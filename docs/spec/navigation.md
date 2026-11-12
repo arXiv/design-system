@@ -256,6 +256,8 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
 </div>
 ```
 
+- `.ds-internal` — On a parent, it turns the current tab's top line Access Lime. Nothing else changes; see [Secondary navigation](#secondary-navigation).
+
 ```html
 <div class="ds-internal">
   <nav class="ds-subnav" aria-label="Moderator reports">
@@ -275,6 +277,8 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
 <script src="subnav.js" defer></script>
 ```
 
+- `.ds-internal` — On a parent, it turns the section menu's background, its hover and open state and its edge line to the Access Lime washes, and the current view's top line and the current row's bar in the open menu Access Lime. The markup and the folding are the same as in [Two levels of navigation](#two-levels-of-navigation).
+
 ```html
 <div class="ds-internal">
   <nav class="ds-subnav ds-subnav--steps" aria-label="Review steps">
@@ -287,11 +291,11 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
 </div>
 ```
 
-- `.ds-internal` — On a parent, it turns the current tab's top line Access Lime. Nothing else changes; see [Secondary navigation](#secondary-navigation).
-- `.ds-internal` — On a parent, it turns the section menu's background, its hover and open state and its edge line to the Access Lime washes, and the current view's top line and the current row's bar in the open menu Access Lime. The markup and the folding are the same as in [Two levels of navigation](#two-levels-of-navigation).
 - `.ds-internal` — On a parent, it turns the current step’s circle Access Lime.
 
 ## Rules
+
+### Accessibility essentials
 
 - **Name each bar.** The `<nav>` takes an `aria-label` that names the area, such as “Account sections” or “Submission steps”, so a screen reader can tell it from the header's navigation.
 - **Mark the current page or step with `aria-current`.** The tab's shape and weight show it too, so the current section never depends on colour alone.

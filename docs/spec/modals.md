@@ -43,6 +43,8 @@ components:
     notes:
       - "Where the closedby attribute is unsupported the dialog keeps its close button and Escape, which is the correct thing to fall back to."
 rules:
+  - "Rarely. A modal interrupts the user experience, takes focus, makes the rest of the page inert, and cannot be ignored. Use this table to decide:"
+  - "The reason this component is a `<dialog>` rather than a `<div role=\"dialog\">` are the reasons listed below. Hand-built modals often fail at least one of them."
   - "**Never open one unprompted.** A modal is a response to something the reader did. One that appears on load is an interruption they did not ask for, and arXiv does not interrupt readers to tell them things."
   - "**Never nest them.** A second modal over the first leaves no way back except forward. If a modal needs a modal, it needed a page."
   - "**Nothing animates.** An entrance animation also animates the moment the page goes inert, and there is nothing here for `prefers-reduced-motion` to switch off when nothing moves."
@@ -64,6 +66,8 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 ## The modal dialog
 
 Click either button below to open a real `.ds-modal`. Modals can be closed with Escape, the close button, or by clicking one of the action buttons.
+
+Test keyboard-tabbing past the last control and scrolling the page behind the modal: neither will work. The modal is appropriately focus-trapped, critical for accessibility. Long content is scrollable within the modal.
 
 **A decision**
 
@@ -89,14 +93,20 @@ Click either button below to open a real `.ds-modal`. Modals can be closed with 
 </dialog>
 ```
 
-**A decision**
-
 ```html
 // Open and close. Focus trap, focus restore, Escape and stacking are
 // the element's own doing; the scroll lock is in the stylesheet.
 document.getElementById('demo-confirm').showModal();
 document.getElementById('demo-confirm').close();
 ```
+
+- `.ds-modal` — The dialog, on a native `<dialog>` element opened with `showModal()`. Sized against the viewport rather than its content, because a modal that outgrows the window puts its own actions out of reach.
+- `aria-labelledby="…"` — Required on the `<dialog>`, pointing at the title. It is the one thing the native element cannot infer, and without it the dialog announces with no name at all.
+- `.ds-modal-header, .ds-modal-body, .ds-modal-footer` — The three regions, in this order. Header and footer hold their size; the body takes what is left and scrolls, which is what keeps the title and the actions on screen when the content is long.
+- `.ds-modal-title` — The heading inside the header. It has the id that `aria-labelledby` points at.
+- `.ds-modal-footer-start` — Pushes one control to the opposite end — Cancel reads better away from the action it undoes.
+- `.ds-close` — The same close control as everywhere else; see [Buttons](buttons.md#the-close-control). It sits inside `.ds-modal-header`, after the title.
+- `data-open="…", data-close` — Hooks for this page's demo script, which finds the button that opens a dialog and the controls that close it. The stylesheet gives them no meaning; your own script may use any hook it likes.
 
 **Long content**
 
@@ -123,13 +133,6 @@ document.getElementById('demo-confirm').close();
 </dialog>
 ```
 
-- `.ds-modal` — The dialog, on a native `<dialog>` element opened with `showModal()`. Sized against the viewport rather than its content, because a modal that outgrows the window puts its own actions out of reach.
-- `aria-labelledby="…"` — Required on the `<dialog>`, pointing at the title. It is the one thing the native element cannot infer, and without it the dialog announces with no name at all.
-- `.ds-modal-header, .ds-modal-body, .ds-modal-footer` — The three regions, in this order. Header and footer hold their size; the body takes what is left and scrolls, which is what keeps the title and the actions on screen when the content is long.
-- `.ds-modal-title` — The heading inside the header. It has the id that `aria-labelledby` points at.
-- `.ds-modal-footer-start` — Pushes one control to the opposite end — Cancel reads better away from the action it undoes.
-- `.ds-close` — The same close control as everywhere else; see [Buttons](buttons.md#the-close-control). It sits inside `.ds-modal-header`, after the title.
-- `data-open="…", data-close` — Hooks for this page's demo script, which finds the button that opens a dialog and the controls that close it. The stylesheet gives them no meaning; your own script may use any hook it likes.
 - `.ds-modal-body` — Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off.
 - `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page.
 
@@ -166,9 +169,38 @@ For a dialog where you need maximum viewing space, like a figure, add class `.ds
 
 ## Rules
 
+### When to use a modal
+
+Rarely. A modal interrupts the user experience, takes focus, makes the rest of the page inert, and cannot be ignored. Use this table to decide:
+
+| Reach for a modal when | Not when |
+|---|---|
+| The user must decide before anything else can happen, for example confirming a deletion or agreeing to a policy. | The information is useful but not blocking, and the reader did not ask for it. The right options are an [alert](alerts.md) or marginalia note. |
+| Displaying a full-size version of a figure. It would disrupt reading if placed directly on the page at that size. | The user needs a quick lookup related to specific content on the page. The right component is a [popover](progressive-disclosure.md). |
+| The user would lose context if the content were placed directly on the page. For example, a *short* optional form. | The form is long enough to scroll, or the reader may need to consult the page behind it for context. The right choice is to build it out as a full page form. |
+| The reader asks to look through a long list or explanation, such as every category a report covers, that would push the main content down if it were on the page. | The reader wants to keep the page in view while reading it. The right component is a [popover](progressive-disclosure.md#popover). |
+| — | Announcing something. arXiv does not interrupt readers to share news. The right components is the [announcement band](messages.md#announcement-band) which can be dismissed or ignored by users and does not interrupt them. |
+
+### The five requirements of a modal
+
+The reason this component is a `<dialog>` rather than a `<div role="dialog">` are the reasons listed below. Hand-built modals often fail at least one of them.
+
+| Requirement | Native? | What it does |
+|---|---|---|
+| Focus trap | Yes | The browser makes the rest of the page unreachable by a screen reader's own navigation (including keyboard tabbing) which a JavaScript trap cannot do. A hand-built trap must enumerate every focusable element and that list is pretty long. |
+| Focus restore | Yes | `close()` returns focus to whatever opened it. If you forget this, a screen reader or keyboard-only user will be dropped at the top of the document again and lose their place. |
+| Escape closes it | Yes | Default behavior, and it fires a `cancel` event first if you need to warn the user about unsaved changes, etc. |
+| Overlays everything | Yes | It renders in the top layer with no `z-index`, so it cannot mistakenly lose its order to a stacking context somewhere up the tree. |
+| Scroll lock | No | The one gap that `<dialog>` does not cover by default. The stylesheet resolves it with `html:has(.ds-modal[open]) { overflow: hidden }`. Still JavaScript-free. |
+
+### Opening and closing
+
 - **Never open one unprompted.** A modal is a response to something the reader did. One that appears on load is an interruption they did not ask for, and arXiv does not interrupt readers to tell them things.
 - **Never nest them.** A second modal over the first leaves no way back except forward. If a modal needs a modal, it needed a page.
 - **Nothing animates.** An entrance animation also animates the moment the page goes inert, and there is nothing here for `prefers-reduced-motion` to switch off when nothing moves.
+
+### Accessibility essentials
+
 - **Use the native element.** Build every modal on a `<dialog class="ds-modal">` and open it with `showModal()`. Never use `show()`: it opens a *non*-modal dialog, with no backdrop, no inert page and no focus trap — every guarantee quietly absent, on markup that looks correct. Never build one from a `<div role="dialog">`, which starts with none of those guarantees either.
 - **Name the dialog.** Put `aria-labelledby` on the `<dialog>`, pointing at the id of its `.ds-modal-title`. It is the one thing the native element cannot infer, and without it the dialog announces with no name at all.
 - **Let the browser move focus.** `showModal()` moves focus into the dialog, and `close()` returns it to the control that opened it. Do not set focus by hand on open or on close, and always close with `close()`: a dialog hidden by removing its `open` attribute or by CSS never gives focus back.

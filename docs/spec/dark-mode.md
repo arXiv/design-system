@@ -26,11 +26,6 @@ components:
         does: "Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`."
     notes:
       - "Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too."
-    rules:
-      - "Preferences saved."
-      - "Preferences saved."
-      - "Preferences saved."
-      - "Preferences saved."
   - id: a-page-locked-to-light
     title: "Locking to light"
     group: "Modifiers"
@@ -47,6 +42,7 @@ components:
     group: "Modifiers"
     summary: "Internal tools load the same tier 1 stylesheet as public pages. Their speciall accent color comes from adding `.ds-internal` on `<html>`, so everything above applies to them unchanged. The internal pages tier 2 stylesheet, `internal-tools.css`, re-points only the tokens whose dark value differs on that surface. No manual adjustments are needed."
 rules:
+  - "In order. Each step links to the reasoning below. If you follow only this list and read nothing else, dark mode will work."
   - "**Take every colour from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)"
   - "**Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself."
   - "**Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the page ground is white in light and Repository Brown in dark, so anything filled with it disappears."
@@ -75,6 +71,8 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 ## The theme control
 
 One control that is identical everywhere it appears. It ships as `.ds-theme-toggle` plus `theme.js`.
+
+Though we honor the user's OS-level mode preference, it is still useful for users to have a manual override. A person might be on a shared library computer, not everyone knows how to set the OS-level preference, and the environment can change quickly. Think of a user looking at a paper on their phone on a train, moving from tunnels to the glare of sunlight. A simple affordance makes papers more accessible in more situations.
 
 ```html
 <!-- in the head, NOT deferred -->
@@ -120,14 +118,6 @@ The same card in light and dark modes, on a public page vs. an internal page. No
 
 > Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too.
 
-**Rule.** Preferences saved.
-
-**Rule.** Preferences saved.
-
-**Rule.** Preferences saved.
-
-**Rule.** Preferences saved.
-
 ## Locking to light  (Modifiers)
 
 Any page or element can lock to light mode only by adding `data-theme="light"`. We use this feature when demonstrating light mode, but it can also be useful if the content being worked with has no dark mode. For example, if porting in complex visualizations from an external engine that does not support dark mode.
@@ -151,6 +141,10 @@ Internal tools load the same tier 1 stylesheet as public pages. Their speciall a
 
 ## Rules
 
+### Adding or changing a component
+
+In order. Each step links to the reasoning below. If you follow only this list and read nothing else, dark mode will work.
+
 - **Take every colour from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)
 - **Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself.
 - **Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the page ground is white in light and Repository Brown in dark, so anything filled with it disappears.
@@ -160,8 +154,14 @@ Internal tools load the same tier 1 stylesheet as public pages. Their speciall a
 - **Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)
 - **If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)
 - **Verify computed styles in both modes, and measure contrast.** Do not trust the cascade and do not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced either way.
+
+### Scoping a mode
+
 - Component CSS consumes tokens. Do not write hex values directly.
 - `color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode.
+
+### Accessibility essentials
+
 - **Respect the setting the reader already made.** A page follows the operating system's colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page.
 - **The icon is the only visible part, so the name gives the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region, as in [Show that something was copied](action-feedback.md). A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.
 - **Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself.

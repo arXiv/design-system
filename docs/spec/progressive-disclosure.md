@@ -98,6 +98,7 @@ components:
         does: "On one panel in the group at most, if one starts open."
 rules:
   - "A view has one level of tabs. Tabs inside a tab panel are not used."
+  - "The question that separates them is not how much is hidden. It is what relationship the hidden thing has to what the reader is looking at."
   - "**Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open."
   - "**Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed."
   - "**Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here."
@@ -207,6 +208,8 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 ## Popover
 
 A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.md).
+
+For a screen reader user, the trigger is an ordinary link whose accessible name includes the reference itself, such as “Reference 47: Ashtekar and Bojowald (2006)”, so most readers hear what they need without opening anything. Opening the popover does not move focus: the trigger reports that it is expanded, and the reader can continue through the main text. To read the popover, they move to it as a named region, from the screen reader's list of landmarks. Escape closes it and returns focus to the trigger.
 
 ```html
 <span class="ds-popover" role="region" aria-label="Reference 47">
@@ -337,7 +340,21 @@ Opening one panel closes the panel that was open. There is no class: give every 
 
 ## Rules
 
-- A view has one level of tabs. Tabs inside a tab panel are not used.
+### One level of tabs
+
+A view has one level of tabs. Tabs inside a tab panel are not used.
+
+### Which affordance
+
+The question that separates them is not how much is hidden. It is what relationship the hidden thing has to what the reader is looking at.
+
+| Use | When the hidden content is | Costs the reader |
+|---|---|---|
+| Accordion `.ds-acc` | A **labelled section** the reader can decide about from its label alone — Versions, Paper information, Related. More than a line or two; a single line goes on the page. | One click, stays on the page, keeps their place. |
+| Show more `.ds-show-more` | The **tail of something already begun** — authors nine through twenty-two, the rest of a category list, the rest of an abstract. There is no label to give it, because it is not a different thing. | One click, expands in place, no new surface. |
+| Popover `.ds-popover` | A **lookup** the reader wants without leaving their sentence — what reference 47 is, what footnote 3 says. | Nothing permanent. It closes on Escape and does not move the page. |
+| A link to a full page | Something with **its own identity** — a different paper, an author's other work, the full licence. | Leaves the page. Pay this only when the destination deserves a URL. |
+
 - **Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open.
 - **Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed.
 - **Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.
@@ -346,8 +363,14 @@ Opening one panel closes the panel that was open. There is no class: give every 
 - **An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back.
 - **Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right.
 - **Never put content in a popover that exists nowhere else.** A popover is a shortcut to something already on the page or already at a URL — the reference list, the footnote. It is not a place to store text.
+
+### Motion and layering
+
 - **Nothing animates.** These components have no transitions, so there is nothing for `prefers-reduced-motion` to switch off. An accordion that animates its height also animates the position of everything below it, which is motion a reader did not ask for.
 - **A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](../doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden.
+
+### Accessibility essentials
+
 - **Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behaviour and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one.
 - **In a `<details>`, the summary is the whole label.** Never put a second interactive control inside it — a link or button in a `<summary>` is reachable but its activation fights the disclosure's own.
 - **Hide with the `hidden` attribute, not with a class.** Content hidden by a class that fails to load is invisible but still tabbable, which puts a keyboard user in a place they cannot see.

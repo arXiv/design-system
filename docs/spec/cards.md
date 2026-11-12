@@ -112,6 +112,8 @@ A flexible and unopinionated white surface with a hairline border and 8px radius
 </div>
 ```
 
+- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own colour. Set between paragraphs, the card keeps a paragraph’s space below it.
+
 **Internal**
 
 ```html
@@ -124,7 +126,6 @@ A flexible and unopinionated white surface with a hairline border and 8px radius
   </div>
 ```
 
-- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own colour. Set between paragraphs, the card keeps a paragraph’s space below it.
 - `.ds-internal` — On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes. The basic card has no accent of its own, so it looks the same on both surfaces; what changes is everything inside it that reaches for the accent, such as the button.
 
 ## Data cards
@@ -144,6 +145,10 @@ Intended for organizing metadata and other reference information: the facts abou
 </section>
 ```
 
+- `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-tint-warm`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it.
+- `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
+- `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
+
 **Internal**
 
 ```html
@@ -159,9 +164,6 @@ Intended for organizing metadata and other reference information: the facts abou
 </section>
 ```
 
-- `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-tint-warm`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it.
-- `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
-- `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
 - `.ds-internal` — The top edge takes Access Lime. The markup is the public one.
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.3.1](https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html) Info and Relationships (Level A)
@@ -285,6 +287,8 @@ A few short details as label and value pairs, each label beside its value, witho
 - `.ds-data-list` — A `<dl>`, one `<div>` per pair, in smaller type. A label never wraps; a long value does.
 
 ## Rules
+
+### Accessibility essentials
 
 - **Name a data card.** It is a `<section>` with an `aria-label` such as “User information”, so a screen reader user can jump straight to it and hears what it holds. A section without a name is not exposed as a landmark at all.
 - **Keep each label with its value.** A label and its value sit together in one `<div>`, `<dt>` first, so they are read as a pair. The label is real text in the markup and the uppercase comes from CSS, so it stays correct for a screen reader and for copy and paste.

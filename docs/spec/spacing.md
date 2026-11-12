@@ -87,6 +87,16 @@ A seven step scale, with each step roughly 1.5x larger than the previous. The wi
 - `--ds-space-8` — 32px. Larger internal padding.
 - `--ds-space-12` — 48px. Breathing space *between* major sections.
 
+| Token | Value | Drawn at size |
+|---|---|---|
+| `--ds-space-1` | 0.25rem (4px) |  |
+| `--ds-space-2` | 0.5rem (8px) |  |
+| `--ds-space-3` | 0.75rem (12px) |  |
+| `--ds-space-4` | 1rem (16px) |  |
+| `--ds-space-6` | 1.5rem (24px) |  |
+| `--ds-space-8` | 2rem (32px) |  |
+| `--ds-space-12` | 3rem (48px) |  |
+
 ## The proximity rule
 
 The gap *between* sections should be clearly larger than the gap *within* a section. We aim for at least 2× (e.g., 16px between paragraphs, 32px before the next heading, 48px between sections). The same holds across a row: groups of controls side by side sit at least twice as far apart as the controls inside each group. This is what allows grouping to work without adding extra lines, borders or boxes.
@@ -131,17 +141,48 @@ Three tokens set the shape of every page: the width of the content column, the g
 
 ## Rules
 
-- Use the step tokens, never hand-code the spacing. Do not fight the grid. If the need arises for different spacing reach out to the design team. The new values mean a change to DESIGN-POLICIES, not a local override.
-- When applying your own spacing use the named `--ds-space-block` for spacing *within*, and `--ds-space-section` for spacing *between*. Spacing between blocks is 2× tight while spacing between sections is 3× block; Lower than 1.5× the eye cannot tell the two apart and the grouping signal fails.
-- Feel like you need a border to separate content? First try widening the gap, using cards, or applying designated background colors for primary and secondary content zones.
-- The scale is expressed in `rem`, so spacing also scales with the reader's text size. A fixed gap next to growing text would destroy the ratio for *within* and *between* sizes and lose visual meaning at different zoom levels.
-- Named breaks include `--ds-space-tight` inside a group, `--ds-space-block` between blocks in a section, or `--ds-space-section` between sections. We name spacing roles like we do colors: for their role and not their raw value. That flexibility enables the dark mode flip and our responsive spacing system.
-- A section does not know what follows it, so it cannot know how far away that next piece of content should be. Spacing is added to the container as `gap`, not on each child as a margin. If you find yourself reaching for `:last-child { margin-bottom: 0 }` let the design team know asap. It is a symptom that the spacing is on the wrong element.
-- One exception: prose spacing *inside* a section stays element-owned, because a heading's margin depends on its own text size, which the container does not know.
-- “How far apart do these sit” means the same thing whether the space comes from a margin or a gap, and whether the space is vertical or horizontal. Gap between siblins uses the standard scale.
-- One exception: the space between a glyph and its label *inside* a single control is part of the control rather than layout. Use `--ds-gap-glyph` (`0.5em`), which scales with that control's own type.
-- Buttons placed as bare siblings are spaced by the HTML whitespace between the tags, which are narrower than any deliberate value. It will look like a bug because it is one. For the button use case you would use `.ds-btn-group` or the `--stack` variant. For other elements, visit their pattern pages to find the right container and code example.
-- There is one name per scale step and every codebase uses it exactly as written. No per-repository prefixes or mapping tables. Anything kept in another repo is invisible here.
+### Stay on the scale
+
+Use the step tokens, never hand-code the spacing. Do not fight the grid. If the need arises for different spacing reach out to the design team. The new values mean a change to DESIGN-POLICIES, not a local override.
+
+### Do not mix within and between, aim for at least 2× difference
+
+When applying your own spacing use the named `--ds-space-block` for spacing *within*, and `--ds-space-section` for spacing *between*. Spacing between blocks is 2× tight while spacing between sections is 3× block; Lower than 1.5× the eye cannot tell the two apart and the grouping signal fails.
+
+### You do not need a border, really
+
+Feel like you need a border to separate content? First try widening the gap, using cards, or applying designated background colors for primary and secondary content zones.
+
+### Rem everywhere
+
+The scale is expressed in `rem`, so spacing also scales with the reader's text size. A fixed gap next to growing text would destroy the ratio for *within* and *between* sizes and lose visual meaning at different zoom levels.
+
+### Name the break, not the value
+
+Named breaks include `--ds-space-tight` inside a group, `--ds-space-block` between blocks in a section, or `--ds-space-section` between sections. We name spacing roles like we do colors: for their role and not their raw value. That flexibility enables the dark mode flip and our responsive spacing system.
+
+### Containers own the space between regions
+
+A section does not know what follows it, so it cannot know how far away that next piece of content should be. Spacing is added to the container as `gap`, not on each child as a margin. If you find yourself reaching for `:last-child { margin-bottom: 0 }` let the design team know asap. It is a symptom that the spacing is on the wrong element.
+
+One exception: prose spacing *inside* a section stays element-owned, because a heading's margin depends on its own text size, which the container does not know.
+
+### Gaps do not need their own scale
+
+“How far apart do these sit” means the same thing whether the space comes from a margin or a gap, and whether the space is vertical or horizontal. Gap between siblins uses the standard scale.
+
+One exception: the space between a glyph and its label *inside* a single control is part of the control rather than layout. Use `--ds-gap-glyph` (`0.5em`), which scales with that control's own type.
+
+### A set of related controls needs a container
+
+Buttons placed as bare siblings are spaced by the HTML whitespace between the tags, which are narrower than any deliberate value. It will look like a bug because it is one. For the button use case you would use `.ds-btn-group` or the `--stack` variant. For other elements, visit their pattern pages to find the right container and code example.
+
+### Namespaced in production
+
+There is one name per scale step and every codebase uses it exactly as written. No per-repository prefixes or mapping tables. Anything kept in another repo is invisible here.
+
+### Accessibility essentials
+
 - **Do not shrink controls.** Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbours.
 - **Spacing survives zoom.** The scale is in `rem`, so every gap grows with the reader's text size (WCAG 1.4.4). At 400% page zoom the page is only 320 pixels wide. Let the tokens do their work and never set a gap or a width that forces the page to scroll sideways.
 - **Spacing is not structure.** Proximity tells a sighted reader what belongs together, but a screen reader does not see it. Give groups a heading, a `<fieldset>` or a landmark, so the grouping is in the markup as well as visual.

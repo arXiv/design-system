@@ -15,14 +15,21 @@ has not had its review pass is wrong with the same confidence.
 
 The shape it reads is buttons.html's (whiteboard/planning/DIGEST-PLAN.md has the table):
   page header            -> the page summary
-  h2/h3 opening a plain <section> -> a component; its .ds-section-desc is the summary
-  "Relevant code" .ds-acc -> <pre><code> is the markup, <dt>/<dd> the class key
+  h2/h3 opening a plain <section> -> a component; its .ds-section-desc paragraphs are the summary
+  "Relevant code" .ds-acc -> <pre><code> is the markup, <dt>/<dd> the class key; each key stays
+                             with the markup of its own accordion
+  <pre> in the section itself -> markup too (the page skeleton on using.html)
+  <table> in the section itself, or a .token-table anywhere -> a table
   .ds-marginalia          -> a note on the component it sits in
+  .ds-note in the section -> guidance, under the note's label
   .ds-note--internal      -> the component's internal variant
-  .ds-note--essential     -> rules
-  .ds-alert in a section  -> a rule for that component
-  sections under a plain "Rules" h2 -> rules; under "Spec" -> left out (the stylesheet is the spec)
-Everything else on the page is scaffolding and is left out.
+  .ds-note--essential     -> rules, under the note's label
+  .ds-alert in the section itself -> a rule for that component
+  sections under a plain "Rules" h2 -> rules, each under its own heading, with its paragraphs,
+                             lists and tables; under "Spec" -> left out (the stylesheet is the spec)
+A demo is not the contract. What sits in a demo (a .ds-card, a .page-demo or a <dialog>) is left
+out: a sample alert, a sample note, a sample table. So is everything else on the page.
+A section inside a section has its own entry and is not repeated in its parent's.
 
 The output is Markdown with a YAML header: the header is the contract as
 data, the body is the prose and markup. That is the format a renderer can
@@ -128,12 +135,16 @@ def parse(path):
 
 
 # ── Text helpers ─────────────────────────────────────────────────────────
-def md_inline(node):
+def md_inline(node, skip=()):
     """Inline HTML to Markdown: code, emphasis, links; everything else is text."""
     out = []
     for c in node.children:
         if not isinstance(c, Node):
             out.append(c)
+        elif c.tag in skip:
+            continue
+        elif c.tag == "br":
+            out.append(" ")
         elif c.tag == "code":
             out.append("`" + c.text() + "`")
         elif c.tag in ("strong", "b"):
@@ -185,10 +196,123 @@ def section_title(node):
     return first is node
 
 
+def titled(n):
+    """A plain <section> opened by its own h2 or h3: it has an entry of its own."""
+    return (isinstance(n, Node) and n.tag == "section" and not n.attrs.get("class")
+            and any(section_title(c) for c in n.children if isinstance(c, Node)))
+
+
+def own(section, pred):
+    """The section's own nodes that match, in page order. A titled section inside it is not
+    entered: on papers.html three sections sit inside another, and each was digested twice."""
+    out = []
+
+    def visit(node):
+        for c in node.children:
+            if not isinstance(c, Node) or titled(c):
+                continue
+            if pred(c):
+                out.append(c)
+            visit(c)
+    visit(section)
+    return out
+
+
+def within(n, section, pred):
+    """The nearest ancestor of n, below its section, that matches."""
+    p = n.parent
+    while p is not None and p is not section:
+        if pred(p):
+            return p
+        p = p.parent
+    return None
+
+
+def in_demo(n, section):
+    """In a demo: a card, a whole-page demo or a dialog. What a demo shows is sample content."""
+    return within(n, section, lambda p: p.has("ds-card") or p.has("page-demo") or p.tag == "dialog") is not None
+
+
+def is_alert(n):
+    return n.has("ds-alert") and not (n.has("ds-alert-icon") or n.has("ds-alert-content") or n.has("ds-alert-title"))
+
+
+def is_guidance(n):
+    return n.has("ds-note") and not (n.has("ds-note--essential") or n.has("ds-note--internal"))
+
+
+def alert_text(alert):
+    t = alert.find(lambda n: n.has("ds-alert-title"))
+    body = [q for q in alert.find_all(lambda n: n.tag == "p") if not q.has("ds-alert-title")]
+    return ((squash(t.text()) + ": ") if t else "") + " ".join(md_inline(q) for q in body)
+
+
+def md_item(li):
+    """A list item, and the items of a list inside it, each once."""
+    kids = [md_inline(k) for sub in li.children if isinstance(sub, Node) and sub.tag in ("ul", "ol")
+            for k in sub.children if isinstance(k, Node) and k.tag == "li"]
+    return {"text": md_inline(li, skip=("ul", "ol")), "kids": kids}
+
+
+def reference_table(table, section):
+    """A table a builder reads: one that stands in the section, or a docs token table. A table in
+    a demo is a sample, and a table with no rows is filled in by the page's script."""
+    if within(table, section, lambda p: p.tag == "details") is not None:
+        return False
+    if len(table.find_all(lambda n: n.tag == "tr")) < 2:
+        return False
+    return table.has("token-table") or not in_demo(table, section)
+
+
+def md_table(table):
+    rows = []
+    for tr in table.find_all(lambda n: n.tag == "tr"):
+        cells = [c for c in tr.children if isinstance(c, Node) and c.tag in ("th", "td")]
+        if cells:
+            rows.append([md_inline(c).replace("|", "\\|") for c in cells])
+    width = max(len(r) for r in rows)
+    rows = [r + [""] * (width - len(r)) for r in rows]
+    out = ["| " + " | ".join(rows[0]) + " |", "|" + "---|" * width]
+    out += ["| " + " | ".join(r) + " |" for r in rows[1:]]
+    return "\n".join(out)
+
+
+def blocks(node, section):
+    """The paragraphs, list items and tables of a rules section or a note, in page order."""
+    out = []
+    for n in own(node, lambda n: n.tag in ("p", "li", "table")):
+        if n.has("ds-marginalia-body"):
+            out.append(("p", md_inline(n)))   # a margin note says something about the rule, wherever it sits
+            continue
+        if in_demo(n, section) and not (n.tag == "table" and n.has("token-table")):
+            continue
+        if within(n, node, lambda p: p.tag in ("li", "table", "details") or p.has("ds-marginalia")) is not None:
+            continue
+        if n.tag == "p" and not n.has("ds-note-label"):
+            out.append(("p", md_inline(n)))
+        elif n.tag == "li":
+            out.append(("li", md_item(n)))
+        elif n.tag == "table" and reference_table(n, section):
+            out.append(("table", md_table(n)))
+    return out
+
+
+def flat(bl):
+    """Blocks as plain strings, for the header's list of rules."""
+    out = []
+    for kind, v in bl:
+        if kind == "p":
+            out.append(v)
+        elif kind == "li":
+            out.append(v["text"])
+            out.extend(v["kids"])
+    return out
+
+
 def extract(path):
     root = parse(path)
     warn = []
-    page = {"page": path.name, "components": [], "rules": []}
+    page = {"page": path.name, "components": [], "rules": [], "rule_groups": []}
 
     title = root.find(lambda n: n.tag == "h1")
     page["title"] = squash(title.text()) if title else path.stem
@@ -196,10 +320,8 @@ def extract(path):
     if header:
         paras = [c for c in header.children if isinstance(c, Node) and c.tag == "p"]
         page["summary"] = " ".join(md_inline(p) for p in paras)
-        for alert in header.find_all(lambda n: n.has("ds-alert")):
-            t = alert.find(lambda n: n.has("ds-alert-title"))
-            body = [p for p in alert.find_all(lambda n: n.tag == "p") if not p.has("ds-alert-title")]
-            page["rules"].append((squash(t.text()) if t else "") + (": " if t else "") + " ".join(md_inline(p) for p in body))
+        for alert in header.find_all(is_alert):
+            page["rules"].append(alert_text(alert))
     else:
         page["summary"] = ""
         warn.append("no .ds-page-header")
@@ -222,32 +344,53 @@ def extract(path):
             group = None
         if group and re.search(r"rule|spec", group, re.I):
             if re.search(r"rule", group, re.I) and not re.search(r"token|spec", h.text(), re.I):
-                for li in section.find_all(lambda n: n.tag == "li"):
-                    page["rules"].append(md_inline(li))
-                for pp in section.find_all(lambda n: n.tag == "p" and not n.has("ds-section-desc")):
-                    if pp.ancestor(lambda n: n.tag == "li") is None:
-                        page["rules"].append(md_inline(pp))
+                bl = blocks(section, section)
+                if bl:
+                    page["rule_groups"].append({"title": squash(h.text()), "blocks": bl})
             continue
         comp = {"id": h.attrs.get("id", ""), "title": squash(h.text()), "group": group,
-                "summary": "", "classes": [], "markup": [], "notes": [], "rules": [], "internal": None}
-        desc = section.find(lambda n: n.has("ds-section-desc"))
-        if desc:
-            comp["summary"] = md_inline(desc)
+                "summary": "", "more": [], "classes": [], "markup": [], "examples": [], "tables": [],
+                "guidance": [], "notes": [], "rules": [], "internal": None}
+        descs = own(section, lambda n: n.has("ds-section-desc"))
+        if descs:
+            comp["summary"] = md_inline(descs[0])
+            # the further paragraphs that stand in the section itself say more about the same component
+            comp["more"] = [md_inline(d) for d in descs[1:] if d.parent is section]
         else:
             warn.append(f"{comp['title']}: no .ds-section-desc")
 
-        # only the reference accordions: a page that documents the accordion itself has demo ones too
-        accs = [d for d in section.find_all(lambda n: n.tag == "details" and n.has("ds-acc"))
-                if (d.find(lambda n: n.tag == "summary") is not None
-                    and squash(d.find(lambda n: n.tag == "summary").text()).lower().startswith("relevant"))]
-        if not accs:
+        def relevant(d):
+            # only the reference accordions: a page that documents the accordion itself has demo ones too
+            summary = d.find(lambda n: n.tag == "summary")
+            return (d.tag == "details" and d.has("ds-acc") and summary is not None
+                    and squash(summary.text()).lower().startswith("relevant"))
+
+        def loose_pre(n):
+            # markup that stands in the section itself, outside any accordion or demo
+            return (n.tag == "pre" and within(n, section, lambda p: p.tag == "details") is None
+                    and not in_demo(n, section))
+
+        def code_of(pre):
+            # The block's text as a reader sees it: the <code> wrapper and any
+            # highlighting spans go, and what the page escapes stays escaped.
+            raw = re.sub(r"</?span[^>]*>", "", pre.inner_html())
+            return html.unescape(re.sub(r"^\s*<code[^>]*>|</code>\s*$", "", raw)).strip("\n")
+
+        sources = own(section, lambda n: relevant(n) or loose_pre(n))
+        if not sources:
             warn.append(f"{comp['title']}: no Relevant code accordion")
-        for acc in accs:
+        for acc in sources:
+            if acc.tag == "pre":
+                comp["markup"].append({"label": None, "code": code_of(acc)})
+                comp["examples"].append({"label": None, "codes": [code_of(acc)], "classes": [], "internal": False})
+                continue
             in_internal = acc.ancestor(lambda n: n.has("ds-note--internal")) is not None
             target = comp
             if in_internal:
                 comp["internal"] = comp["internal"] or {"summary": "", "classes": [], "markup": []}
                 target = comp["internal"]
+            example = {"label": None, "codes": [], "classes": [], "internal": in_internal}
+            comp["examples"].append(example)
             label = None
             card = acc.parent
             # a panel label before the card names this example
@@ -259,20 +402,21 @@ def extract(path):
                         if s.has("ds-panel-label"):
                             label = squash(s.text())
                         break
+            example["label"] = label
             for pre in acc.find_all(lambda n: n.tag == "pre"):
-                # The block's text as a reader sees it: the <code> wrapper and any
-                # highlighting spans go, and what the page escapes stays escaped.
-                raw = re.sub(r"</?span[^>]*>", "", pre.inner_html())
-                code = html.unescape(re.sub(r"^\s*<code[^>]*>|</code>\s*$", "", raw))
+                code = code_of(pre)
                 if "\n" not in code.strip() and len(code) > 90:
                     warn.append(f"{comp['title']}: a code block is a single line")
-                target["markup"].append({"label": label, "code": code.strip("\n")})
+                target["markup"].append({"label": label, "code": code})
+                example["codes"].append(code)
             # a class table: first column the class, last column what it is for
             for table in acc.find_all(lambda n: n.tag == "table"):
                 for tr in table.find_all(lambda n: n.tag == "tr"):
                     cells = [c for c in tr.children if isinstance(c, Node) and c.tag == "td"]
                     if len(cells) >= 2:
-                        target["classes"].append({"name": squash(cells[0].text()), "does": md_inline(cells[-1])})
+                        key = {"name": squash(cells[0].text()), "does": md_inline(cells[-1])}
+                        target["classes"].append(key)
+                        example["classes"].append(key)
             dts = acc.find_all(lambda n: n.tag == "dt")
             for dt in dts:
                 dd = None
@@ -288,21 +432,34 @@ def extract(path):
                 name = squash(dt.text())
                 if not re.match(r"^[.\[]|^[a-z-]+=|^--ds-|^<", name):
                     warn.append(f"{comp['title']}: key entry \"{name}\" is prose, not a class or attribute")
-                target["classes"].append({"name": name, "does": md_inline(dd)})
+                key = {"name": name, "does": md_inline(dd)}
+                target["classes"].append(key)
+                example["classes"].append(key)
             if not dts and not acc.find_all(lambda n: n.tag == "pre"):
                 warn.append(f"{comp['title']}: an accordion with neither markup nor a class key")
 
-        internal = section.find(lambda n: n.has("ds-note--internal"))
+        internal = next((n for n in own(section, lambda n: n.has("ds-note--internal")) if not in_demo(n, section)), None)
         if internal:
             comp["internal"] = comp["internal"] or {"summary": "", "classes": [], "markup": []}
             ps = [c for c in internal.children if isinstance(c, Node) and c.tag == "p"]
             comp["internal"]["summary"] = " ".join(md_inline(p) for p in ps)
-        # an alert inside a section is a rule for that component
-        for alert in section.find_all(lambda n: n.has("ds-alert") and not n.has("ds-alert-icon") and not n.has("ds-alert-content") and not n.has("ds-alert-title")):
-            t = alert.find(lambda n: n.has("ds-alert-title"))
-            body = [q for q in alert.find_all(lambda n: n.tag == "p") if not q.has("ds-alert-title")]
-            comp["rules"].append(((squash(t.text()) + ": ") if t else "") + " ".join(md_inline(q) for q in body))
-        for note in section.find_all(lambda n: n.has("ds-marginalia")):
+        # a table that stands in the section, outside a note, is part of the contract
+        for table in own(section, lambda n: n.tag == "table"):
+            if reference_table(table, section) and within(table, section, is_guidance) is None:
+                comp["tables"].append(md_table(table))
+        # a grey note in the section is guidance: how to word something, when to choose one thing over another
+        for note in own(section, is_guidance):
+            if in_demo(note, section):
+                continue
+            label = note.find(lambda n: n.has("ds-note-label"))
+            bl = blocks(note, section)
+            if bl:
+                comp["guidance"].append({"label": squash(label.text()) if label else "", "blocks": bl})
+        # an alert that stands in the section is a rule for that component; one in a demo is a sample
+        for alert in own(section, is_alert):
+            if not in_demo(alert, section):
+                comp["rules"].append(alert_text(alert))
+        for note in own(section, lambda n: n.has("ds-marginalia")):
             body = note.find(lambda n: n.has("ds-marginalia-body"))
             if body:
                 comp["notes"].append(md_inline(body))
@@ -316,7 +473,7 @@ def extract(path):
             elif items:
                 comp["notes"].append("; ".join(items))
         # a titled card holding a list (the questions on organize-content.html) is guidance for this section
-        for card in section.find_all(lambda n: n.has("ds-card")):
+        for card in own(section, lambda n: n.has("ds-card")):
             ct = next((c for c in card.children if isinstance(c, Node) and c.tag == "h3"), None)
             ul = next((c for c in card.children if isinstance(c, Node) and c.tag == "ul"), None)
             if ct is None or ul is None:
@@ -337,20 +494,38 @@ def extract(path):
             if isinstance(sib, Node) and sib.tag == "h2" and not section_title(sib):
                 prev = squash(sib.text())
         if prev and re.search(r"rule", prev, re.I):
-            for li in sec.find_all(lambda n: n.tag == "li"):
-                page["rules"].append(md_inline(li))
+            bl = blocks(sec, sec)
+            if bl:
+                page["rule_groups"].append({"title": "", "blocks": bl})
 
     for ess in root.find_all(lambda n: n.has("ds-note--essential")):
-        for li in ess.find_all(lambda n: n.tag == "li"):
-            page["rules"].append(md_inline(li))
+        label = ess.find(lambda n: n.has("ds-note-label"))
+        bl = [("li", md_item(li)) for li in ess.find_all(lambda n: n.tag == "li")
+              if li.ancestor(lambda n: n.tag == "li") is None]
         for g in ess.find_all(lambda n: n.has("ds-note-gotcha")):
-            page["rules"].append("Easy to get wrong: " + md_inline(g).replace("**Easy to get wrong** ", ""))
+            bl.append(("li", {"text": "Easy to get wrong: " + md_inline(g).replace("**Easy to get wrong** ", ""), "kids": []}))
+        if bl:
+            page["rule_groups"].append({"title": squash(label.text()) if label else "Essentials", "blocks": bl})
     if not page["components"]:
         warn.append("no section titles")
     return page, warn
 
 
 # ── Rendering ────────────────────────────────────────────────────────────
+def render_blocks(bl):
+    """Paragraphs, bullets and tables, in the order the page has them."""
+    out = []
+    for i, (kind, v) in enumerate(bl):
+        if kind == "li":
+            out.append(f"- {v['text']}")
+            out += [f"  - {k}" for k in v["kids"]]
+            if i + 1 == len(bl) or bl[i + 1][0] != "li":
+                out.append("")
+        else:
+            out += [v, ""]
+    return out
+
+
 def render(page):
     y = ["---", f"page: {page['page']}", f"title: {yaml_str(page['title'])}", f"summary: {yaml_str(page['summary'])}",
          "stylesheet: design-system.css", "components:"]
@@ -375,9 +550,10 @@ def render(page):
             y.append("    rules:")
             for r in c["rules"]:
                 y.append(f"      - {yaml_str(r)}")
-    if page["rules"]:
+    rules = page["rules"] + [r for g in page["rule_groups"] for r in flat(g["blocks"])]
+    if rules:
         y.append("rules:")
-        for r in page["rules"]:
+        for r in rules:
             y.append(f"  - {yaml_str(r)}")
     y.append("---")
 
@@ -387,34 +563,50 @@ def render(page):
     for c in page["components"]:
         b.append(f"## {c['title']}" + (f"  ({c['group']})" if c["group"] else ""))
         b += ["", c["summary"], ""]
-        for m in c["markup"]:
-            if m["label"]:
-                b.append(f"**{m['label']}**")
-                b.append("")
-            b += ["```html", m["code"], "```", ""]
-        if c["classes"]:
-            for k in c["classes"]:
-                b.append(f"- `{k['name']}` — {k['does']}")
-            b.append("")
+        for more in c["more"]:
+            b += [more, ""]
+
+        def example(e):
+            # each example keeps its own key: the same class can mean something else in the next one
+            out = []
+            if e["label"]:
+                out += [f"**{e['label']}**", ""]
+            for code in e["codes"]:
+                out += ["```html", code, "```", ""]
+            if e["classes"]:
+                out += [f"- `{k['name']}` — {k['does']}" for k in e["classes"]] + [""]
+            return out
+
+        for e in c["examples"]:
+            if not e["internal"]:
+                b += example(e)
+        for t in c["tables"]:
+            b += [t, ""]
         if c["internal"]:
             b.append("**Internal variant.** " + c["internal"]["summary"])
             b.append("")
-            for m in c["internal"]["markup"]:
-                b += ["```html", m["code"], "```", ""]
-            for k in c["internal"]["classes"]:
-                b.append(f"- `{k['name']}` — {k['does']}")
-            if c["internal"]["classes"]:
-                b.append("")
+            for e in c["examples"]:
+                if e["internal"]:
+                    b += example(e)
+        for g in c["guidance"]:
+            if g["label"]:
+                b += [f"**{g['label']}**", ""]
+            b += render_blocks(g["blocks"])
         for n in c["notes"]:
             b += [f"> {n}", ""]
         for r in c["rules"]:
             b += [f"**Rule.** {r}", ""]
-    if page["rules"]:
+    if page["rules"] or page["rule_groups"]:
         b += ["## Rules", ""]
-        for r in page["rules"]:
-            b.append(f"- {r}")
-        b.append("")
-    return "\n".join(y) + "\n" + "\n".join(b)
+        if page["rules"]:
+            b += [f"- {r}" for r in page["rules"]] + [""]
+        for g in page["rule_groups"]:
+            if g["title"]:
+                b += [f"### {g['title']}", ""]
+            b += render_blocks(g["blocks"])
+    while b and b[-1] == "":
+        b.pop()
+    return "\n".join(y) + "\n" + "\n".join(b) + "\n"
 
 
 def render_index(pages, unreviewed):
@@ -441,7 +633,7 @@ def reviewed():
 
 
 def all_pages():
-    skip = {"doc.html", "icons.html", "using.html", "index.html", "brand.html", "outreach.html"}   # not component pages
+    skip = {"doc.html", "icons.html", "using.html", "index.html"}   # the viewer, a generated page, and pages with a digest of their own or none to make
     return sorted(p.relative_to(DOCS).as_posix() for p in DOCS.rglob("*.html") if p.name not in skip and "sharing" not in p.parts)
 
 
