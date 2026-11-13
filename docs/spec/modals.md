@@ -213,7 +213,7 @@ Rarely. A modal interrupts the user experience, takes focus, makes the rest of t
 | Displaying a full-size version of a figure. It would disrupt reading if placed directly on the page at that size. | The user needs a quick lookup related to specific content on the page. The right component is a [popover](progressive-disclosure.md). |
 | The user would lose context if the content were placed directly on the page. For example, a *short* optional form. | The form is long enough to scroll, or the reader may need to consult the page behind it for context. The right choice is to build it out as a full page form. |
 | The reader asks to look through a long list or explanation, such as every category a report covers, that would push the main content down if it were on the page. | The reader wants to keep the page in view while reading it. The right component is a [popover](progressive-disclosure.md#popover). |
-| — | Announcing something. arXiv does not interrupt readers to share news. The right components is the [announcement band](messages.md#announcement-band) which can be dismissed or ignored by users and does not interrupt them. |
+| — | Announcing something. arXiv does not interrupt readers to share news. The right component is the [announcement band](messages.md#announcement-band) which can be dismissed or ignored by users and does not interrupt them. |
 
 ### The five requirements of a modal
 
