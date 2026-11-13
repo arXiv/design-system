@@ -167,3 +167,21 @@ In order. Each step links to the reasoning below. If you follow only this list a
 - **Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself.
 - **Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.
 - **Let form controls follow.** The stylesheet sets `color-scheme` beside the tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not set it yourself to force a mode: it governs those browser-rendered widgets only and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`.
+
+## Spec
+
+### The mechanism
+
+Dark values are declared twice in each stylesheet: once in a `@media (prefers-color-scheme: dark)` block that follows the OS, and once under `[data-theme="dark"]` so the attribute can force a mode. A page takes one of three states:
+
+```
+<html data-theme="dark">    <!-- dark, whatever the OS says -->
+<html data-theme="light">   <!-- light, whatever the OS says -->
+<html>                      <!-- follows the OS -->
+```
+
+Only semantic tokens change between modes. Primitives such as Repository Brown keep their value; what changes is the role a token points them at.
+
+### Color tokens
+
+The table below is rendered at runtime from `design-system.css` through a light island and a dark island, so the values will not drift from the stylesheet. Do not edit manually.

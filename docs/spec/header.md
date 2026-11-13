@@ -506,3 +506,13 @@ A page includes the header from `templates/` and writes the skip link before it,
 - **The account area is not navigation.** In the aspirational header it sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there.
 - **Name every search field.** A search field in the bar is a `<form role="search">` with a `<label>`, hidden with `.is-sr-only` if needed, that says what it searches. The placeholder is not the name: it disappears as soon as someone types.
 - **Mark the current page in the markup.** Put `aria-current="page"` on the current link in the secondary navigation and in header menus.
+
+## Spec
+
+### Surface tokens
+
+How the bar is coloured, and how a variant changes it.
+
+`.ds-site-header` declares seven `--ds-hdr-*` tokens on itself: background, text, emphasis text, hover, focus ring, bottom border and divider. Every rule in the bar reads one of them, so a variant is a re-pointing of tokens and never a property override: `.ds-site-header--light` sets all seven and nothing else. A property with its own colours does the same.
+
+The focus ring is the one to notice: the standard Link Blue ring is invisible against Repository Brown, so the dark surface needs its own. Because it is a token rather than a rule, a property that switches surface gets the correct ring without knowing that it needed to.
