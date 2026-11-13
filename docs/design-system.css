@@ -66,8 +66,6 @@
   --ds-access-lime-wash:     #f0f9e8;
   --ds-access-lime-wash-2:   #e2f3d0;
   --ds-access-lime-wash-3:   #d4edb8;
-  --ds-access-lime-faded:    #e6efb8;
-  --ds-access-lime-faded-fg: #8a9a5a;
   --ds-smileybones-yellow:#ffe000;
 
   /* ── Semantic: what each colour is FOR ─────────────────────────────
@@ -81,7 +79,6 @@
   --ds-canvas:            #ffffff;                     /* the page ground */
   --ds-surface:           #ffffff;
   --ds-surface-hover:     var(--ds-tint-warm);         /* a row or control under the pointer */
-  --ds-surface-muted:     var(--ds-tint-warm);         /* old name for --ds-tint-warm */
   --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — SECONDARY ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
@@ -98,7 +95,6 @@
 
   --ds-border:            var(--ds-grey-25);                     /* decorative hairline, 1.42:1 —
                                                           never the sole edge of a control */
-  --ds-border-muted:      var(--ds-border);            /* old name for --ds-border */
   --ds-border-strong:     var(--ds-grey-80);  /* 3.61:1 — interactive boundaries */
 
   --ds-link:              var(--ds-link-blue);
@@ -259,6 +255,19 @@
    sets. A script that reveals a part writes it hidden and removes the attribute.
    until-found is left alone, so the browser can still find text in it. */
 [hidden]:not([hidden="until-found"]) { display: none !important; }
+
+/* Reduced motion: no animation and no transition, on a page or in a component.
+   A script that moves the page checks the same setting itself, because
+   scrollIntoView's smooth scroll ignores CSS (DESIGN-POLICIES). */
+@media (prefers-reduced-motion: reduce) {
+  [class*="ds-"], [class*="ds-"] *, [class*="ds-"]::before, [class*="ds-"]::after,
+  [class*="ds-"] *::before, [class*="ds-"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 /* Reserve the scrollbar's width whether or not the page scrolls. Without
    this, anything that locks scrolling — a modal — removes the scrollbar and
@@ -488,6 +497,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    host the button itself, because it scrolls — an absolutely positioned child
    would scroll out of view with the code. */
 .ds-code { position: relative; }
+/* The text keeps clear of the copy button, so a long first line can scroll out
+   from under it. The Cite block's copy button sits in the same corner. */
+:is(.ds-code, .ds-paper-cite) pre { padding-inline-end: calc(28px + var(--ds-space-4)); }
 /* The button sits over the code's top corner, on a solid ground: a long
    line scrolls under it and is hidden, rather than showing through. */
 .ds-code-copy {
@@ -641,7 +653,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-site-header-dropdown[open] > summary::after { transform: rotate(180deg); }
 /* Forced colours drop backgrounds, which would hide the drawn arrow. */
 @media (forced-colors: active) {
-  .ds-site-header-dropdown > summary::after { forced-color-adjust: none; background: CanvasText; }
+  .ds-site-header-dropdown > summary::after { background: CanvasText; }
 }
 .ds-site-header-dropdown > summary:hover,
 .ds-site-header-dropdown[open] > summary {
@@ -793,21 +805,12 @@ button:not(.is-failed) > svg.ds-copy-failed,
 
 /* ── Secondary on tinted surface (.on-tint) — buttons.html
    Add to a default-tier .ds-btn when the ground is not white. Its white fill
-   would otherwise read as a hole in the tint. */
+   would otherwise read as a hole in the tint. It changes the fill tokens only,
+   so the rims and both themes follow the secondary button. */
 .ds-btn.on-tint {
-  background:
-    linear-gradient(var(--ds-tint-warm), var(--ds-tint-warm)) padding-box,
-    linear-gradient(to bottom, var(--ds-grey-25), var(--ds-grey-55)) border-box;
-}
-.ds-btn.on-tint:hover {
-  background:
-    linear-gradient(var(--ds-surface), var(--ds-surface)) padding-box,
-    linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
-}
-.ds-btn.on-tint:active {
-  background:
-    linear-gradient(var(--ds-tint-warm), var(--ds-tint-warm)) padding-box,
-    linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
+  --ds-btn-secondary-bg:        var(--ds-tint-warm);
+  --ds-btn-secondary-bg-hover:  var(--ds-surface);
+  --ds-btn-secondary-bg-active: var(--ds-tint-warm);
 }
 
 /* ── On a dark or saturated field (.on-dark) — buttons.html
@@ -1247,9 +1250,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
 /* The thumb's travel is the only thing here that carries meaning by
    moving — state is also in the colour and in the label weight, so
    removing the motion loses nothing. */
-@media (prefers-reduced-motion: reduce) {
-  .ds-switch-track, .ds-switch-thumb, .ds-switch-label { transition: none; }
-}
 
 /* DIVIDER  (.ds-divider) — dividers.html
    A rule between things. Reach for it only when whitespace has already
@@ -1987,7 +1987,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite-code figure { margin: 0; }
 .ds-paper-cite > .ds-show-more { margin-left: 0; }
 html.js .ds-paper-cite-code figcaption { display: none; }
-.ds-paper-cite pre { margin: 0; padding: var(--ds-space-3); padding-inline-end: calc(28px + var(--ds-space-3)); font-size: 0.75rem; white-space: pre-wrap; overflow-wrap: break-word; }
+.ds-paper-cite pre { margin: 0; padding-block: var(--ds-space-3); padding-inline-start: var(--ds-space-3); font-size: 0.75rem; white-space: pre-wrap; overflow-wrap: break-word; }
 html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2em; overflow: hidden; }   /* two lines */
 .ds-paper-capabilities { list-style: none; margin: 0; padding: 0; font-size: 0.8125rem; }
 .ds-paper-capabilities > li { display: flex; align-items: flex-start; gap: var(--ds-space-2); }
@@ -2033,9 +2033,8 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
 }
 @media print {
-  .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none; }
-  /* A Show more prints its whole text, and not its button. */
-  html .ds-show-more { display: none; }
+  /* Paper has no controls: every button goes, and a Show more prints its whole text. */
+  :where(.ds-page) button, .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none !important; }
   html .ds-show-more-tail, html .ds-show-more-tail[hidden] { display: inline !important; }
   .ds-paper-identity { font-size: 10pt; }
   .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
@@ -2605,11 +2604,6 @@ html:has(.ds-modal[open]) {
   opacity: 1;
   pointer-events: auto;
 }
-/* After .is-revealed so the reduce override wins the cascade for both states */
-@media (prefers-reduced-motion: reduce) {
-  .ds-element-pill,
-  .ds-element-pill.is-revealed { transition: none; }
-}
 
 
 /* MARGINALIA  (.ds-marginalia) — layouts.html
@@ -2629,7 +2623,6 @@ html:has(.ds-modal[open]) {
 /* Folded, the mark needs the card's corner to itself: content that fills the
    card, such as a band, would otherwise sit under it. */
 .ds-card:has(> .ds-marginalia) { padding-right: calc(var(--ds-space-6) + 28px); }
-.ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * (var(--ds-space-6) + 28px)); }
 /* Beside a card grid, the grid is the block. Folded, the mark sits just above
    the grid's top-right corner, clear of the cards. */
 .ds-card-grid:has(> .ds-marginalia) { position: relative; }
@@ -2674,7 +2667,6 @@ html:has(.ds-modal[open]) {
     }
     .ds-container:not(.ds-container--wide) .ds-marginalia > summary { display: none; }
     .ds-container:not(.ds-container--wide) .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
-    .ds-container:not(.ds-container--wide) .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
     .ds-container:not(.ds-container--wide) .ds-card-grid > .ds-marginalia { top: 0; bottom: auto; }
     .ds-container:not(.ds-container--wide) .ds-marginalia::details-content { content-visibility: visible; display: block; }
     .ds-container:not(.ds-container--wide) .ds-marginalia-body {
@@ -2920,7 +2912,6 @@ html:has(.ds-modal[open]) {
     --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --ds-canvas:            var(--ds-repository-brown);
     --ds-surface-hover:     var(--ds-tint-warm);
-    --ds-surface-muted:     var(--ds-tint-warm);
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
@@ -2928,7 +2919,6 @@ html:has(.ds-modal[open]) {
     --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
     --ds-border:            #383531;
-    --ds-border-muted:      var(--ds-border);
     --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
     --ds-text-disabled:     #5a554f;
     --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -3037,7 +3027,6 @@ html:has(.ds-modal[open]) {
     --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --ds-canvas:            var(--ds-repository-brown);
     --ds-surface-hover:     var(--ds-tint-warm);
-    --ds-surface-muted:     var(--ds-tint-warm);
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
@@ -3045,7 +3034,6 @@ html:has(.ds-modal[open]) {
     --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
     --ds-border:            #383531;
-    --ds-border-muted:      var(--ds-border);
     --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
     --ds-text-disabled:     #5a554f;
     --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -3146,7 +3134,6 @@ html:has(.ds-modal[open]) {
   --ds-accent-active:              var(--ds-access-lime-active);
   --ds-accent-border:              var(--ds-access-lime-border);
   --ds-accent-border-active:       var(--ds-access-lime-deep);
-  --ds-subnav-current:             var(--ds-access-lime-deep);
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
@@ -3192,9 +3179,6 @@ html:has(.ds-modal[open]) {
    forced-color-adjust:none. */
 @media (forced-colors: active) {
   .ds-alert a { color: LinkText; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ds-close { transition: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -3263,18 +3247,12 @@ html:has(.ds-modal[open]) {
   border-radius: 3px;
 }
 .ds-acc-body { padding: 4px 0 16px; font-size: 0.85rem; color: var(--ds-text); }
-/* Ending a card, the accordion is the card's foot: it runs to the card's
-   edges and the card's own border closes it. */
-.ds-card > .ds-acc:last-child {
-  margin: var(--ds-space-4) calc(-1 * var(--ds-space-6)) calc(-1 * var(--ds-space-4));
-  border-bottom: 0;
-}
-.ds-card > .ds-acc:last-child > summary,
-.ds-card > .ds-acc:last-child > .ds-acc-body { padding-inline: var(--ds-space-6); }
+/* Ending a card, the accordion sits inside the card's padding, and the card's
+   own edge closes it. */
+.ds-card > .ds-acc:last-child { margin-bottom: 0; border-bottom: 0; }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-tight) var(--ds-space-block); margin: 0; }
 .ds-acc-body dt { white-space: nowrap; padding-top: 2px; margin: 0; font-size: 0.8125rem; color: var(--ds-text-muted); }
 .ds-acc-body dd { margin: 0; grid-column: 2; min-width: 0; }   /* keeps a second dd out of the term column */
-.ds-acc-body a { color: var(--ds-link); }
 .ds-acc-body code { overflow-wrap: anywhere; }
 /* Narrow: one column, and a term may wrap. */
 @media (max-width: 40rem) {
@@ -3459,9 +3437,6 @@ html:has(.ds-toc-bar--scrolls) { scroll-padding-top: var(--ds-space-3); }
 .ds-toc-menu ol ol a { padding-inline-start: calc(18px + 0.9rem + 6px); font-size: 0.8125rem; }
 .ds-toc-menu ol ol .ds-toc-num { min-width: 1.65rem; }
 
-@media (prefers-reduced-motion: reduce) {
-  .ds-toc-bar, .ds-toc-trigger, .ds-toc-trigger .ds-toc-chevron { transition: none; }
-}
 
 /* SHOW MORE  (.ds-show-more) — progressive-disclosure.html
    Reveals the TAIL of something already begun, where an accordion would
@@ -4290,11 +4265,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   outline-offset: -3px;
   border-radius: 2px;
 }
-.ds-subnav a[aria-current="page"] {
-  color: var(--ds-text);
-  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
-  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
-}
+.ds-subnav a[aria-current="page"] { color: var(--ds-text); }
 @media (max-width: 599px) {
   .ds-subnav { --ds-row-pad: 12px; column-gap: var(--ds-space-4); }
 }
@@ -4384,7 +4355,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 :is(.ds-subnav-section, .ds-subnav-views)[open] > summary::after { transform: rotate(180deg); }
 @media (forced-colors: active) {
-  :is(.ds-subnav-section, .ds-subnav-views) > summary::after { forced-color-adjust: none; background: CanvasText; }
+  :is(.ds-subnav-section, .ds-subnav-views) > summary::after { background: CanvasText; }
 }
 /* The sheet: square corners, rows with hairlines, hanging from its control. */
 .ds-menu {
@@ -4592,7 +4563,6 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 .ds-permalink:hover { color: var(--ds-link); }
 .ds-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { .ds-permalink { transition: none; } }
 
 /* PRINTED LINKS — links.html
    On paper an external link shows its address after its text. */
@@ -4670,24 +4640,4 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    bar tokens are undefined, so it falls back to the page's own. */
 .ds-theme-toggle:not(.ds-site-header *) {
   color: var(--ds-hdr-fg, var(--ds-text-muted));
-}
-
-/* PRINT IS ALWAYS LIGHT
-   Dark mode answers "what is comfortable on this screen", and paper is not a
-   screen. Without this, a reader whose OS is set to dark gets a page of dark
-   ink — or, on the printers that drop backgrounds, light grey text on white.
-   The tokens are re-pointed rather than the components overridden, so every
-   component prints correctly without knowing that it is printing. */
-@media print {
-  :root {
-    --ds-text:          #000000;
-    --ds-text-muted:    #333333;
-    --ds-canvas:        #ffffff;
-    --ds-surface:       #ffffff;
-    --ds-tint-warm:     #ffffff;
-    --ds-border:        #cccccc;
-    --ds-link:          #000000;
-    --ds-link-visited:  #000000;
-  }
-  body { background: #ffffff; color: #000000; }
 }
