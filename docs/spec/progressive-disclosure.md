@@ -49,7 +49,7 @@ components:
     summary: "A quick lookup the reader can access without losing their place. Popovers are used on HTML papers pages for citations and footnotes, which is especially helpful for screen reader users. Popovers can contain nearly any type of content including links but should be used only for short bursts of information, or a list the reader opens, looks through and closes, such as the categories a report covers. The filter panel, a popover of filters for a set of data, is on [Filters](filters.md)."
     classes:
       - name: ".ds-popover"
-        does: "The panel. It is `position: fixed`: the host sets `top` and `left`, and moves it to `<body>` if the trigger has a transformed ancestor. Closed, it has the `hidden` attribute."
+        does: "The panel, a `<div>`. The page's script builds it and inserts it straight after its trigger, so it is next in the tab order; it is never written into a paragraph in the HTML, where the browser would end the paragraph at the div. It is `position: fixed`: the script sets `top` and `left`. Closed, it has the `hidden` attribute."
       - name: ".ds-popover-title"
         does: "The label line at the top of the panel. It leaves room for the close control."
       - name: ".ds-close"
@@ -212,19 +212,18 @@ A quick lookup the reader can access without losing their place. Popovers are us
 For a screen reader user, the trigger is an ordinary link whose accessible name includes the reference itself, such as “Reference 47: Ashtekar and Bojowald (2006)”, so most readers hear what they need without opening anything. Opening the popover does not move focus: the trigger reports that it is expanded, and the reader can continue through the main text. To read the popover, they move to it as a named region, from the screen reader's list of landmarks. Escape closes it and returns focus to the trigger.
 
 ```html
-<span class="ds-popover" role="region" aria-label="Reference 47">
+<div class="ds-popover" role="region" aria-label="Reference 47">
   <div class="ds-popover-title">Reference 47</div>
   <button type="button" class="ds-close">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
     <span class="is-sr-only">Close reference 47</span>
   </button>
-  Ashtekar, A. and Bojowald, M. <em>Quantum geometry and the Schwarzschild singularity.</em>
-  Class. Quantum Grav. 23 (2006).
-  <a href="#">Jump to reference</a>
-</span>
+  <p>Ashtekar, A. and Bojowald, M. <em>Quantum geometry and the Schwarzschild singularity.</em>
+  Class. Quantum Grav. 23 (2006). <a href="#">Jump to reference</a></p>
+</div>
 ```
 
-- `.ds-popover` — The panel. It is `position: fixed`: the host sets `top` and `left`, and moves it to `<body>` if the trigger has a transformed ancestor. Closed, it has the `hidden` attribute.
+- `.ds-popover` — The panel, a `<div>`. The page's script builds it and inserts it straight after its trigger, so it is next in the tab order; it is never written into a paragraph in the HTML, where the browser would end the paragraph at the div. It is `position: fixed`: the script sets `top` and `left`. Closed, it has the `hidden` attribute.
 - `.ds-popover-title` — The label line at the top of the panel. It leaves room for the close control.
 - `.ds-close` — The close control, the same one the alert and the announcement band use, documented on [Buttons](buttons.md#the-close-control). The popover supplies its corner position and nothing else. It needs a `<span class="is-sr-only">` that says what it closes.
 - `[role="region"], [aria-label]` — Together they make the panel a named landmark, so a screen reader user can find it and hear what it holds.
