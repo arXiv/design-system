@@ -26,7 +26,7 @@ components:
     group: "Building on the foundation"
     summary: "When building internal tools like arXiv Check or Admin Console pages, one class is added to `<html>` and a tier 2 stylesheet is added to the `<head>` section, in this order."
     rules:
-      - "**The accent color defines internal pages.** Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment."
+      - "**The accent color defines internal pages.** Access Lime is highly differentiated from the Open Blue of public pages and clearly signals that you are in a different environment."
       - "**All you need is a parent class.** `.ds-internal` re-points `--ds-accent` and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on `<html>`. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough."
       - "**Internal tools are compact.** `.ds-internal` also sets less padding inside table cells and cards, through the density tokens (`--ds-cell-padding`, `--ds-card-padding`), so a dense screen holds more. There is no compact class: the density comes with the surface."
       - "**Never copy a component into the tier 2 stylesheet to restyle it.** If it needs to look different on your surface, what you need is a token change, not a second copy. A component that exists twice creates drift and lots of sad devs."
@@ -129,7 +129,7 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 <script src="../theme.js"></script>
 ```
 
-**Rule.** **The accent color defines internal pages.** Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.
+**Rule.** **The accent color defines internal pages.** Access Lime is highly differentiated from the Open Blue of public pages and clearly signals that you are in a different environment.
 
 **Rule.** **All you need is a parent class.** `.ds-internal` re-points `--ds-accent` and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on `<html>`. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough.
 

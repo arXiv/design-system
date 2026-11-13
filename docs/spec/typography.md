@@ -19,7 +19,7 @@ components:
       - name: ".ds-annotation"
         does: "The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision."
       - name: "--ds-font-serif"
-        does: "The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`."
+        does: "The serif stack. On public pages and in internal tools it is used only through `.ds-annotation`."
       - name: "<math>"
         does: "No font token exists for math; use the stack directly on the notation. Loads with `font-display: auto` per DESIGN-POLICIES."
   - id: the-type-scale
@@ -99,10 +99,10 @@ components:
     notes:
       - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading."
 rules:
-  - "One family, three contexts. Internal tools and the public site share the working set; [outreach properties](../outreach.html) add the upright serif and the heaviest sans. A face without a mark is not used in that context."
+  - "One family, three contexts. Internal tools and public pages share the working set; [outreach properties](../outreach.html) add the upright serif and the heaviest sans. A face without a mark is not used in that context."
   - "**700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists."
   - "**Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as \"another article\" uses the heavy *sans* instead, which is why 700 exists in this context at all."
-  - "**Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means \"this is an identifier or code.\""
+  - "**Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On public pages, mono still means \"this is an identifier or code.\""
   - "Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale."
   - "**On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size."
   - "**Among headings, 700 is the h1's alone.** IBM Plex ships nothing heavier, so 700 is the ceiling, and among headings it is spent on the one that names the page. Every heading below it is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it."
@@ -172,7 +172,7 @@ font-family: var(--ds-font-mono);
 ```
 
 - `.ds-annotation` — The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision.
-- `--ds-font-serif` — The serif stack. On the public site and in internal tools it is used only through `.ds-annotation`.
+- `--ds-font-serif` — The serif stack. On public pages and in internal tools it is used only through `.ds-annotation`.
 
 ```html
 font-family: "STIX Two Math", "Cambria Math", math;
@@ -296,9 +296,9 @@ The test: if a paragraph follows it, or it covers several examples, it is a head
 
 ### Which faces where — the three contexts
 
-One family, three contexts. Internal tools and the public site share the working set; [outreach properties](../outreach.html) add the upright serif and the heaviest sans. A face without a mark is not used in that context.
+One family, three contexts. Internal tools and public pages share the working set; [outreach properties](../outreach.html) add the upright serif and the heaviest sans. A face without a mark is not used in that context.
 
-| Face · weights | Internal tools | Public site | Outreach |
+| Face · weights | Internal tools | Public pages | Outreach |
 |---|---|---|---|
 | IBM Plex Sans · 400 / 500 / 600, 400 *italic* | ✓ all text | ✓ all text | ✓ all text |
 | IBM Plex Sans · 700 | ✓ h1, alert titles, a pressed toggle | ✓ h1, alert titles, a pressed toggle | ✓ the one heading that must not read as an article |
@@ -310,7 +310,7 @@ One family, three contexts. Internal tools and the public site share the working
 
 - **700 is the ceiling.** IBM Plex ships no heavier weight, so a CSS `800` either falls back or gets faux-bolded, differently per browser. Ask for the weight that exists.
 - **Two serif jobs, kept apart.** Upright serif is the editorial voice — headlines, quotes, drop caps. Italic serif stays the annotation voice everywhere. A heading that must not read as "another article" uses the heavy *sans* instead, which is why 700 exists in this context at all.
-- **Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means "this is an identifier or code."
+- **Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On public pages, mono still means "this is an identifier or code."
 
 ### Headings
 

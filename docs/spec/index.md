@@ -9,7 +9,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Buttons | [buttons.md](buttons.md) |
 | Alerts | [alerts.md](alerts.md) |
 | Tags | [tags.md](tags.md) |
-| Special messages | [messages.md](messages.md) |
+| Messaging | [messages.md](messages.md) |
 | Site footer | [footer.md](footer.md) |
 | Forms & validation | [forms.md](forms.md) |
 | Site header | [header.md](header.md) |

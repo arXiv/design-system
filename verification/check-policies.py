@@ -195,7 +195,7 @@ def check_colours_from_tokens():
 
 
 # ── One name per surface ──
-# The two surfaces are "the public site" and "internal tools" (DESIGN-POLICIES).
+# The two surfaces are "public pages" and "internal tools" (DESIGN-POLICIES).
 # "Staff" is for people, not for the surface, its stylesheet or its pages —
 # a second name for one thing reads as a third thing.
 SURFACE_SYNONYM = re.compile(
