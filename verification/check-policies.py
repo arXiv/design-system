@@ -73,14 +73,20 @@ def check_wordmark_not_typed():
 
 
 # ── Self-hosted everything ──
-# No fonts, icons, scripts or stylesheets from another origin. Data URIs and
+# No fonts, icons, scripts or stylesheets from a third party. Data URIs and
 # protocol-relative paths to our own assets are not what this is about; an
-# absolute http(s) URL in a resource slot is.
+# absolute http(s) URL in a resource slot is, unless it is arXiv's own static
+# assets (arxiv.org), which is where DESIGN-POLICIES says they are served from.
 EXTERNAL = re.compile(
-    r"""(?:<link\b[^>]*href|<script\b[^>]*src|@import\s+url\(|src:\s*url\()"""
-    r"""\s*["'(]?\s*(https?://[^"')\s]+)""",
+    r"""(?:<script\b[^>]*?\bsrc\s*=|@import\s+(?:url\()?|src:\s*url\()"""
+    r"""\s*["'(]?\s*(?!https?://(?:[\w-]+\.)?arxiv\.org/)(https?://[^"')\s>]+)""",
     re.I,
 )
+# A <link> loads something only with these rels; a canonical or alternate link
+# to another origin loads nothing.
+LINK = re.compile(r"<link\b[^>]*>", re.I)
+LOADS = re.compile(r"""\brel\s*=\s*["']?[^"'>]*\b(?:stylesheet|preload|modulepreload|icon)\b""", re.I)
+LINK_HREF = re.compile(r"""\bhref\s*=\s*["']?(?!https?://(?:[\w-]+\.)?arxiv\.org/)(https?://[^"'\s>]+)""", re.I)
 
 
 def check_self_hosted():
@@ -90,6 +96,11 @@ def check_self_hosted():
         for m in EXTERNAL.finditer(text):
             line = text[: m.start()].count("\n") + 1
             fail(rule, f"{path.relative_to(REPO)}:{line}", f"loads {m.group(1)}")
+        for m in LINK.finditer(text):
+            href = LINK_HREF.search(m.group(0))
+            if href and LOADS.search(m.group(0)):
+                line = text[: m.start()].count("\n") + 1
+                fail(rule, f"{path.relative_to(REPO)}:{line}", f"loads {href.group(1)}")
         n += 1
     if rule not in FAILS:
         ok(rule, f"{n} pages")
