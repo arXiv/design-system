@@ -40,7 +40,7 @@ Open items only. Finished items are removed; the git history keeps them. The cur
 - **A footer check:** a build in round 8 or 9 left out the footer, and nobody noticed. The evaluation could flag a page without the standard footer.
 - **arXiv Check, in React.** Shamsi takes screenshots first. See `TESTING-PLAN.md`.
 - **The build and audit skills:** thin routers into the docs, never a second copy of the system. Not needed for V1.
-- **User testing of the paper mockups** (`abstract-phase2.html`, `html-phase1.html`): script, tasks, recruitment (working researchers first). Parked questions are in `docs/accessibility-research-questions.md`.
+- **User testing of the paper mockups** (`abstract-phase2.html`, `html-phase1.html`): script, tasks, recruitment (working researchers first). Parked questions are in `whiteboard/planning/accessibility-research-questions.md`.
 
 ## Mockups
 
@@ -51,7 +51,7 @@ Open items only. Finished items are removed; the git history keeps them. The cur
 ## Accessibility
 
 - **Is a closed accordion "visible"?** The Accessibility accordion in the paper sidebar stays closed for now.
-- **One general set of accessibility rules** in the design system, informed by the HTML papers work, with paper-specific decisions living with the renderer. Shamsi is unsure about `accessibility-priorities.md` being about the abstract and HTML paper pages only.
+- **One general set of accessibility rules** in the design system, informed by the HTML papers work, with paper-specific decisions living with the renderer. `accessibility-priorities.md` (paper-page decisions) moved here from docs/ in November 2026, out of the general docs menu.
 
 ## Later, against real content
 

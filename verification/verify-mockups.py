@@ -79,7 +79,7 @@ async def run():
         check(
             "abstract type sizes are rem, not px",
             px_fonts == 0,
-            "accessibility-priorities.md: user font-size overrides must propagate",
+            "DESIGN-POLICIES, Magnification: user font-size overrides must propagate",
         )
         await pg.close()
 
