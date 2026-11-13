@@ -543,7 +543,7 @@ def check_generated_current():
 NAV_MENUS = re.compile(
     r'<header class="ds-site-header ds-site-header--light">.*?'
     r'<nav class="ds-site-header-nav" aria-label="Design system">'
-    r'((?:\s*<details class="ds-site-header-dropdown">.*?</details>)+)',
+    r'((?:\s*<details name="docs-menus" class="ds-site-header-dropdown">.*?</details>)+)',
     re.S,
 )
 OFF_NAV = {"doc.html", "outreach.html"}   # the doc viewer; the outreach rules page

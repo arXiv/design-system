@@ -194,7 +194,7 @@
       d.addEventListener('toggle', function () {
         if (!d.open) return;
         var gap = header.getBoundingClientRect().bottom - d.getBoundingClientRect().bottom;
-        d.style.setProperty('--ds-menu-gap', Math.round(gap) + 'px');
+        d.style.setProperty('--ds-menu-gap', gap + 'px');   // unrounded, so the menu meets the bar exactly
       });
     });
   }

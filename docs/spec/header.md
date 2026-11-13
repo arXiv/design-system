@@ -73,10 +73,12 @@ components:
       - "The script answers to the width of the bar, not of the window, so the phone example folds inside a narrower box on a wide screen. Open the menu to see the folded rows."
   - id: header-dropdown-menus
     title: "Header dropdown menus"
-    summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches the row it opens from: its background is the row’s background, and it attaches to the row’s bottom edge, with no gap."
+    summary: "A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. One menu is open at a time. A dropdown matches the row it opens from: its background is the row’s background, and it attaches to the row’s bottom edge, with no gap."
     classes:
       - name: ".ds-site-header-dropdown"
         does: "A `<details>` group in the bar. Optional. The summary sits in the bar and takes the surface tokens, so it is correct on either variant."
+      - name: "name=\"…\""
+        does: "The same name on every dropdown in one header, the Account menu included, so one menu is open at a time: opening another closes it, with no JavaScript. Each header on a page takes its own name."
       - name: ".ds-site-header-menu"
         does: "The menu, on the bar’s own background: dark under the dark bar, light under the light one. It hangs from the bar’s bottom edge, which `header.js` measures, and is anchored to its trigger’s right edge, so the last menu in the bar stays on screen. Its rows are 32px with a mouse and 44px on a touch screen, with a hairline between them."
       - name: ".ds-panel-label"
@@ -292,7 +294,7 @@ Signed in, the account area shows a greeting with the reader’s given name and 
 <span class="ds-site-header-divider" aria-hidden="true"></span>
 <div class="ds-site-header-account">
   <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
-  <details class="ds-site-header-dropdown">
+  <details name="site-menus" class="ds-site-header-dropdown">
     <summary class="ds-site-header-login">Account</summary>
     <div class="ds-site-header-menu">
       <a href="/account">Your account</a>
@@ -324,13 +326,13 @@ When the header does not fit on one row, it folds. The greeting goes first. Then
 
 ## Header dropdown menus
 
-A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. A dropdown matches the row it opens from: its background is the row’s background, and it attaches to the row’s bottom edge, with no gap.
+A property whose sections need grouping adds `.ds-site-header-dropdown`, built on `<details>` so it opens and closes with no JavaScript. A page may add close-on-outside-click and Esc as enhancement. The Account menu is the same component. One menu is open at a time. A dropdown matches the row it opens from: its background is the row’s background, and it attaches to the row’s bottom edge, with no gap.
 
 ```html
 <header class="ds-site-header ds-site-header--light">
   <a href="/" class="ds-site-header-logo">arXiv Design System</a>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="site-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -340,7 +342,7 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
         <!-- … -->
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="site-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
@@ -352,6 +354,7 @@ A property whose sections need grouping adds `.ds-site-header-dropdown`, built o
 ```
 
 - `.ds-site-header-dropdown` — A `<details>` group in the bar. Optional. The summary sits in the bar and takes the surface tokens, so it is correct on either variant.
+- `name="…"` — The same name on every dropdown in one header, the Account menu included, so one menu is open at a time: opening another closes it, with no JavaScript. Each header on a page takes its own name.
 - `.ds-site-header-menu` — The menu, on the bar’s own background: dark under the dark bar, light under the light one. It hangs from the bar’s bottom edge, which `header.js` measures, and is anchored to its trigger’s right edge, so the last menu in the bar stays on screen. Its rows are 32px with a mouse and 44px on a touch screen, with a hairline between them.
 - `.ds-panel-label` — A group heading inside a menu.
 - `aria-current="page"` — On the menu link for the page the reader is on. The menu shows it in bold, and a screen reader announces it.
@@ -417,7 +420,7 @@ Each internal tool chooses the search fields, navigation and wordmark its users 
   </div>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-account ds-site-header-account--compact">
-    <details class="ds-site-header-dropdown">
+    <details name="site-menus" class="ds-site-header-dropdown">
       <summary class="ds-site-header-login">
         <svg …>…</svg>   <!-- Lucide circle-user -->
         <span class="is-sr-only">Account, signed in as Shamsi</span>
