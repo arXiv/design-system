@@ -421,8 +421,15 @@ def check_no_changelog_prose():
         for m in HISTORY.finditer(re.sub(r"<[^>]+>", " ", body)):
             fail(rule, str(path.relative_to(REPO)),
                  f'"{m.group(0)}" — the system is new; say what it is, not what it was')
+    # The rule documents in docs/ too: the policies and the style guide. (AGENTS.md
+    # quotes the phrases in the rule that bans them.)
+    for path in sorted((REPO / "docs").glob("*.md")):
+        n += 1
+        for m in HISTORY.finditer(path.read_text(encoding="utf-8", errors="replace")):
+            fail(rule, str(path.relative_to(REPO)),
+                 f'"{m.group(0)}" — the system is new; say what it is, not what it was')
     if rule not in FAILS:
-        ok(rule, f"{n} pages")
+        ok(rule, f"{n} pages and rule documents")
 
 
 # ── Every class a builder can write is findable in the docs ──

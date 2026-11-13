@@ -144,8 +144,6 @@ components:
         does: "Caps the field at 11rem, for a code, an identifier or a year."
       - name: ".ds-field--full"
         does: "Releases the cap, for something that genuinely wants the whole measure."
-      - name: ".ds-field--sm, .ds-field--md, .ds-field--lg"
-        does: "Internal tools only, in `internal-tools.css`: caps the control at 240px, 360px or 480px. Internal screens are dense enough to need field widths chosen rather than inferred, so on an internal form a person picks the size instead of the input `type` picking it. Use the pair above on public pages and this trio on internal pages, and do not mix them on one form."
 rules:
   - "What each tier means for the person filling the form in."
   - "**Labels go above the control.** A label-left, field-right layout gives a ragged edge and reads badly on a phone."
@@ -493,7 +491,6 @@ Default field widths are set to follow the expected amount of content and are an
 
 - `.ds-field--short` — Caps the field at 11rem, for a code, an identifier or a year.
 - `.ds-field--full` — Releases the cap, for something that genuinely wants the whole measure.
-- `.ds-field--sm, .ds-field--md, .ds-field--lg` — Internal tools only, in `internal-tools.css`: caps the control at 240px, 360px or 480px. Internal screens are dense enough to need field widths chosen rather than inferred, so on an internal form a person picks the size instead of the input `type` picking it. Use the pair above on public pages and this trio on internal pages, and do not mix them on one form.
 
 ## Rules
 
