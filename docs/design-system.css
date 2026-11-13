@@ -417,6 +417,12 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   margin: var(--ds-space-8) 0;
 }
 
+/* A fieldset groups the controls that answer one question, such as a radio group,
+   and its legend asks it. The browser's box goes (GOV.UK's reset); the legend
+   takes .ds-label, like any field's label. */
+:where(.ds-page) fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+:where(.ds-page) legend { padding: 0; }
+
 /* ── Links ───────────────────────────────────────────────────────────
    Every bare anchor inside a .ds-page is the inline link; there is no
    class to add. Hover thickens the underline as well as deepening the
@@ -2104,7 +2110,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
    and the controls flow after it. Not a flex fieldset, because Safari keeps a
    legend on a line of its own there. Half the row gap above and below each
    item, taken back by the fieldset, spaces wrapped lines evenly. */
-.ds-form--compact > fieldset { min-width: 0; margin: calc(var(--ds-space-2) / -2) 0; padding: 0; border: 0; }
+.ds-form--compact > fieldset { margin: calc(var(--ds-space-2) / -2) 0; }
 .ds-form--compact > fieldset > legend { float: left; margin: calc(var(--ds-space-2) / 2) var(--ds-space-3) calc(var(--ds-space-2) / 2) 0; padding: 0; font-weight: 600; line-height: var(--ds-compact-h); }
 .ds-form--compact > fieldset > :not(legend, .is-sr-only) { display: inline-flex; align-items: center; vertical-align: top; min-height: var(--ds-compact-h); margin: calc(var(--ds-space-2) / 2) 0; }
 /* 8px between controls, plus the space between them in the markup (about 4px),
