@@ -106,7 +106,7 @@ rules:
   - "**One panel, one label.** If a summary needs a sentence to explain what is inside, the content is not a section and probably wants show-more or a page of its own."
   - "**An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back."
   - "**Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right."
-  - "**Never put content in a popover that exists nowhere else.** A popover is a shortcut to something already on the page or already at a URL — the reference list, the footnote. It is not a place to store text."
+  - "**A popover holds short content the reader opens on request**: a reference or a footnote, an explanation, a list, or a set of filters. Nothing the reader needs to finish their task is only in a popover."
   - "**Nothing animates.** These components have no transitions, so there is nothing for `prefers-reduced-motion` to switch off. An accordion that animates its height also animates the position of everything below it, which is motion a reader did not ask for."
   - "**A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](../doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden."
   - "**Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behaviour and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one."
@@ -350,7 +350,7 @@ The question that separates them is not how much is hidden. It is what relations
 | Use | When the hidden content is | Costs the reader |
 |---|---|---|
 | Accordion `.ds-acc` | A **labelled section** the reader can decide about from its label alone — Versions, Paper information, Related. More than a line or two; a single line goes on the page. | One click, stays on the page, keeps their place. |
-| Show more `.ds-show-more` | The **tail of something already begun** — authors nine through twenty-two, the rest of a category list, the rest of an abstract. There is no label to give it, because it is not a different thing. | One click, expands in place, no new surface. |
+| Show more `.ds-show-more` | The **tail of something already begun** — authors nine through twenty-two, the rest of an abstract. There is no label to give it, because it is not a different thing. | One click, expands in place, no new surface. |
 | Popover `.ds-popover` | A **lookup** the reader wants without leaving their sentence — what reference 47 is, what footnote 3 says. | Nothing permanent. It closes on Escape and does not move the page. |
 | A link to a full page | Something with **its own identity** — a different paper, an author's other work, the full licence. | Leaves the page. Pay this only when the destination deserves a URL. |
 
@@ -361,7 +361,7 @@ The question that separates them is not how much is hidden. It is what relations
 - **One panel, one label.** If a summary needs a sentence to explain what is inside, the content is not a section and probably wants show-more or a page of its own.
 - **An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back.
 - **Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right.
-- **Never put content in a popover that exists nowhere else.** A popover is a shortcut to something already on the page or already at a URL — the reference list, the footnote. It is not a place to store text.
+- **A popover holds short content the reader opens on request**: a reference or a footnote, an explanation, a list, or a set of filters. Nothing the reader needs to finish their task is only in a popover.
 
 ### Motion and layering
 
