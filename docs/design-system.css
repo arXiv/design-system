@@ -2661,20 +2661,21 @@ html:has(.ds-modal[open]) {
   border-radius: 8px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
 }
+/* On a wide page the margin is too narrow for a note, so notes stay folded there. */
 @media (min-width: 82.125rem) {
   @supports selector(::details-content) {
-    .ds-marginalia {
+    .ds-container:not(.ds-container--wide) .ds-marginalia {
       top: 0;
       right: auto;
       left: calc(100% + var(--ds-space-4));
       width: var(--ds-marginalia-width);
     }
-    .ds-marginalia > summary { display: none; }
-    .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
-    .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
-    .ds-card-grid > .ds-marginalia { top: 0; bottom: auto; }
-    .ds-marginalia::details-content { content-visibility: visible; display: block; }
-    .ds-marginalia-body {
+    .ds-container:not(.ds-container--wide) .ds-marginalia > summary { display: none; }
+    .ds-container:not(.ds-container--wide) .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
+    .ds-container:not(.ds-container--wide) .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
+    .ds-container:not(.ds-container--wide) .ds-card-grid > .ds-marginalia { top: 0; bottom: auto; }
+    .ds-container:not(.ds-container--wide) .ds-marginalia::details-content { content-visibility: visible; display: block; }
+    .ds-container:not(.ds-container--wide) .ds-marginalia-body {
       position: static;
       width: auto;
       padding: 0;
@@ -2798,6 +2799,10 @@ html:has(.ds-modal[open]) {
 /* The label is out of flow, so the first block after it starts the box. */
 .ds-note > .ds-note-label + * { margin-top: 0; }
 .ds-note > :last-child { margin-bottom: 0; }
+/* Its margin is for running text, where the tab needs room above the box.
+   Placed directly in the page container, between sections, a note takes the
+   container's gap like a section does. */
+.ds-container > .ds-note { margin-block: 0; }
 .ds-note ul { padding-inline-start: 1.15rem; }
 /* A ruled-off warning at the foot of a note: the mistake this rule keeps
    being broken by. Set off, because it is the thing to read twice. */
@@ -3428,10 +3433,8 @@ html:has(.ds-modal[open]) {
    back across the line, and the bar flickers between its two heights. */
 .ds-toc-bar.is-stuck > .ds-toc-sentinel { top: -11px; }
 
-/* A bar directly after a tinted band sits on that band's bottom edge, and the
-   content after the bar starts close under it. */
+/* A bar directly after a tinted band sits on that band's bottom edge. */
 .ds-container > .ds-zone-secondary + .ds-toc-bar { margin-top: calc(-1 * var(--ds-space-section)); }
-.ds-container > .ds-toc-bar + * { margin-top: calc(var(--ds-space-8) - var(--ds-space-section)); }
 
 .ds-toc-bar.is-stuck {
   z-index: 100;

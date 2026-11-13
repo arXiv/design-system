@@ -38,7 +38,7 @@ components:
     rules:
       - "**Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does."
       - "**Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
-      - "**Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it."
+      - "**Page width.** Every page has one width. A dense internal tool that needs more uses the [wide page](layouts.md#wide-page); nothing else changes the width."
   - id: combining-components
     title: "Combining components"
     group: "Building on the foundation"
@@ -154,7 +154,7 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 
 **Rule.** **Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
 
-**Rule.** **Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it.
+**Rule.** **Page width.** Every page has one width. A dense internal tool that needs more uses the [wide page](layouts.md#wide-page); nothing else changes the width.
 
 ## Combining components  (Building on the foundation)
 

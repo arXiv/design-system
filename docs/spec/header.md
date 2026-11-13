@@ -125,8 +125,6 @@ components:
         does: "What is chosen, after the word. It folds next, leaving the icon. The page heading names the choice too, so the reader can still see it: see [Organize complex page content](organize-content.md#the-main-content-comes-first)."
       - name: ".is-center-compact, .is-center-folded"
         does: "State classes `header.js` sets on the bar as it folds the label, then the value. They are never written by hand."
-    notes:
-      - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A): what the button shows at each width is part of its spoken name."
   - id: sticky-header
     title: "Sticky header"
     group: "Modifiers"
@@ -469,8 +467,6 @@ The aspirational header has an optional centred space, `.ds-site-header-center`,
 - `.ds-site-header-center-label` — The button's word, such as “Subject”. The first thing to fold.
 - `.ds-filter-value` — What is chosen, after the word. It folds next, leaving the icon. The page heading names the choice too, so the reader can still see it: see [Organize complex page content](organize-content.md#the-main-content-comes-first).
 - `.is-center-compact, .is-center-folded` — State classes `header.js` sets on the bar as it folds the label, then the value. They are never written by hand.
-
-> Meets accessibility guidelines [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A): what the button shows at each width is part of its spoken name.
 
 ## Sticky header  (Modifiers)
 

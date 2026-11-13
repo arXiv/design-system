@@ -35,7 +35,7 @@ components:
     rules:
       - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
       - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
-      - "**A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Secondary zones](layouts.md#secondary-zones)."
+      - "**A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones)."
       - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
       - "**Selecting items in a list: the checkbox at the start of each item, and the actions on the selection in the set's header bar.** A control for one item only goes at the end of that item, on the right. See [Selecting items in a list](tables.md#selecting-items-in-a-list)."
       - "**A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's."
@@ -43,7 +43,7 @@ components:
     title: "Long pages"
     summary: "Long pages need special consideration of their organization. The longer the page, the more we need to think about [navigation](navigation.md), defining [page zones](layouts.md#secondary-zones), and [not losing your place](../references.html#getting-back-after-a-jump)."
     rules:
-      - "**The TOC bar hangs from the opening band.** A page with a TOC bar has an opening band with its title and an introduction of one to five sentences. See [Secondary zones](layouts.md#secondary-zones). A paper is the exception: its TOC bar holds the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar))."
+      - "**The TOC bar hangs from the opening band.** See [Secondary zones](layouts.md#secondary-zones)."
       - "**On a page with a TOC bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own."
 rules:
   - "**Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout."
@@ -117,7 +117,7 @@ A control sits with what it changes. The more of the site it changes, the higher
 
 **Rule.** **A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation).
 
-**Rule.** **A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Secondary zones](layouts.md#secondary-zones).
+**Rule.** **A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones).
 
 **Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
 
@@ -129,7 +129,7 @@ A control sits with what it changes. The more of the site it changes, the higher
 
 Long pages need special consideration of their organization. The longer the page, the more we need to think about [navigation](navigation.md), defining [page zones](layouts.md#secondary-zones), and [not losing your place](../references.html#getting-back-after-a-jump).
 
-**Rule.** **The TOC bar hangs from the opening band.** A page with a TOC bar has an opening band with its title and an introduction of one to five sentences. See [Secondary zones](layouts.md#secondary-zones). A paper is the exception: its TOC bar holds the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar)).
+**Rule.** **The TOC bar hangs from the opening band.** See [Secondary zones](layouts.md#secondary-zones).
 
 **Rule.** **On a page with a TOC bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own.
 
