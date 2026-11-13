@@ -62,7 +62,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 Before a search, the form is the primary content so it sits on the default page ground (white in light mode). Tips for searching are secondary content and sit in a tinted band below it.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <h1>Search</h1>
   <form class="ds-form--compact" method="get" action="search.html" role="search" aria-label="Search arXiv">
     <div class="ds-input-group">
@@ -79,7 +79,7 @@ Before a search, the form is the primary content so it sits on the default page 
     <h2>Search tips</h2>
     <p>How to search by author, by category, with wildcards and phrases.</p>
   </div>
-</div>
+</main>
 ```
 
 - `<h1>` — The page heading. The demo here uses smaller headings because it sits inside this page.
@@ -94,7 +94,7 @@ Before a search, the form is the primary content so it sits on the default page 
 After a search, the form stays where it was, on the page ground. A heading names the query, and tinted bars with the range and page numbers bookend the results.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <h1>Search</h1>
   <form class="ds-form--compact" method="get" action="search.html" role="search" aria-label="Search arXiv">
     <div class="ds-input-group">
@@ -148,7 +148,7 @@ After a search, the form stays where it was, on the page ground. A heading names
       <a class="ds-btn ds-btn-text" href="?page=2"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
     </nav>
   </section>
-</div>
+</main>
 ```
 
 - `<h1>` — The page heading. The demo here uses smaller headings because it sits inside this page.

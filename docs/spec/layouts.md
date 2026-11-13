@@ -172,7 +172,7 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <div class="ds-full ds-zone-secondary">               <!-- tinted: introduces -->
     <header class="ds-page-header">
       <h1>Page title</h1>
@@ -183,7 +183,7 @@ The default page background is white, and that is the color that primary page co
   <div class="ds-full ds-zone-secondary">               <!-- tinted: supports -->
     <section>…</section>
   </div>
-</div>
+</main>
 ```
 
 - `.ds-page-header` — The page title, an `<h1>`, and its introduction, a plain paragraph with no class of its own. These docs pages mark theirs `.ds-section-desc`, which only flags a summary for the docs' digests; a product page leaves it out.

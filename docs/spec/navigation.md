@@ -194,7 +194,7 @@ The steps of one ordered process, such as a submission, and which one the reader
 Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. By default the bar is sticky: it stays at the top of the viewport while the reader scrolls through the page. It can scroll away with the page instead.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <div class="ds-full ds-zone-secondary">
     <header class="ds-page-header">
       <h1>Page title</h1>
@@ -221,7 +221,7 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
   </div>
 
   <section>…</section>
-</div>
+</main>
 <script src="toc.js" defer></script>
 ```
 
