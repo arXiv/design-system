@@ -28,7 +28,7 @@ components:
     summary: "At wide screen widths, our max content width leaves enough gutter space on the sides for marginalia. A short note beside the block it belongs to is appropriate for annotation-style content. At narrower widths, it is hidden in an info icon in the block’s top-right corner. Try it by widening and narrowing your screen."
     classes:
       - name: ".ds-marginalia"
-        does: "The note, a `<details>`. Its first child in the block, so it is read before the thing it annotates. The block supplies `position: relative`; `.ds-card` already does."
+        does: "The note, a `<details>`: the first child of a `.ds-card`, so it is read before the thing it annotates."
       - name: ".ds-marginalia-body"
         does: "The text, with `.ds-annotation` for the voice. In the margin it has no chrome; folded, it opens as a small panel under the mark."
       - name: ".is-sr-only"
@@ -138,7 +138,7 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 </div>
 ```
 
-- `.ds-marginalia` — The note, a `<details>`. Its first child in the block, so it is read before the thing it annotates. The block supplies `position: relative`; `.ds-card` already does.
+- `.ds-marginalia` — The note, a `<details>`: the first child of a `.ds-card`, so it is read before the thing it annotates.
 - `.ds-marginalia-body` — The text, with `.ds-annotation` for the voice. In the margin it has no chrome; folded, it opens as a small panel under the mark.
 - `.is-sr-only` — Required on the mark. The icon is `aria-hidden`, so without it the control announces as nothing.
 
