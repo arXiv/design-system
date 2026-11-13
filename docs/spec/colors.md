@@ -69,15 +69,15 @@ background: var(--ds-tint-accent);
 
 | Color and tokens | Light | Dark | Why it exists |
 |---|---|---|---|
-| Canvas `--ds-canvas` | `` | `` | The ground of every page and the footer. In dark mode the page is Repository Brown. |
-| Warm Tint `--ds-tint-warm` `--ds-surface-hover` | `` | `` | The warm tint: the secondary page band, data cards, the table header row, row headers, striped rows, notes, tags, and the disabled button fill. Also the hover fill on a white surface. |
-| Accent Tint `--ds-tint-accent` `--ds-accent-surface` | `` | `` | The accent tint on public pages: selected table rows and a pressed button. Also the ground of a panel arXiv adds over the paper: a popover, a dropdown, the reader footer band. |
-| Accent Tint, internal `--ds-tint-accent` | `` | `` | The accent tint in internal tools: selected table rows and a pressed button. Inside `.ds-internal`, the accent tokens take Access Lime values. |
-| Accent Wash `--ds-accent-wash` | `` | `` | The deepest chrome blue that still holds AA for body text: an active inline anchor, a hover inside a panel, the read-aloud highlight. |
-| Accent Hover `--ds-accent-hover` `--ds-accent-border` | `` | `` hover `` panel edges | The hover step of an Open Blue fill, which takes `--ds-text-on-accent` like the fill it hovers from, and the edge of a panel arXiv adds over the paper. |
-| Border `--ds-border` | `` | `` | Hairlines on inputs and cards, pressed fills, pill borders, the footer edge. Decorative only: it is below 3:1, so it is never the only edge of a control, and body-size grey text and links miss AA on it. |
-| Strong Border `--ds-border-strong` | `` | `` | The edge of a control: input borders, switch edges, sort arrows. The one grey that clears 3:1 on white, which is what the edge of a control needs. |
-| Disabled Text `--ds-text-disabled` | `` | `` | Disabled text only. A disabled control is exempt from contrast requirements. |
+| Canvas `--ds-canvas` | `#ffffff` | `#1c1a17` | The ground of every page and the footer. In dark mode the page is Repository Brown. |
+| Warm Tint `--ds-tint-warm` `--ds-surface-hover` | `#f0f0ee` | `#282622` | The warm tint: the secondary page band, data cards, the table header row, row headers, striped rows, notes, tags, and the disabled button fill. Also the hover fill on a white surface. |
+| Accent Tint `--ds-tint-accent` `--ds-accent-surface` | `#edf7ff` | `#202b38` | The accent tint on public pages: selected table rows and a pressed button. Also the ground of a panel arXiv adds over the paper: a popover, a dropdown, the reader footer band. |
+| Accent Tint, internal `--ds-tint-accent` | `#f0f9e8` | `#292b18` | The accent tint in internal tools: selected table rows and a pressed button. Inside `.ds-internal`, the accent tokens take Access Lime values. |
+| Accent Wash `--ds-accent-wash` | `#d2eafe` | `#22344a` | The deepest chrome blue that still holds AA for body text: an active inline anchor, a hover inside a panel, the read-aloud highlight. |
+| Accent Hover `--ds-accent-hover` `--ds-accent-border` | `#c0e2fe` | `#c0e2fe` hover `#2a4a7a` panel edges | The hover step of an Open Blue fill, which takes `--ds-text-on-accent` like the fill it hovers from, and the edge of a panel arXiv adds over the paper. |
+| Border `--ds-border` | `#dad8d6` | `#383531` | Hairlines on inputs and cards, pressed fills, pill borders, the footer edge. Decorative only: it is below 3:1, so it is never the only edge of a control, and body-size grey text and links miss AA on it. |
+| Strong Border `--ds-border-strong` | `#89837a` | `#89837a` | The edge of a control: input borders, switch edges, sort arrows. The one grey that clears 3:1 on white, which is what the edge of a control needs. |
+| Disabled Text `--ds-text-disabled` | `#aeaaa4` | `#5a554f` | Disabled text only. A disabled control is exempt from contrast requirements. |
 
 ## Rules
 

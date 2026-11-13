@@ -310,7 +310,8 @@ body > .ds-site-header > .ds-site-header-logo img { height: 26px; }
 .tint-table td:last-child { min-width: 16rem; }
 
 /* ─── colors.html: a colour where it is used, on the light page and on the
-   dark page, with its contrast (filled in by the page's script) ─── */
+   dark page, with its contrast. verification/gen-theme-values.py writes the
+   colours and the ratio into the page. ─── */
 .contrast-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -320,30 +321,18 @@ body > .ds-site-header > .ds-site-header-logo img { height: 26px; }
   overflow: hidden;
 }
 .contrast-pair--single { grid-template-columns: 1fr; }
-.contrast-sample {
-  /* Re-resolved here, as :root defines it, so it takes this sample's theme. */
-  --ds-focus-ring: var(--ds-link);
-  padding: var(--ds-space-3) var(--ds-space-4);
-  background: var(--ds-canvas);
-  color: var(--ds-text);
-}
-.contrast-sample--bar { background: var(--ds-repository-brown); color: var(--ds-grey-10); }
+.contrast-sample { padding: var(--ds-space-3) var(--ds-space-4); }
 .contrast-ratio {
   display: block;
   margin-top: var(--ds-space-2);
   font-family: var(--ds-font-mono);
   font-size: 0.75rem;
-  color: var(--ds-text-muted);
 }
-.contrast-sample--bar .contrast-ratio { color: var(--ds-grey-10); }
-.contrast-link { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
-.contrast-link--hover { color: var(--ds-link-hover); }
-.contrast-link--visited { color: var(--ds-link-visited); }
+.contrast-link { text-decoration: underline; text-underline-offset: 2px; }
 .contrast-ring {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 4px;
-  outline: 3px solid var(--ds-focus-ring);
+  outline: 3px solid;
   outline-offset: 2px;
 }
-.contrast-ring--on-dark { outline-color: var(--ds-focus-ring-on-dark); }

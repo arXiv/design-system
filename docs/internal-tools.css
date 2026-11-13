@@ -62,7 +62,7 @@
 
 /* Dark mode. Only the tokens whose dark value differs from tier 1's; never
  * hand-pick a dark colour into a component rule. */
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     /* Only the tokens whose dark value differs from tier 1's. Everything
        else — text, canvas, borders, links, focus ring, all four status
@@ -73,46 +73,26 @@
     --ds-surface-active:        #383531;
 
     --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
-
-
   }
-
-  /* Constructive icon — lime holds its light value, so the label is lime on dark */
-
-
 }
 
 /* ── The same values, keyed to the attribute ──────────────────────────────
-   Generated from the @media block above; check-drift.py fails if the two
-   disagree. The block above answers the OS; this one answers the reader,
-   who can now say so on either surface. Until 2026-09-16 this file had no
-   attribute rules at all, so an internal tool followed the machine and could
-   not be switched — an asymmetry with tier 1 that was inherited, not chosen.
-   Dropping the :root / html prefix also makes it scopable: a data-theme
-   island anywhere in the DOM picks up the same values. */
-[data-theme="dark"] {
-  /* Only the tokens whose dark value differs from tier 1's. Everything
-     else — text, canvas, borders, links, focus ring, all four status
-     families — flips identically on both surfaces and is inherited. */
+   check-drift.py fails if this and the @media block above disagree. The
+   block above answers the OS; this one answers the reader's choice, which
+   theme.js sets on <html>. Screens only, so a page always prints light. */
+@media screen {
+  :is(:root, [popover])[data-theme="dark"] {
+    /* Only the tokens whose dark value differs from tier 1's. Everything
+       else — text, canvas, borders, links, focus ring, all four status
+       families — flips identically on both surfaces and is inherited. */
 
-  /* The two internal hover washes, at the same steps as in light mode. */
-  --ds-surface-hover-strong:  #282622;
-  --ds-surface-active:        #383531;
+    /* The two internal hover washes, at the same steps as in light mode. */
+    --ds-surface-hover-strong:  #282622;
+    --ds-surface-active:        #383531;
 
-  --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
-
-
+    --ds-text-strong:           #d4cfc9;  /* 11.22:1 on dark ✓ */
+  }
 }
-
-/* Resets every value above for a data-theme="light" island; check-drift.py
-   fails if one is missing or differs from :root. */
-[data-theme="light"] {
-  --ds-surface-hover-strong:  var(--ds-grey-10);
-  --ds-surface-active:        var(--ds-grey-25);
-  --ds-text-strong:           #4a433d;
-}
-
-/* Constructive icon — lime holds its light value, so the label is lime on dark */
 
 
 /* ─── Form Validation ──────────────────────────────────────── */

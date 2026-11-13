@@ -480,7 +480,8 @@ def check_section_anchors():
 def check_generated_current():
     import subprocess
     for rule, script in (("the digests match their pages", "gen-digest.py"),
-                         ("the icons page matches the icons", "gen-icons.py")):
+                         ("the icons page matches the icons", "gen-icons.py"),
+                         ("the light and dark values in the docs match the stylesheets", "gen-theme-values.py")):
         r = subprocess.run([sys.executable, str(REPO / "verification" / script), "--check"],
                            capture_output=True, text=True)
         if r.returncode != 0:
