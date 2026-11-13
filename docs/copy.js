@@ -19,6 +19,11 @@
  *                             equation 2.14 copied"; "Copied to clipboard" if absent
  *   data-copy-failed="…"      what to do instead if the copy fails
  *
+ * Write such a button hidden: it does nothing without this script, which shows
+ * it. A Permalink is a link to its #id instead, <a href="#S2" data-copy-link="#S2">,
+ * so without the script it still goes to the section; with it, a press copies
+ * the link and the page stays where it is.
+ *
  * The button holds its own icon and a tick, <svg class="ds-copy-done">. After a copy
  * the tick takes the icon's place and a status region says what was copied; both
  * clear after two seconds. Focus and the button's name stay as they were.
@@ -240,9 +245,11 @@
   // stops the click from bubbling, as anchors.js does, cannot stop the copy.
   var page = region();
   document.body.appendChild(page);
+  document.querySelectorAll('button[hidden]:is([data-copy], [data-copy-link], [data-copy-from])').forEach(function (b) { b.hidden = false; });
   document.addEventListener('click', function (e) {
     var btn = e.target.closest && e.target.closest('[data-copy], [data-copy-link], [data-copy-from]');
     if (!btn) return;
+    if (btn.tagName === 'A') e.preventDefault();   // a Permalink copies; without this script it goes to the section
     reset(btn);
     var text, otherwise, link = btn.hasAttribute('data-copy-link');
     if (link) {

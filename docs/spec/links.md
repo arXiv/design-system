@@ -33,7 +33,7 @@ components:
       - name: "id"
         does: "Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text."
       - name: ".ds-permalink"
-        does: "The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden. After a copy, the link icon is a green tick (`.ds-permalink-done`, added by the script) for 2 seconds, in the same space, so the word does not move."
+        does: "The control, a link to the section, `<a href=\"#…\">`, with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. With `copy.js` a press copies the link; without it, the link goes to the section, and the reader can copy the address from the address bar. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden. After a copy, the link icon is a green tick (`.ds-permalink-done`, added by the script) for 2 seconds, in the same space, so the word does not move."
       - name: ".is-sr-only"
         does: "Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word."
       - name: "[role=\"status\"]"
@@ -128,13 +128,13 @@ A section heading can include a control that copies a link to that section, so a
 
 <!-- What renders -->
 <h2 id="dividers">Dividers
-  <button type="button" class="ds-permalink"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to Dividers</span></button>
+  <a class="ds-permalink" href="#dividers"><svg aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to Dividers</span></a>
 </h2>
 ```
 
 - `<section> > h2, h3` — The section heading: the `<h2>` or `<h3>` that is the first element in a `<section>`. `anchors.js` adds the control to every section heading that has an `id`. No class is needed.
 - `id` — Written into the HTML, by hand or by whatever builds the page. These docs use `verification/gen-anchors.py`, which makes it from the heading text.
-- `.ds-permalink` — The control, a `<button>` with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden. After a copy, the link icon is a green tick (`.ds-permalink-done`, added by the script) for 2 seconds, in the same space, so the word does not move.
+- `.ds-permalink` — The control, a link to the section, `<a href="#…">`, with the link icon and the word “Permalink”, that `anchors.js` adds to every section heading with an `id`. With `copy.js` a press copies the link; without it, the link goes to the section, and the reader can copy the address from the address bar. It shows while the heading is hovered, while it has focus, and after a tap on a screen without hover. It stays in the tab order while it is hidden. After a copy, the link icon is a green tick (`.ds-permalink-done`, added by the script) for 2 seconds, in the same space, so the word does not move.
 - `.is-sr-only` — Completes the accessible name with the section: “Permalink to Dividers”. The name starts with the visible word.
 - `[role="status"]` — One region on the page. The script writes “Link to Dividers copied” into it and clears it with the tick.
 

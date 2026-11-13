@@ -33,8 +33,10 @@ components:
         does: "On v1 here, since v1 is the version being viewed. \"(this version)\" moves to the Submitted date for the same reason."
       - name: ".ds-show-more"
         does: "The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides; `show-more.js`, once per page, does the flipping. The label includes the total: \"show all 12 versions\", and \"show fewer\" once open."
+      - name: ".ds-show-more-tail"
+        does: "On the span that holds the elided versions. The full list is in the HTML the server sends: `show-more.js` hides the tail with the `hidden` attribute, not a class, so the hidden links are out of the tab order, and shows the button. With no JavaScript the reader gets every version and no button."
       - name: "[hidden]"
-        does: "On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version."
+        does: "On the button and on the span that holds the ellipsis, in the markup: neither means anything without JavaScript. The script shows the ellipsis while the list is closed."
       - name: "aria-hidden=\"true\""
         does: "On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens."
       - name: "aria-controls=\"v7-elide-a v7-tail-a v7-elide-b v7-tail-b\""
@@ -208,8 +210,8 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
-  <span id="v12-elide"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
-  <span id="v12-tail" hidden>
+  <span id="v12-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
+  <span id="v12-tail" class="ds-show-more-tail">
     <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
     <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
     <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
@@ -220,14 +222,15 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v10">v10<span class="is-sr-only">, version 10</span></a>
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
-  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
+  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v12-elide v12-tail">show all 12 versions</button>
   </span>
 </p>
 <script src="show-more.js" defer></script>
 ```
 
 - `.ds-show-more` — The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides; `show-more.js`, once per page, does the flipping. The label includes the total: "show all 12 versions", and "show fewer" once open.
-- `[hidden]` — On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version.
+- `.ds-show-more-tail` — On the span that holds the elided versions. The full list is in the HTML the server sends: `show-more.js` hides the tail with the `hidden` attribute, not a class, so the hidden links are out of the tab order, and shows the button. With no JavaScript the reader gets every version and no button.
+- `[hidden]` — On the button and on the span that holds the ellipsis, in the markup: neither means anything without JavaScript. The script shows the ellipsis while the list is closed.
 - `aria-hidden="true"` — On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens.
 
 **Viewing v7 of 12**
@@ -243,22 +246,22 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
-  <span id="v7-elide-a"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
-  <span id="v7-tail-a" hidden>
+  <span id="v7-elide-a" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
+  <span id="v7-tail-a" class="ds-show-more-tail">
     <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
     <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
     <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
   </span>
   <strong class="ds-version" aria-current="true">v7<span class="is-sr-only">, this version</span></strong>
-  <span id="v7-elide-b"><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
-  <span id="v7-tail-b" hidden>
+  <span id="v7-elide-b" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
+  <span id="v7-tail-b" class="ds-show-more-tail">
     <a class="ds-version" href="#v8">v8<span class="is-sr-only">, version 8</span></a>
     <a class="ds-version" href="#v9">v9<span class="is-sr-only">, version 9</span></a>
   </span>
   <a class="ds-version" href="#v10">v10<span class="is-sr-only">, version 10</span></a>
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <a class="ds-version" href="#v12">v12<span class="is-sr-only">, version 12</span></a>
-  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
+  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
   </span>
 </p>
 <div class="ds-alert ds-alert--warning">
@@ -289,7 +292,7 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
   <span id="v24-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 21 hidden,</span></span>
-  <span id="v24-tail">
+  <span id="v24-tail" class="ds-show-more-tail">
     <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
     <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
     <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
@@ -312,7 +315,7 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v22">v22<span class="is-sr-only">, version 22</span></a>
   <a class="ds-version" href="#v23">v23<span class="is-sr-only">, version 23</span></a>
   <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
-  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
+  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" hidden aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
   </span>
 </p>
 ```

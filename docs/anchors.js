@@ -37,8 +37,8 @@
       // A label inside a demo or a sidebar names a block, not a section of the page.
       if (h.querySelector('.ds-permalink') || h.closest('aside, .ds-card')) return;
       var name = plain(h);
-      var btn = document.createElement('button');
-      btn.type = 'button';
+      var btn = document.createElement('a');
+      btn.href = '#' + h.id;
       btn.className = 'ds-permalink';
       // The visible word starts the name; the hidden part says which section.
       btn.innerHTML = LINK_ICON + 'Permalink<span class="is-sr-only"> to ' + name.replace(/[&<>]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }) + '</span>';

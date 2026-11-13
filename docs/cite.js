@@ -13,8 +13,9 @@
  * .ds-show-more that names .ds-paper-cite-code in aria-controls, with hidden
  * on it; its text is the label while the citation is closed.
  *
- * Without JavaScript every format is shown in full under its name, and the
- * stylesheet hides the select and the button. With it, only the format the
+ * Without JavaScript every format is shown in full under its name. The select's
+ * wrapper, .ds-paper-cite-tools, and the button are written hidden, and this
+ * shows them, so nothing here depends on another script. With it, only the format the
  * select names is shown; the others take the hidden attribute, so the one copy
  * button left in the Cite copies the citation the reader sees. copy.js names
  * that button from the figcaption, "Copy BibTeX", and the select keeps its own
@@ -30,7 +31,9 @@
   document.querySelectorAll('.ds-paper-cite').forEach(function (cite) {
     var select = cite.querySelector('select');
     var figures = cite.querySelectorAll('figure[data-format]');
+    var tools = cite.querySelector('.ds-paper-cite-tools');
     if (select && figures.length) {
+      if (tools) tools.hidden = false;
       var show = function () {
         figures.forEach(function (f) { f.hidden = f.getAttribute('data-format') !== select.value; });
       };

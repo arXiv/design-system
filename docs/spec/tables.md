@@ -31,22 +31,18 @@ components:
     summary: "A table has a border all the way round, except directly inside a card, where the card is the frame and the table has none."
   - id: sortable-column-headers
     title: "Sortable column headers"
-    summary: "A sortable column has a `<button class=\"sortable\">` inside its `<th>`, holding the label and a `<span class=\"sort-arrow\">` for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a `<th>` on its own cannot. `.sort-asc` or `.sort-desc` and `aria-sort` go on the `<th>` of the sorted column."
+    summary: "A sortable column's header is a link to the same page sorted by that column, holding the label and a `<span class=\"sort-arrow\">` for the direction. It looks like the plain header, it can be reached and pressed from the keyboard, and it works without JavaScript, as the [sort bar](buttons.md#a-group-of-toggles) does. `aria-sort` goes on the `<th>` of the sorted column, and the arrow follows it."
     classes:
-      - name: ".sortable"
-        does: "On a `<button type=\"button\">` inside the `<th>`. The button is styled to look like the plain header text, so nothing changes visually; what it adds is a keyboard stop, so a reader who cannot use a mouse can sort. Pointer cursor, and the label darkens on hover."
+      - name: "<a href=\"?sort=…\">"
+        does: "Inside the `<th>`: a link to this page sorted by the column. On the sorted column it sends the reverse direction; on any other, the column's first direction. Styled to look like the header text; the label darkens on hover. No class."
       - name: ".sort-arrow"
-        does: "The direction indicator, a `<span>` inside the header. The glyph in the markup is replaced by an icon: two arrows in `--ds-text-muted` when the column is unsorted."
-      - name: ".sort-asc"
-        does: "On the `<th>` of the sorted column. The arrow shows ↑ in `--ds-text`."
-      - name: ".sort-desc"
-        does: "On the `<th>` of the sorted column. The arrow shows ↓ in `--ds-text`."
+        does: "The direction indicator, a `<span aria-hidden=\"true\">` inside the link. The glyph in the markup is replaced by an icon: two arrows in `--ds-text-muted` when the column is unsorted."
       - name: "aria-sort=\"ascending\", aria-sort=\"descending\""
-        does: "Required on the sorted `<th>`, matching the class. Remove it from the column that is no longer sorted. The arrow is a glyph, so this is what tells a screen reader which column orders the table."
+        does: "On the `<th>` of the sorted column only. It tells a screen reader which column orders the table and how, and it turns the arrow up or down in `--ds-text`."
       - name: ".ds-table-footer"
         does: "The row count under the table."
     notes:
-      - "Sort logic is application-specific; the CSS only handles visual states."
+      - "The server sorts the rows. In this demo a script sorts them in place instead, because the page is static."
   - id: filters
     title: "Filters"
     summary: "Filters for a table go in the header bar of the card that holds it. For a demo, see [Filters](filters.md)."
@@ -97,7 +93,7 @@ components:
       - name: ".ds-num"
         does: "On every cell of a numeric column, the header included. Aligns the numbers on the right and uses tabular figures."
 rules:
-  - "Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states."
+  - "A sortable header is a link that reloads the page sorted, as the sort bar is a form that does. Pressing the sorted column's header reverses the order; pressing another column's header sorts by it, in its first direction, and the previous column becomes unsorted. Only the sorted column has `aria-sort`."
   - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
   - "**Mark the header cells.** Put `scope=\"col\"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value."
   - "**Give the table a name.** A `<caption>`, or an `aria-label` on the scrolling region around the table, as the examples on this page do. Without one, a screen reader user lands in “table, 4 columns” with no idea which table it is."
@@ -180,7 +176,7 @@ A table has a border all the way round, except directly inside a card, where the
 
 ## Sortable column headers
 
-A sortable column has a `<button class="sortable">` inside its `<th>`, holding the label and a `<span class="sort-arrow">` for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a `<th>` on its own cannot. `.sort-asc` or `.sort-desc` and `aria-sort` go on the `<th>` of the sorted column.
+A sortable column's header is a link to the same page sorted by that column, holding the label and a `<span class="sort-arrow">` for the direction. It looks like the plain header, it can be reached and pressed from the keyboard, and it works without JavaScript, as the [sort bar](buttons.md#a-group-of-toggles) does. `aria-sort` goes on the `<th>` of the sorted column, and the arrow follows it.
 
 **Sortable headers**
 
@@ -188,12 +184,12 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 <table class="ds-table">
   <thead>
     <tr>
-      <th scope="col" class="sort-desc" aria-sort="descending">
-        <button type="button" class="sortable">Date <span class="sort-arrow">↓</span></button>
+      <th scope="col" aria-sort="descending">
+        <a href="?sort=date-asc">Date <span class="sort-arrow" aria-hidden="true">↓</span></a>
       </th>
       <th scope="col">Title</th>
-      <th scope="col"><button type="button" class="sortable">Type <span class="sort-arrow">⇅</span></button></th>
-      <th scope="col"><button type="button" class="sortable">Status <span class="sort-arrow">⇅</span></button></th>
+      <th scope="col"><a href="?sort=type-asc">Type <span class="sort-arrow" aria-hidden="true">⇅</span></a></th>
+      <th scope="col"><a href="?sort=status-asc">Status <span class="sort-arrow" aria-hidden="true">⇅</span></a></th>
     </tr>
   </thead>
   <tbody>
@@ -215,14 +211,12 @@ A sortable column has a `<button class="sortable">` inside its `<th>`, holding t
 <div class="ds-table-footer">1–4 of 4</div>
 ```
 
-- `.sortable` — On a `<button type="button">` inside the `<th>`. The button is styled to look like the plain header text, so nothing changes visually; what it adds is a keyboard stop, so a reader who cannot use a mouse can sort. Pointer cursor, and the label darkens on hover.
-- `.sort-arrow` — The direction indicator, a `<span>` inside the header. The glyph in the markup is replaced by an icon: two arrows in `--ds-text-muted` when the column is unsorted.
-- `.sort-asc` — On the `<th>` of the sorted column. The arrow shows ↑ in `--ds-text`.
-- `.sort-desc` — On the `<th>` of the sorted column. The arrow shows ↓ in `--ds-text`.
-- `aria-sort="ascending", aria-sort="descending"` — Required on the sorted `<th>`, matching the class. Remove it from the column that is no longer sorted. The arrow is a glyph, so this is what tells a screen reader which column orders the table.
+- `<a href="?sort=…">` — Inside the `<th>`: a link to this page sorted by the column. On the sorted column it sends the reverse direction; on any other, the column's first direction. Styled to look like the header text; the label darkens on hover. No class.
+- `.sort-arrow` — The direction indicator, a `<span aria-hidden="true">` inside the link. The glyph in the markup is replaced by an icon: two arrows in `--ds-text-muted` when the column is unsorted.
+- `aria-sort="ascending", aria-sort="descending"` — On the `<th>` of the sorted column only. It tells a screen reader which column orders the table and how, and it turns the arrow up or down in `--ds-text`.
 - `.ds-table-footer` — The row count under the table.
 
-> Sort logic is application-specific; the CSS only handles visual states.
+> The server sorts the rows. In this demo a script sorts them in place instead, because the page is static.
 
 ## Filters
 
@@ -378,7 +372,7 @@ Numbers align on the right, and their digits line up from row to row.
 
 ### Sort interaction
 
-Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending. Clicking a different column resets the previous column to unsorted. Sort logic is application-specific; the CSS only handles visual states.
+A sortable header is a link that reloads the page sorted, as the sort bar is a form that does. Pressing the sorted column's header reverses the order; pressing another column's header sorts by it, in its first direction, and the previous column becomes unsorted. Only the sorted column has `aria-sort`.
 
 ### Bulk-action bar layout
 

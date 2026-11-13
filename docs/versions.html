@@ -316,8 +316,8 @@
         <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
         <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
         <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
-        <span id="v12-elide"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
-        <span id="v12-tail" hidden>
+        <span id="v12-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
+        <span id="v12-tail" class="ds-show-more-tail">
           <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
           <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
           <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
@@ -328,7 +328,7 @@
         <a class="ds-version" href="#v10">v10<span class="is-sr-only">, version 10</span></a>
         <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
         <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
-        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
+        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v12-elide v12-tail">show all 12 versions</button>
         </span>
       </p>
       <details class="ds-acc"><summary>Relevant code</summary>
@@ -343,8 +343,8 @@
   &lt;a class="ds-version" href="#v1"&gt;v1&lt;span class="is-sr-only"&gt;, version 1&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v2"&gt;v2&lt;span class="is-sr-only"&gt;, version 2&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v3"&gt;v3&lt;span class="is-sr-only"&gt;, version 3&lt;/span&gt;&lt;/a&gt;
-  &lt;span id="v12-elide"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
-  &lt;span id="v12-tail" hidden&gt;
+  &lt;span id="v12-elide" hidden&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v12-tail" class="ds-show-more-tail"&gt;
     &lt;a class="ds-version" href="#v4"&gt;v4&lt;span class="is-sr-only"&gt;, version 4&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v5"&gt;v5&lt;span class="is-sr-only"&gt;, version 5&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v6"&gt;v6&lt;span class="is-sr-only"&gt;, version 6&lt;/span&gt;&lt;/a&gt;
@@ -355,7 +355,7 @@
   &lt;a class="ds-version" href="#v10"&gt;v10&lt;span class="is-sr-only"&gt;, version 10&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v11"&gt;v11&lt;span class="is-sr-only"&gt;, version 11&lt;/span&gt;&lt;/a&gt;
   &lt;strong class="ds-version" aria-current="true"&gt;v12&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
-  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail"&gt;show all 12 versions&lt;/button&gt;
+  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v12-elide v12-tail"&gt;show all 12 versions&lt;/button&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;script src="show-more.js" defer&gt;&lt;/script&gt;</code></pre>
@@ -367,11 +367,14 @@
             every region it shows or hides; <code>show-more.js</code>, once per page, does the
             flipping. The label includes the total: "show all 12 versions", and
             "show fewer" once open.</dd>
+            <dt>.ds-show-more-tail</dt>
+            <dd>On the span that holds the elided versions. The full list is in the HTML the server
+            sends: <code>show-more.js</code> hides the tail with the <code>hidden</code> attribute, not a
+            class, so the hidden links are out of the tab order, and shows the button. With no JavaScript
+            the reader gets every version and no button.</dd>
             <dt>[hidden]</dt>
-            <dd>On the span that holds the elided versions. The attribute, not a class: the hidden links
-            are out of the tab order while they are off screen. The full list is in the HTML the server
-            sends; a script adds <code>hidden</code> and the button, so with no JavaScript the reader
-            gets every version.</dd>
+            <dd>On the button and on the span that holds the ellipsis, in the markup: neither means
+            anything without JavaScript. The script shows the ellipsis while the list is closed.</dd>
             <dt>aria-hidden="true"</dt>
             <dd>On the ellipsis, which is decoration. The <code>.is-sr-only</code> span beside it says
             which versions are hidden. Both sit in one span that the button hides when the list
@@ -393,22 +396,22 @@
         <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
         <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
         <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
-        <span id="v7-elide-a"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
-        <span id="v7-tail-a" hidden>
+        <span id="v7-elide-a" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
+        <span id="v7-tail-a" class="ds-show-more-tail">
           <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
           <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
           <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
         </span>
         <strong class="ds-version" aria-current="true">v7<span class="is-sr-only">, this version</span></strong>
-        <span id="v7-elide-b"><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
-        <span id="v7-tail-b" hidden>
+        <span id="v7-elide-b" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
+        <span id="v7-tail-b" class="ds-show-more-tail">
           <a class="ds-version" href="#v8">v8<span class="is-sr-only">, version 8</span></a>
           <a class="ds-version" href="#v9">v9<span class="is-sr-only">, version 9</span></a>
         </span>
         <a class="ds-version" href="#v10">v10<span class="is-sr-only">, version 10</span></a>
         <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
         <a class="ds-version" href="#v12">v12<span class="is-sr-only">, version 12</span></a>
-        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
+        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
         </span>
       </p>
       <div class="ds-alert ds-alert--warning">
@@ -433,22 +436,22 @@
   &lt;a class="ds-version" href="#v1"&gt;v1&lt;span class="is-sr-only"&gt;, version 1&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v2"&gt;v2&lt;span class="is-sr-only"&gt;, version 2&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v3"&gt;v3&lt;span class="is-sr-only"&gt;, version 3&lt;/span&gt;&lt;/a&gt;
-  &lt;span id="v7-elide-a"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 6 hidden,&lt;/span&gt;&lt;/span&gt;
-  &lt;span id="v7-tail-a" hidden&gt;
+  &lt;span id="v7-elide-a" hidden&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 6 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v7-tail-a" class="ds-show-more-tail"&gt;
     &lt;a class="ds-version" href="#v4"&gt;v4&lt;span class="is-sr-only"&gt;, version 4&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v5"&gt;v5&lt;span class="is-sr-only"&gt;, version 5&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v6"&gt;v6&lt;span class="is-sr-only"&gt;, version 6&lt;/span&gt;&lt;/a&gt;
   &lt;/span&gt;
   &lt;strong class="ds-version" aria-current="true"&gt;v7&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
-  &lt;span id="v7-elide-b"&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 8 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
-  &lt;span id="v7-tail-b" hidden&gt;
+  &lt;span id="v7-elide-b" hidden&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 8 through 9 hidden,&lt;/span&gt;&lt;/span&gt;
+  &lt;span id="v7-tail-b" class="ds-show-more-tail"&gt;
     &lt;a class="ds-version" href="#v8"&gt;v8&lt;span class="is-sr-only"&gt;, version 8&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v9"&gt;v9&lt;span class="is-sr-only"&gt;, version 9&lt;/span&gt;&lt;/a&gt;
   &lt;/span&gt;
   &lt;a class="ds-version" href="#v10"&gt;v10&lt;span class="is-sr-only"&gt;, version 10&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v11"&gt;v11&lt;span class="is-sr-only"&gt;, version 11&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v12"&gt;v12&lt;span class="is-sr-only"&gt;, version 12&lt;/span&gt;&lt;/a&gt;
-  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"&gt;show all 12 versions&lt;/button&gt;
+  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b"&gt;show all 12 versions&lt;/button&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 &lt;div class="ds-alert ds-alert--warning"&gt;
@@ -484,7 +487,7 @@
         <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
         <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
         <span id="v24-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 21 hidden,</span></span>
-        <span id="v24-tail">
+        <span id="v24-tail" class="ds-show-more-tail">
           <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
           <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
           <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
@@ -507,7 +510,7 @@
         <a class="ds-version" href="#v22">v22<span class="is-sr-only">, version 22</span></a>
         <a class="ds-version" href="#v23">v23<span class="is-sr-only">, version 23</span></a>
         <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
-        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
+        <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" hidden aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
         </span>
       </p>
       <details class="ds-acc"><summary>Relevant code</summary>
@@ -523,7 +526,7 @@
   &lt;a class="ds-version" href="#v2"&gt;v2&lt;span class="is-sr-only"&gt;, version 2&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v3"&gt;v3&lt;span class="is-sr-only"&gt;, version 3&lt;/span&gt;&lt;/a&gt;
   &lt;span id="v24-elide" hidden&gt;&lt;span aria-hidden="true"&gt;…&lt;/span&gt;&lt;span class="is-sr-only"&gt;versions 4 through 21 hidden,&lt;/span&gt;&lt;/span&gt;
-  &lt;span id="v24-tail"&gt;
+  &lt;span id="v24-tail" class="ds-show-more-tail"&gt;
     &lt;a class="ds-version" href="#v4"&gt;v4&lt;span class="is-sr-only"&gt;, version 4&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v5"&gt;v5&lt;span class="is-sr-only"&gt;, version 5&lt;/span&gt;&lt;/a&gt;
     &lt;a class="ds-version" href="#v6"&gt;v6&lt;span class="is-sr-only"&gt;, version 6&lt;/span&gt;&lt;/a&gt;
@@ -546,7 +549,7 @@
   &lt;a class="ds-version" href="#v22"&gt;v22&lt;span class="is-sr-only"&gt;, version 22&lt;/span&gt;&lt;/a&gt;
   &lt;a class="ds-version" href="#v23"&gt;v23&lt;span class="is-sr-only"&gt;, version 23&lt;/span&gt;&lt;/a&gt;
   &lt;strong class="ds-version" aria-current="true"&gt;v24&lt;span class="is-sr-only"&gt;, this version&lt;/span&gt;&lt;/strong&gt;
-  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions"&gt;show fewer&lt;/button&gt;
+  &lt;button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" hidden aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions"&gt;show fewer&lt;/button&gt;
   &lt;/span&gt;
 &lt;/p&gt;
 </code></pre>
