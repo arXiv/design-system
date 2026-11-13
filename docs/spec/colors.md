@@ -1,7 +1,7 @@
 ---
 page: colors.html
 title: "Colors"
-summary: "The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](../doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spec disagree, the spec wins). Hard rules live in [DESIGN-POLICIES.md](../doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values."
+summary: "The full arXiv palette, rendered, with what each color is for. Hard rules live in [DESIGN-POLICIES.md](../doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values. The values themselves are in `design-system.css`."
 stylesheet: design-system.css
 components:
   - id: brand-colors
@@ -22,8 +22,8 @@ components:
       - name: "--ds-tint-accent"
         does: "The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
 rules:
-  - "\"No one-off hex values\" has three tiers. **Tier 1 — palette tokens** (everything on this page): free to use in their documented roles. **Tier 2 — component-internal constants**: a handful of values that exist only inside a component's own CSS — the button-border gradient stops, the dark header's hover and divider shades. They are part of those components, not the palette; do not lift them for new uses. **Tier 3 — everything else**: does not exist. If a new value seems needed, it is a [color-mapping.md](../doc.html?src=docs/color-mapping.md) change, not a local invention."
-  - "No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally."
+  - "\"No one-off hex values\" has three tiers. **Tier 1 — palette tokens** (everything on this page): free to use in their documented roles. **Tier 2 — component-internal constants**: a handful of values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the destructive button's border stops (`#d4453f`, `#8e1c1c`, `#e0605a`, `#a52626`) and inner shadow (`rgb(90, 10, 10)` at any opacity), the close button's wash (`rgb(128, 128, 128)` at any opacity), and the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette; do not lift them for new uses. `verification/check-policies.py` reads this list. **Tier 3 — everything else**: does not exist. If a new value seems needed, it is a change to the palette, made with the design team, not a local invention."
+  - "No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to the palette first rather than inventing one locally."
   - "A component fill uses a tint or a status color. A new fill color is discussed with the design team first."
   - "The recommended set — what to reach for on each surface. It is deliberately not exhaustive: any pairing not listed here, and any new tint, must be checked against WCAG AA before use (4.5:1 normal text; 3:1 large text and UI boundaries)."
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
@@ -36,7 +36,7 @@ rules:
 
 # Colors
 
-The full arXiv palette, rendered. Written spec and rationale: [color-mapping.md](../doc.html?src=docs/color-mapping.md) (source of truth — if this page and the spec disagree, the spec wins). Hard rules live in [DESIGN-POLICIES.md](../doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values.
+The full arXiv palette, rendered, with what each color is for. Hard rules live in [DESIGN-POLICIES.md](../doc.html?src=docs/DESIGN-POLICIES.md): all colors come from this palette; no one-off hex values. The values themselves are in `design-system.css`.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -83,9 +83,9 @@ background: var(--ds-tint-accent);
 
 ### Working on tinted backgrounds
 
-"No one-off hex values" has three tiers. **Tier 1 — palette tokens** (everything on this page): free to use in their documented roles. **Tier 2 — component-internal constants**: a handful of values that exist only inside a component's own CSS — the button-border gradient stops, the dark header's hover and divider shades. They are part of those components, not the palette; do not lift them for new uses. **Tier 3 — everything else**: does not exist. If a new value seems needed, it is a [color-mapping.md](../doc.html?src=docs/color-mapping.md) change, not a local invention.
+"No one-off hex values" has three tiers. **Tier 1 — palette tokens** (everything on this page): free to use in their documented roles. **Tier 2 — component-internal constants**: a handful of values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the destructive button's border stops (`#d4453f`, `#8e1c1c`, `#e0605a`, `#a52626`) and inner shadow (`rgb(90, 10, 10)` at any opacity), the close button's wash (`rgb(128, 128, 128)` at any opacity), and the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette; do not lift them for new uses. `verification/check-policies.py` reads this list. **Tier 3 — everything else**: does not exist. If a new value seems needed, it is a change to the palette, made with the design team, not a local invention.
 
-No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.
+No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to the palette first rather than inventing one locally.
 
 A component fill uses a tint or a status color. A new fill color is discussed with the design team first.
 

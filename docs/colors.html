@@ -79,7 +79,6 @@
         <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -95,11 +94,9 @@
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Colors</h1>
-    <p>The full arXiv palette, rendered. Written spec and rationale:
-      <a href="doc.html?src=docs/color-mapping.md">color-mapping.md</a> (source of truth — if this page
-      and the spec disagree, the spec wins). Hard rules live in
+    <p>The full arXiv palette, rendered, with what each color is for. Hard rules live in
       <a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES.md</a>: all colors come from this
-      palette; no one-off hex values.</p>
+      palette; no one-off hex values. The values themselves are in <code>design-system.css</code>.</p>
   </header>
   </div>
 
@@ -391,15 +388,18 @@ background: var(--ds-tint-accent);</code></pre>
       "No one-off hex values" has three tiers. <strong>Tier 1 — palette
       tokens</strong> (everything on this page): free to use in their
       documented roles. <strong>Tier 2 — component-internal constants</strong>:
-      a handful of values that exist only inside a component's own CSS —
-      the button-border gradient stops, the dark header's hover and divider
-      shades. They are part of those components, not the palette; do not
-      lift them for new uses. <strong>Tier 3 — everything else</strong>:
-      does not exist. If a new value seems needed, it is a
-      <a href="doc.html?src=docs/color-mapping.md">color-mapping.md</a>
-      change, not a local invention.
+      a handful of values that exist only inside a component's own CSS: the
+      button-border gradient stops (<code>#b0d5ed</code>, <code>#6ba8da</code>, <code>#8fc1e8</code>,
+      <code>#4a86b8</code>, <code>#c8c4be</code>, <code>#b3ada4</code>, <code>#7eb8e0</code>), the
+      destructive button's border stops (<code>#d4453f</code>, <code>#8e1c1c</code>, <code>#e0605a</code>,
+      <code>#a52626</code>) and inner shadow (<code>rgb(90, 10, 10)</code> at any opacity), the close
+      button's wash (<code>rgb(128, 128, 128)</code> at any opacity), and the dark header's hover fill
+      <code>#302c28</code> and divider <code>#4a433d</code>. They are part of those components, not the
+      palette; do not lift them for new uses. <code>verification/check-policies.py</code> reads this list.
+      <strong>Tier 3 — everything else</strong>: does not exist. If a new value seems needed, it is a
+      change to the palette, made with the design team, not a local invention.
     </p>
-    <p class="ds-annotation">No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to color-mapping.md first rather than inventing one locally.</p>
+    <p class="ds-annotation">No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to the palette first rather than inventing one locally.</p>
     <p class="ds-annotation">A component fill uses a tint or a status color. A new fill color is discussed with the design team first.</p>
 
     <h3 id="recommended-pairings">Recommended pairings</h3>

@@ -43,7 +43,7 @@ Render each page if you can: a headless browser can open it from a `file://` add
 
 | Building / touching | Read | Reuse |
 |---|---|---|
-| Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
+| Anything with color | `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | A line between sections, between items in a group, or between controls in a row | `docs/dividers.html` | a bare `<hr>`, no class; `.ds-divider--tight` between items in a group, `.ds-divider--flush` when the caller owns the spacing; in a row of controls, a `<span class="ds-divider ds-divider--vertical" aria-hidden="true">`; group with space first |
@@ -119,7 +119,7 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 - **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `whiteboard/planning/`, and the git history is the changelog.
 - **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page has `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
-- After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.
+- After changing a pattern, update its page; `check-policies.py` checks that every class the docs name exists and that every token is defined; check yourself that links resolve and the HTML balances.
 - After editing a docs page, run `python3 verification/gen-anchors.py` and `python3 verification/gen-digest.py`. The digests in `docs/spec/` are written from the pages, and `check-policies.py` fails when one is out of date.
 - The shared nav is four dropdowns (Components / Patterns / Mockups / Docs), hand-copied on every doc page and on `index.html`. Adding a component or pattern page means adding it to its menu on every page and a card to the home page's matching section; adding a mockup means adding it to the Mockups menu on every page AND to `whiteboard/mockups/index.html`. Script the sweep; never update just one page.
 - After changing either `design-system.css`, run `python3 verification/check-drift.py`. It guards the places where a value is written down twice — chiefly the mirrored dark palette. Any FAIL is yours to fix.
