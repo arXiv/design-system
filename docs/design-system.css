@@ -90,7 +90,6 @@
   --ds-danger-active:         #9a0007;
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-disabled-fg:    #c47878;
   --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
   --ds-danger-fg-hover:       var(--ds-danger-hover);
   --ds-chrome:            var(--ds-repository-brown);  /* header bar, skip link */
@@ -853,28 +852,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   box-shadow: inset 0 0 10px rgba(90, 10, 10, 0.42);
 }
 
-/* ── Disabled — buttons.html
-   Flat neutral fill, not reduced opacity: opacity dims border and label
-   by the same amount and can render a light fill invisible. Both
-   :disabled and .is-disabled, because <a> cannot take the attribute —
-   an <a> also needs its href removed and aria-disabled set. */
-.ds-btn:disabled,
-.ds-btn[aria-disabled="true"],
-.ds-btn.is-disabled,
-.ds-btn:disabled:hover,
-.ds-btn[aria-disabled="true"]:hover,
-.ds-btn.is-disabled:hover,
-.ds-btn:disabled:active,
-.ds-btn[aria-disabled="true"]:active,
-.ds-btn.is-disabled:active {
-  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash, so the flat fill shows on every ground in both themes */
-  border-color: transparent;
-  color: var(--ds-text-muted);
-  box-shadow: none;
-  transform: none;
-  cursor: not-allowed;
-}
-
 /* ── Text button (.ds-btn-text) — the quiet third tier — buttons.html
    Link Blue but NEVER underlined: it is a control, not a link. Hover is
    a background wash, the same feedback the other tiers give. */
@@ -895,12 +872,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   background: var(--ds-btn-text-bg-active);
   color: var(--ds-btn-text-fg-hover);
 }
-.ds-btn-text:disabled,
-.ds-btn-text.is-disabled {
-  color: var(--ds-text-disabled);
-  background: none;
-  cursor: not-allowed;
-}
 
 /* ── Quiet destructive (.ds-btn-text.ds-btn-destructive) — buttons.html
    The text tier in the danger colour: a remove action in a table row or a
@@ -920,11 +891,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   background: var(--ds-danger-wash-active);
   color: var(--ds-danger-fg-hover);
   box-shadow: none;
-}
-.ds-btn-text.ds-btn-destructive:disabled,
-.ds-btn-text.ds-btn-destructive.is-disabled {
-  background: none;
-  color: var(--ds-danger-disabled-fg);
 }
 
 /* ── Icon-only control (.ds-btn-icon) — buttons.html
@@ -1633,6 +1599,22 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-btn-group:has(> .ds-btn[aria-pressed]) > :not(.ds-btn) { margin-inline-end: var(--ds-space-tight); }
 .ds-btn-group > .ds-btn[aria-pressed] + .ds-btn[aria-pressed] { margin-inline-start: -1px; border-start-start-radius: 0; border-end-start-radius: 0; }
 .ds-btn-group > .ds-btn[aria-pressed]:has(+ .ds-btn[aria-pressed]) { border-start-end-radius: 0; border-end-end-radius: 0; }
+
+/* ── Disabled — buttons.html
+   One look for every tier, whether the control has disabled or
+   aria-disabled: a flat wash and the muted label. Never opacity, which dims
+   border and label alike and can make a light fill invisible. It comes after
+   every tier and the toggles, so nothing they set on hover or press shows
+   through. */
+.ds-btn:is(:disabled, [aria-disabled="true"]),
+.ds-btn:is(:disabled, [aria-disabled="true"]):is(:hover, :active) {
+  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash, so the flat fill shows on every ground in both themes */
+  border-color: transparent;
+  color: var(--ds-text-muted);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
 
 /* Stacked rather than side by side — same relationship, other axis. */
 .ds-btn-group--stack {
@@ -2896,7 +2878,6 @@ html:has(.ds-modal[open]) {
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
-    --ds-danger-disabled-fg:    #864040;
     --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
     --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
@@ -3008,7 +2989,6 @@ html:has(.ds-modal[open]) {
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #2a0808;
   --ds-danger-wash-active:    #380d0d;
-  --ds-danger-disabled-fg:    #864040;
   --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
   --ds-danger-fg-hover:       #ef9a9a;
   --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
@@ -3082,7 +3062,6 @@ html:has(.ds-modal[open]) {
   --ds-zone-secondary-bg: var(--ds-tint-warm);
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-disabled-fg:    #c47878;
   --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
   --ds-danger-fg-hover:       var(--ds-danger-hover);
   --ds-surface:           #ffffff;

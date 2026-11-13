@@ -117,7 +117,7 @@ After a search, the form stays where it was, on the page ground. A heading names
     </div>
     <nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
       <span class="ds-pagination-position">1–50 of 18,659 results</span>
-      <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+      <button type="button" class="ds-btn ds-btn-text" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></button>
       <ol class="ds-pagination-pages">
       <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
       <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
@@ -135,7 +135,7 @@ After a search, the form stays where it was, on the page ground. A heading names
     </ol>
     <nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list">
       <span class="ds-pagination-position">1–50 of 18,659 results</span>
-      <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+      <button type="button" class="ds-btn ds-btn-text" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></button>
       <ol class="ds-pagination-pages">
       <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
       <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>

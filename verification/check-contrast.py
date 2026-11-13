@@ -92,7 +92,7 @@ INT_SURF = ["canvas", "surface", "tint-warm", "surface-hover-strong"]
 INT_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover"), ("text-on-accent", "accent-active")]
 INT_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
 INT_NEVER = [("border-strong", "borders and arrows (3:1 non-text minimum)"),
-             ("text-disabled", "disabled text only"), ("danger-disabled-fg", "disabled destructive icon buttons only")]
+             ("text-disabled", "disabled text only")]
 
 def palettes():
     pub_text = PUB.read_text()
