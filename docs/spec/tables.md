@@ -72,6 +72,16 @@ components:
         does: "The selection count and the “Clear selection” link, beside the actions. Takes `role=\"status\"` so a change in the count is announced."
       - name: "<button disabled>"
         does: "The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection."
+  - id: selecting-items-in-a-list
+    title: "Selecting items in a list"
+    summary: "The same selection when the set is a list rather than a table, such as a list of papers. Each item starts with its checkbox, lined up with the item's first line. The actions on the selection sit in the header bar above the list, as for a table. A control that acts on one item only sits at the end of that item, on the right."
+    classes:
+      - name: "<input type=\"checkbox\">"
+        does: "The first child of each item, then its `<label class=\"is-sr-only\">`, which names the item: “Select” and the paper's title. The box is 24px, in a column of its own, and lines up with the item's first line; everything after it sits beside it. No class."
+      - name: ".ds-card-bar"
+        does: "The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). Each action names what it acts on."
+      - name: ".ds-btn-group.ds-btn-group--end"
+        does: "The last child of an item: the controls for that item only, on the right, as a form's action bar is. Each control's name includes the item's, in an `.is-sr-only` span, because “Remove” alone does not say which."
   - id: striped-rows
     title: "Striped rows"
     group: "Modifiers"
@@ -307,6 +317,38 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 ```
 
 - `<button disabled>` — The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection.
+
+## Selecting items in a list
+
+The same selection when the set is a list rather than a table, such as a list of papers. Each item starts with its checkbox, lined up with the item's first line. The actions on the selection sit in the header bar above the list, as for a table. A control that acts on one item only sits at the end of that item, on the right.
+
+**Two papers selected**
+
+```html
+<div class="ds-card">
+  <div class="ds-card-bar">
+    <div class="ds-btn-group">
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button">Remove selected papers…</button>
+      <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+    </div>
+  </div>
+  <ol class="ds-paper-list" aria-label="Saved papers">
+    <li class="ds-paper">
+      <input type="checkbox" id="lists-1" checked><label for="lists-1" class="is-sr-only">Select LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</label>
+      <h3><a href="https://arxiv.org/abs/2609.36857">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3>
+      <p class="ds-link-list">…the authors…</p>
+      <div class="ds-btn-group ds-btn-group--end">
+        <button type="button" class="ds-btn ds-btn-text ds-btn-compact">Remove<span class="is-sr-only"> LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</span></button>
+      </div>
+    </li>
+    …
+  </ol>
+</div>
+```
+
+- `<input type="checkbox">` — The first child of each item, then its `<label class="is-sr-only">`, which names the item: “Select” and the paper's title. The box is 24px, in a column of its own, and lines up with the item's first line; everything after it sits beside it. No class.
+- `.ds-card-bar` — The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). Each action names what it acts on.
+- `.ds-btn-group.ds-btn-group--end` — The last child of an item: the controls for that item only, on the right, as a form's action bar is. Each control's name includes the item's, in an `.is-sr-only` span, because “Remove” alone does not say which.
 
 ## Striped rows  (Modifiers)
 

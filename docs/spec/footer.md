@@ -1,12 +1,12 @@
 ---
 page: footer.html
 title: "Site footer"
-summary: "The universal arXiv public-page footer (`.ds-site-footer`). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge major funders. The footer below is accurate as of 9/28/2026."
+summary: "The universal arXiv public-page footer (`.ds-site-footer`): an acknowledgement line and the site's links. The transitional footer is the one in production now; the aspirational footer is the one arXiv's pages will move to."
 stylesheet: design-system.css
 components:
-  - id: the-footer
-    title: "The footer"
-    summary: "The acknowledgement line followed by footer links. As of September 2026, funders have been removed. This may change again in the future; stay tuned."
+  - id: transitional-footer
+    title: "Transitional footer (currently in production)"
+    summary: "The footer in production now. A page includes it from `templates/` rather than copying its markup; the [templates README](../doc.html?src=templates/README.md) says how to install it and what each variable does. The example is a copy of the template's output."
     classes:
       - name: ".ds-site-footer"
         does: "The whole unit, on a `<footer>` element. Canvas ground with a hairline rule above it; hidden in print."
@@ -20,12 +20,19 @@ components:
         does: "The dot between two links. A `<span>` holding a middle dot, with `aria-hidden=\"true\"`."
       - name: "target=\"_blank\""
         does: "Only on the Operational Status link, which leaves arxiv.org. It takes `rel=\"noopener noreferrer\"` and a `.is-sr-only` “(opens in new tab)” inside the link text."
+  - id: aspirational-footer
+    title: "Aspirational footer (post-migration)"
+    summary: "The footer arxiv.org will move to. It differs from the transitional footer in three ways: the acknowledgement names the reader's member institution when arXiv recognises the network they are on; “all contributors” is a link; and the links are separated by space alone, with no dots."
+    classes:
+      - name: ".ack-member-inline"
+        does: "The reader's member institution, after “member institutions”, when arXiv recognises the network they are on, such as a campus. Leave it out when there is no match."
+      - name: ".ds-site-footer-links"
+        does: "As in the transitional footer, with no `.ds-site-footer-sep`: the links are separated by space alone."
 rules:
   - "Wording has been carefully workshopped by leadership and must maintain an exact-match to the approved deployment."
   - "Which links the footer includes is set in [Design policies](../doc.html?src=docs/DESIGN-POLICIES.md)."
-  - "Major funders were removed from the footer in September 2026. They may be added to the footer again in the future. Stay tuned."
   - "Type sizes are rem so browser font-size overrides propagate (see [accessibility priorities](../doc.html?src=docs/accessibility-priorities.md))."
-  - "When implementing, use `@media print` on the footer so only the content prints, not the chrome."
+  - "The stylesheet hides the footer in print, so only the content prints, not the chrome."
   - "Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied."
   - "**Use appropriate landmarks.** The unit is a real `<footer>`, and the link row is a `<nav aria-label=\"Site navigation\">`, so a screen reader user can jump to either one from a list of landmarks."
   - "**Hide the separators from assistive technology.** Every dot separator has `aria-hidden=\"true\"`; screen readers otherwise announce “middot” between every link."
@@ -35,31 +42,32 @@ rules:
 
 # Site footer
 
-The universal arXiv public-page footer (`.ds-site-footer`). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge major funders. The footer below is accurate as of 9/28/2026.
+The universal arXiv public-page footer (`.ds-site-footer`): an acknowledgement line and the site's links. The transitional footer is the one in production now; the aspirational footer is the one arXiv's pages will move to.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
-## The footer
+## Transitional footer (currently in production)
 
-The acknowledgement line followed by footer links. As of September 2026, funders have been removed. This may change again in the future; stay tuned.
-
-Note that the institution name after “member institutions” is an optional IP-matched insertion that will appear when a user accesses arXiv from their campus or nearby. Omit when no match exists.
+The footer in production now. A page includes it from `templates/` rather than copying its markup; the [templates README](../doc.html?src=templates/README.md) says how to install it and what each variable does. The example is a copy of the template's output.
 
 ```html
 <footer class="ds-site-footer">
   <div class="ds-site-footer-grid">
     <div class="ds-site-footer-main">
       <div class="ds-site-footer-ack">
-        We gratefully acknowledge support from our <a href="#"><strong>major funders</strong></a>,
-        <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">,
-        <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>,
-        and <a href="#">all contributors</a>.
+        We gratefully acknowledge support from our <a href="https://info.arxiv.org/about/major_funders.html"><strong>major funders</strong></a>,
+        <a href="https://info.arxiv.org/about/ourmembers.html"><strong>member institutions</strong></a>,
+        and all contributors.
       </div>
       <nav class="ds-site-footer-links" aria-label="Site navigation">
-        <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
-        <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">·</span>
-        <!-- … Contact, Subscribe, Copyright, Privacy, Accessibility, each followed by a separator … -->
+        <a href="https://info.arxiv.org/about">About</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help">Help</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/contact.html">Contact</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/subscribe.html">Subscribe</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/license/index.html">Copyright</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/policies/privacy_policy.html">Privacy</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
+        <a href="https://info.arxiv.org/help/web_accessibility.html">Accessibility</a> <span class="ds-site-footer-sep" aria-hidden="true">&middot;</span>
         <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
       </nav>
     </div>
@@ -74,18 +82,45 @@ Note that the institution name after “member institutions” is an optional IP
 - `.ds-site-footer-sep` — The dot between two links. A `<span>` holding a middle dot, with `aria-hidden="true"`.
 - `target="_blank"` — Only on the Operational Status link, which leaves arxiv.org. It takes `rel="noopener noreferrer"` and a `.is-sr-only` “(opens in new tab)” inside the link text.
 
+## Aspirational footer (post-migration)
+
+The footer arxiv.org will move to. It differs from the transitional footer in three ways: the acknowledgement names the reader's member institution when arXiv recognises the network they are on; “all contributors” is a link; and the links are separated by space alone, with no dots.
+
+```html
+<footer class="ds-site-footer">
+  <div class="ds-site-footer-grid">
+    <div class="ds-site-footer-main">
+      <div class="ds-site-footer-ack">
+        We gratefully acknowledge support from our <a href="#"><strong>major funders</strong></a>,
+        <a href="#"><strong>member institutions</strong></a><span class="ack-member-inline">,
+        <strong>Rheinisch-Westfälische Technische Hochschule Aachen</strong></span>,
+        and <a href="#">all contributors</a>.
+      </div>
+      <nav class="ds-site-footer-links" aria-label="Site navigation">
+        <a href="https://info.arxiv.org/about">About</a>
+        <a href="https://info.arxiv.org/help">Help</a>
+        <!-- … Contact, Subscribe, Copyright, Privacy, Accessibility, with no separators … -->
+        <a href="https://status.arxiv.org/" target="_blank" rel="noopener noreferrer">Operational Status<span class="is-sr-only"> (opens in new tab)</span></a>
+      </nav>
+    </div>
+  </div>
+</footer>
+```
+
+- `.ack-member-inline` — The reader's member institution, after “member institutions”, when arXiv recognises the network they are on, such as a campus. Leave it out when there is no match.
+- `.ds-site-footer-links` — As in the transitional footer, with no `.ds-site-footer-sep`: the links are separated by space alone.
+
 ## Rules
 
 ### Content
 
 - Wording has been carefully workshopped by leadership and must maintain an exact-match to the approved deployment.
 - Which links the footer includes is set in [Design policies](../doc.html?src=docs/DESIGN-POLICIES.md).
-- Major funders were removed from the footer in September 2026. They may be added to the footer again in the future. Stay tuned.
 
 ### Type and print
 
 - Type sizes are rem so browser font-size overrides propagate (see [accessibility priorities](../doc.html?src=docs/accessibility-priorities.md)).
-- When implementing, use `@media print` on the footer so only the content prints, not the chrome.
+- The stylesheet hides the footer in print, so only the content prints, not the chrome.
 - Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied.
 
 ### Accessibility essentials
