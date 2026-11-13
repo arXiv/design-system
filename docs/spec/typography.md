@@ -59,11 +59,11 @@ components:
       - name: "a"
         does: "The inline text link: a bare `<a>` inside `.ds-page`, with no class. Both surfaces use the same `--ds-link-*` tokens and the same values."
       - name: "--ds-link, --ds-link-hover, --ds-link-visited"
-        does: "Rest, hover and visited colours. The underline does not change between states."
+        does: "Rest, hover and visited colors. The underline does not change between states."
       - name: "--ds-focus-ring"
         does: "The 3px keyboard focus ring, drawn on `:focus-visible` only."
       - name: ".ds-link-list"
-        does: "On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here."
+        does: "On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited color. There is no ordinary text beside them for the underline to separate them from, so color alone is enough here."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: matched-words
@@ -71,7 +71,7 @@ components:
     summary: "The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight."
     classes:
       - name: "<mark>"
-        does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime."
+        does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the color, so it is never color alone. In internal tools the wash is Access Lime."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
   - id: code-blocks-and-the-copy-button
@@ -228,7 +228,7 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 ```
 
 - `a` — The inline text link: a bare `<a>` inside `.ds-page`, with no class. Both surfaces use the same `--ds-link-*` tokens and the same values.
-- `--ds-link, --ds-link-hover, --ds-link-visited` — Rest, hover and visited colours. The underline does not change between states.
+- `--ds-link, --ds-link-hover, --ds-link-visited` — Rest, hover and visited colors. The underline does not change between states.
 - `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 
 ```html
@@ -239,7 +239,7 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 </p>
 ```
 
-- `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited colour. There is no ordinary text beside them for the underline to separate them from, so colour alone is enough here.
+- `.ds-link-list` — On the element that holds a list in which every item is a link, such as an author list or a column of footer links. The links drop the underline at rest and keep everything else: Link Blue, the underline on hover, the focus ring and the visited color. There is no ordinary text beside them for the underline to separate them from, so color alone is enough here.
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 
@@ -251,7 +251,7 @@ The words that matched a search are marked with `<mark>`, in the accent wash and
 <p>Weak-<mark>Lensing</mark> Shear Response for Photometric Redshift-Based Tomographic Binning</p>
 ```
 
-- `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the colour, so it is never colour alone. In internal tools the wash is Access Lime.
+- `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the color, so it is never color alone. In internal tools the wash is Access Lime.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
 
@@ -384,7 +384,7 @@ Every weight and style IBM Plex ships is self-hosted — Thin 100, ExtraLight 20
 | 700 Bold | The h1, alert titles and a pressed toggle's label — see the heading scale. |
 | 100, 200, 300, 450 | Lighter weights are present, but unused and commented out. See warning below. |
 
-Thin, ExtraLight and Light are in the repository but not used. At interface sizes their strokes are too fine for many readers to resolve even when the colour passes AA — the ratio measures the hue, not whether the letterform survives. **Body and interface text use 400 or heavier.** Anything lighter belongs at display sizes, if anywhere, and is worth testing before it ships.
+Thin, ExtraLight and Light are in the repository but not used. At interface sizes their strokes are too fine for many readers to resolve even when the color passes AA — the ratio measures the hue, not whether the letterform survives. **Body and interface text use 400 or heavier.** Anything lighter belongs at display sizes, if anywhere, and is worth testing before it ships.
 
 ### The files
 

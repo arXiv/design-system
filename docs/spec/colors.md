@@ -20,7 +20,7 @@ components:
       - name: "--ds-tint-warm"
         does: "The warm tint. The same value on both surfaces."
       - name: "--ds-tint-accent"
-        does: "The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface."
+        does: "The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right color on each surface."
 rules:
   - "\"No one-off hex values\" has three tiers. **Tier 1 — palette tokens** (everything on this page): free to use in their documented roles. **Tier 2 — component-internal constants**: a handful of values that exist only inside a component's own CSS: the button-border gradient stops (`#b0d5ed`, `#6ba8da`, `#8fc1e8`, `#4a86b8`, `#c8c4be`, `#b3ada4`, `#7eb8e0`), the destructive button's border stops (`#d4453f`, `#8e1c1c`, `#e0605a`, `#a52626`) and inner shadow (`rgb(90, 10, 10)` at any opacity), the close button's wash (`rgb(128, 128, 128)` at any opacity), and the dark header's hover fill `#302c28` and divider `#4a433d`. They are part of those components, not the palette; do not lift them for new uses. `verification/check-policies.py` reads this list. **Tier 3 — everything else**: does not exist. If a new value seems needed, it is a change to the palette, made with the design team, not a local invention."
   - "No near-whites lighter than Warm Tint. If a lighter step is genuinely needed, add it to the palette first rather than inventing one locally."
@@ -29,7 +29,7 @@ rules:
   - "Repository Brown is the workhorse — it clears AA on every approved surface, which is why buttons set Repository Brown on Open Blue."
   - "The secondary button's white fill reads as \"primary\" against a tinted band, so tinted sections add the `.on-tint` modifier: the fill swaps to Warm Tint — same luminance as the surface, *warm* hue — so the button reads as secondary through warm-on-cool material difference, not through low contrast. Live from [the button pattern](buttons.md):"
   - "**Use tokens, not hex values.** Take every color from a `--ds-` token. The hex values on this page are specimens to read, not values to paste into a stylesheet. A color with no token is not available to build with."
-  - "**Every pairing on this page already passes.** Each text colour clears WCAG AA (4.5:1) on every surface it is documented for, in both modes, and `verification/check-contrast.py` fails if a token change ever breaks one. That is the reason to take colours from tokens and never to override one: a hex typed by hand is a pairing nobody has checked."
+  - "**Every pairing on this page already passes.** Each text color clears WCAG AA (4.5:1) on every surface it is documented for, in both modes, and `verification/check-contrast.py` fails if a token change ever breaks one. That is the reason to take colors from tokens and never to override one: a hex typed by hand is a pairing nobody has checked."
   - "**Never use color alone.** Pair a color with a word, an icon, an underline, or a change of position, so a reader who cannot see the color still gets the message (WCAG 1.4.1)."
   - "**Dark mode flips the tokens.** Every token on this page takes its dark value on its own. Never hand-pick a dark value into a page; see [Dark mode](dark-mode.md) for what flips and what stays fixed."
 ---
@@ -65,7 +65,7 @@ background: var(--ds-tint-accent);
 ```
 
 - `--ds-tint-warm` — The warm tint. The same value on both surfaces.
-- `--ds-tint-accent` — The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right colour on each surface.
+- `--ds-tint-accent` — The accent tint: blue on public pages, a lime wash inside `.ds-internal`. A component uses the token and gets the right color on each surface.
 
 | Color and tokens | Light | Dark | Why it exists |
 |---|---|---|---|
@@ -75,8 +75,8 @@ background: var(--ds-tint-accent);
 | Accent Tint, internal `--ds-tint-accent` | `#f0f9e8` | `#292b18` | The accent tint in internal tools: selected table rows and a pressed button. Inside `.ds-internal`, the accent tokens take Access Lime values. |
 | Accent Wash `--ds-accent-wash` | `#d2eafe` | `#22344a` | The deepest chrome blue that still holds AA for body text: an active inline anchor, a hover inside a panel, the read-aloud highlight. |
 | Accent Hover `--ds-accent-hover` `--ds-accent-border` | `#c0e2fe` | `#c0e2fe` hover `#2a4a7a` panel edges | The hover step of an Open Blue fill, which takes `--ds-text-on-accent` like the fill it hovers from, and the edge of a panel arXiv adds over the paper. |
-| Border `--ds-border` | `#dad8d6` | `#383531` | Hairlines on inputs and cards, pressed fills, pill borders, the footer edge. Decorative only: it is below 3:1, so it is never the only edge of a control, and body-size grey text and links miss AA on it. |
-| Strong Border `--ds-border-strong` | `#89837a` | `#89837a` | The edge of a control: input borders, switch edges, sort arrows. The one grey that clears 3:1 on white, which is what the edge of a control needs. |
+| Border `--ds-border` | `#dad8d6` | `#383531` | Hairlines on inputs and cards, pressed fills, pill borders, the footer edge. Decorative only: it is below 3:1, so it is never the only edge of a control, and body-size gray text and links miss AA on it. |
+| Strong Border `--ds-border-strong` | `#89837a` | `#89837a` | The edge of a control: input borders, switch edges, sort arrows. The one gray that clears 3:1 on white, which is what the edge of a control needs. |
 | Disabled Text `--ds-text-disabled` | `#aeaaa4` | `#5a554f` | Disabled text only. A disabled control is exempt from contrast requirements. |
 
 ## Rules
@@ -105,6 +105,6 @@ The secondary button's white fill reads as "primary" against a tinted band, so t
 ### Accessibility essentials
 
 - **Use tokens, not hex values.** Take every color from a `--ds-` token. The hex values on this page are specimens to read, not values to paste into a stylesheet. A color with no token is not available to build with.
-- **Every pairing on this page already passes.** Each text colour clears WCAG AA (4.5:1) on every surface it is documented for, in both modes, and `verification/check-contrast.py` fails if a token change ever breaks one. That is the reason to take colours from tokens and never to override one: a hex typed by hand is a pairing nobody has checked.
+- **Every pairing on this page already passes.** Each text color clears WCAG AA (4.5:1) on every surface it is documented for, in both modes, and `verification/check-contrast.py` fails if a token change ever breaks one. That is the reason to take colors from tokens and never to override one: a hex typed by hand is a pairing nobody has checked.
 - **Never use color alone.** Pair a color with a word, an icon, an underline, or a change of position, so a reader who cannot see the color still gets the message (WCAG 1.4.1).
 - **Dark mode flips the tokens.** Every token on this page takes its dark value on its own. Never hand-pick a dark value into a page; see [Dark mode](dark-mode.md) for what flips and what stays fixed.

@@ -38,7 +38,7 @@ components:
       - name: "<a> Clear all"
         does: "A link to the page without filters, after the tags, while a filter is applied."
       - name: "<script src=\"filter-panel.js\" defer>"
-        does: "Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the centre of the window."
+        does: "Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the center of the window."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
 rules:
@@ -144,7 +144,7 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 - `<fieldset> with the legend Settings` — A setting, such as threshold days, changes a calculation and is not a filter. It goes after the filters, in a fieldset of its own, and is not shown as a tag.
 - `.ds-tag, .ds-tag-remove` — One tag for each applied filter, after the button. Its remove control is a link to the page without that filter. See [Tags](tags.md#complex-tags).
 - `<a> Clear all` — A link to the page without filters, after the tags, while a filter is applied.
-- `<script src="filter-panel.js" defer>` — Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the centre of the window.
+- `<script src="filter-panel.js" defer>` — Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the center of the window.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 

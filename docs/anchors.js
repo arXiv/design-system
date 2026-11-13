@@ -49,7 +49,7 @@
       h.appendChild(btn);
     });
 
-    // A demo that writes its control into a heading with an id gets the same behaviour.
+    // A demo that writes its control into a heading with an id gets the same behavior.
     document.querySelectorAll('.ds-card :is(h2, h3, h4)[id] > .ds-permalink').forEach(function (btn) {
       wire(btn, btn.parentElement, btn.querySelector('.is-sr-only').textContent.replace(/^ to /, ''));
     });

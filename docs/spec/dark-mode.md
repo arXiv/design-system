@@ -1,7 +1,7 @@
 ---
 page: dark-mode.html
 title: "Dark mode"
-summary: "In the design system, every colour comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without any additional work and no hand-picking of values."
+summary: "In the design system, every color comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without any additional work and no hand-picking of values."
 stylesheet: design-system.css
 components:
   - id: the-theme-control
@@ -34,27 +34,27 @@ components:
     summary: "Internal tools load the same tier 1 stylesheet as public pages. Their speciall accent color comes from adding `.ds-internal` on `<html>`, so everything above applies to them unchanged. The internal pages tier 2 stylesheet, `internal-tools.css`, re-points only the tokens whose dark value differs on that surface. No manual adjustments are needed."
 rules:
   - "In order. Each step links to the reasoning below. If you follow only this list and read nothing else, dark mode will work."
-  - "**Take every colour from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)"
-  - "**Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself."
+  - "**Take every color from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)"
+  - "**Decide whether the color is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a color specimen whose subject is the value itself."
   - "**Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the page ground is white in light and Repository Brown in dark, so anything filled with it disappears."
   - "**Check any text sitting on an accent fill.** Accents hold their light values in dark, so the text on them must not flip either — `--ds-text-on-accent` on lime and on Open Blue alike. Reaching for the plain token puts near-white text on a light fill, about 1.3:1."
-  - "**Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself."
+  - "**Set the page's own background and text from tokens.** An inherited color from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself."
   - "**Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme` on `<html>`. [Locking to light](#a-page-locked-to-light)"
   - "**The theme belongs to the whole page.** Set `data-theme` on `<html>` only: no part of a page is lighter or darker than the rest. To show both modes, use the theme control in the header. One case follows from another rule: a popover takes the ground of the row that opened it, so a popover from the dark site header opens in dark mode. `filter-panel.js` sets that; a page never does."
   - "**If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)"
   - "**Verify computed styles in both modes, and measure contrast.** Do not trust the cascade and do not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced either way."
   - "Component CSS consumes tokens. Do not write hex values directly."
   - "`color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` on `<html>` to lock a mode."
-  - "**Respect the setting the reader already made.** A page follows the operating system's colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page."
+  - "**Respect the setting the reader already made.** A page follows the operating system's color scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page."
   - "**The icon is the only visible part, so the name gives the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region, as in [Show that something was copied](action-feedback.md). A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”."
-  - "**Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself."
-  - "**Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes."
+  - "**Never a dark value by hand.** Take every color from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself."
+  - "**Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses color to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes."
   - "**Let form controls follow.** The stylesheet sets `color-scheme` beside the tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not set it yourself to force a mode: it governs those browser-rendered widgets only and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`."
 ---
 
 # Dark mode
 
-In the design system, every colour comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without any additional work and no hand-picking of values.
+In the design system, every color comes from a token and the tokens flip in each mode. A page or component built from the color tokens follows the mode without any additional work and no hand-picking of values.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -123,11 +123,11 @@ Internal tools load the same tier 1 stylesheet as public pages. Their speciall a
 
 In order. Each step links to the reasoning below. If you follow only this list and read nothing else, dark mode will work.
 
-- **Take every colour from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)
-- **Decide whether the colour is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value itself.
+- **Take every color from a token.** Never write a dark hex into a page or a component. Components that consume tokens flip for free. [How it works](#the-mechanism)
+- **Decide whether the color is content or identity.** Content flips. Identity is pinned to a literal with a comment saying why — a masthead, a brand fill, a color specimen whose subject is the value itself.
 - **Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the page ground is white in light and Repository Brown in dark, so anything filled with it disappears.
 - **Check any text sitting on an accent fill.** Accents hold their light values in dark, so the text on them must not flip either — `--ds-text-on-accent` on lime and on Open Blue alike. Reaching for the plain token puts near-white text on a light fill, about 1.3:1.
-- **Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself.
+- **Set the page's own background and text from tokens.** An inherited color from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself.
 - **Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme` on `<html>`. [Locking to light](#a-page-locked-to-light)
 - **The theme belongs to the whole page.** Set `data-theme` on `<html>` only: no part of a page is lighter or darker than the rest. To show both modes, use the theme control in the header. One case follows from another rule: a popover takes the ground of the row that opened it, so a popover from the dark site header opens in dark mode. `filter-panel.js` sets that; a page never does.
 - **If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)
@@ -140,10 +140,10 @@ In order. Each step links to the reasoning below. If you follow only this list a
 
 ### Accessibility essentials
 
-- **Respect the setting the reader already made.** A page follows the operating system's colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page.
+- **Respect the setting the reader already made.** A page follows the operating system's color scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page.
 - **The icon is the only visible part, so the name gives the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region, as in [Show that something was copied](action-feedback.md). A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.
-- **Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself.
-- **Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses colour to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.
+- **Never a dark value by hand.** Take every color from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself.
+- **Check contrast in both modes.** Verify computed styles and measure contrast in every state a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do not judge by eye. Anything that uses color to convey meaning keeps its second cue (icon, word, position) in dark mode too — the WCAG 1.4.1 requirement applies in both modes.
 - **Let form controls follow.** The stylesheet sets `color-scheme` beside the tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not set it yourself to force a mode: it governs those browser-rendered widgets only and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`.
 
 ## Spec

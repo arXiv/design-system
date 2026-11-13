@@ -25,7 +25,7 @@ components:
       - name: "Icons"
         does: "Any `.ds-btn` accepts an inline SVG. The stylesheet sizes it in `em`, blocks the baseline gap, and stops it shrinking beside a long label. Set `stroke=\"currentColor\"` and nothing else."
       - name: "Disabled"
-        does: "One look for every tier: a flat grey wash and the muted label, the same with `disabled` and with `aria-disabled=\"true\"`. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation)."
+        does: "One look for every tier: a flat gray wash and the muted label, the same with `disabled` and with `aria-disabled=\"true\"`. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation)."
     notes:
       - "When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page."
   - id: links-styled-as-buttons
@@ -49,7 +49,7 @@ components:
       - name: "role=\"toolbar\", aria-label"
         does: "The pill is one tab stop. Tab reaches its first action, or the one used last, even while the pill is hidden; the arrow keys, Home and End move between its actions. The label names the element: “Equation 2.14”. `element-pill.js`, loaded once on the page, does this. Without it, every action is its own tab stop."
       - name: "The actions"
-        does: "Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue."
+        does: "Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted color, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue."
     rules:
       - "**Input decides how the pill appears, not width.** Test `(hover: hover)` and `(hover: none)`: a narrow window can still have a mouse."
       - "**On a touch-only device, a tap on the content shows the pill** (`.is-revealed`), and a tap elsewhere hides it."
@@ -70,7 +70,7 @@ components:
     summary: "A button whose whole label is an icon. `.ds-btn-icon` modifies the shape of a primary, secondary, or text-only button."
     classes:
       - name: ".ds-btn-text.ds-btn-destructive"
-        does: "The quiet destructive: the text tier in the danger colour, for a remove action in a table row or a toolbar where a filled red on every row would be alarm rather than information. Works with a label as well as with an icon."
+        does: "The quiet destructive: the text tier in the danger color, for a remove action in a table row or a toolbar where a filled red on every row would be alarm rather than information. Works with a label as well as with an icon."
       - name: ".ds-btn-icon"
         does: "The shape. Square by `aspect-ratio`, `min-width: 0`, equal padding, no label gap. Always used *with* a tier — `.ds-btn .ds-btn-text .ds-btn-icon`, never `.ds-btn-icon` alone."
       - name: ".is-sr-only"
@@ -89,7 +89,7 @@ components:
   - id: compact-buttons
     title: "Compact buttons"
     group: "Modifiers"
-    summary: "A smaller button for a [compact form](forms.md#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface."
+    summary: "A smaller button for a [compact form](forms.md#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its color still comes from the surface."
     classes:
       - name: ".ds-btn-compact"
         does: "Sets smaller padding and a smaller minimum width on the button. It works with every tier and with `.ds-btn-icon`. On a touch screen the button keeps its drawn size and its target reaches, unseen, to 44px."
@@ -101,7 +101,7 @@ components:
     summary: "A set of related buttons with a parent container class that spaces them appropriately."
     classes:
       - name: ".ds-btn-group"
-        does: "The container. Flex, wrapping, vertically centred, gap `--ds-space-tight`. Nothing about buttons makes their spacing special: two side by side are siblings that belong together, so they take the same gap as any other such pair."
+        does: "The container. Flex, wrapping, vertically centered, gap `--ds-space-tight`. Nothing about buttons makes their spacing special: two side by side are siblings that belong together, so they take the same gap as any other such pair."
       - name: ".ds-btn-group--stack"
         does: "The same relationship on the other axis. Items align to the start rather than stretching."
       - name: ".ds-btn-group--end"
@@ -126,10 +126,10 @@ components:
 rules:
   - "**Use the right element.** Use a `<button>` for an action that happens on this page, and an `<a>` for anything that goes to another page or another place on this one. Both take the same classes. Do not put a click handler on a link or an `href` on a button."
   - "**Every button needs a text label.** An icon-only button gets its name from a `<span class=\"is-sr-only\">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes."
-  - "**Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognises in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu."
+  - "**Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognizes in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu."
   - "**Say what will happen.** Label a button with the action it performs: “Save changes”, “Download PDF”, “Delete file”. Avoid “OK”, “Yes” and “Submit” on their own, because they only make sense to someone who can see the whole screen."
   - "**Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled=\"true\"` instead and say what they need to do; see [Forms](forms.md#validation). `aria-disabled` stops nothing on its own: a press still fires, so the page's script has to ignore it, and without JavaScript only `disabled` works. Use `disabled` where it is plain from the page that the control is there; use `aria-disabled` where the reader must still be able to find it with the keyboard, such as in a toolbar."
-  - "**When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed=\"true\"` or `\"false\"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.md#switch) instead."
+  - "**When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed=\"true\"` or `\"false\"` on it and update it when it changes. A color change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.md#switch) instead."
 ---
 
 # Buttons
@@ -161,7 +161,7 @@ arXiv has three button tiers: primary, secondary, and a quiet text-only button (
 - `Quiet tier` — The text button borrows the link’s quietness, not its identity: Link Blue, never underlined, and hover is a background wash — the same feedback the other buttons give. Underlines stay with links, so a reader can still tell “this navigates” from “this acts here.”
 - `No outline tier` — The secondary is already white fill plus border, and on a white canvas a transparent fill is the same pixels as a white one.
 - `Icons` — Any `.ds-btn` accepts an inline SVG. The stylesheet sizes it in `em`, blocks the baseline gap, and stops it shrinking beside a long label. Set `stroke="currentColor"` and nothing else.
-- `Disabled` — One look for every tier: a flat grey wash and the muted label, the same with `disabled` and with `aria-disabled="true"`. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation).
+- `Disabled` — One look for every tier: a flat gray wash and the muted label, the same with `disabled` and with `aria-disabled="true"`. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation).
 
 > When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page.
 
@@ -201,7 +201,7 @@ This component is a variant of text-only buttons and attach a row of tiny contro
 - `.ds-element-pill` — The container: a white pill straddling the bottom edge of the content it belongs to. The wrapper supplies `position: relative`; the pill positions itself inside it.
 - `.is-revealed` — The pill is hidden at rest and shown while the wrapped content is hovered or holds focus. The consumer adds and removes this class; the demo above keeps it on. The pill also shows whenever one of its own actions has keyboard focus. The pill fades in, and under `prefers-reduced-motion` it appears without the fade.
 - `role="toolbar", aria-label` — The pill is one tab stop. Tab reaches its first action, or the one used last, even while the pill is hidden; the arrow keys, Home and End move between its actions. The label names the element: “Equation 2.14”. `element-pill.js`, loaded once on the page, does this. Without it, every action is its own tab stop.
-- `The actions` — Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted colour, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue.
+- `The actions` — Plain `<button>` or `<a>` elements, with no class of their own. The pill gives each its small type, muted color, a wash on hover and a 24px target floor. `.is-cta` marks the one main action in Link Blue.
 
 **Rule.** **Input decides how the pill appears, not width.** Test `(hover: hover)` and `(hover: none)`: a narrow window can still have a mouse.
 
@@ -232,7 +232,7 @@ Dismissing something is a simple job, but it needs a clear and consistent contro
 
 A button whose whole label is an icon. `.ds-btn-icon` modifies the shape of a primary, secondary, or text-only button.
 
-- `.ds-btn-text.ds-btn-destructive` — The quiet destructive: the text tier in the danger colour, for a remove action in a table row or a toolbar where a filled red on every row would be alarm rather than information. Works with a label as well as with an icon.
+- `.ds-btn-text.ds-btn-destructive` — The quiet destructive: the text tier in the danger color, for a remove action in a table row or a toolbar where a filled red on every row would be alarm rather than information. Works with a label as well as with an icon.
 - `.ds-btn-icon` — The shape. Square by `aspect-ratio`, `min-width: 0`, equal padding, no label gap. Always used *with* a tier — `.ds-btn .ds-btn-text .ds-btn-icon`, never `.ds-btn-icon` alone.
 - `.is-sr-only` — **Required.** The icon is `aria-hidden` under the icon policy, so without this span the control announces as “button” and nothing more. Carbon and Primer both make this name a required prop; the systems that leave it optional are the ones with the known gap here. Prefer it to `aria-label`, which does not survive page translation.
 
@@ -252,7 +252,7 @@ The primary button works everywhere. The gradient border and vignette keep the e
 
 ## Compact buttons  (Modifiers)
 
-A smaller button for a [compact form](forms.md#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its colour still comes from the surface.
+A smaller button for a [compact form](forms.md#compact-form), such as a filter or a single field with its own actions. `.ds-btn-compact` reduces the padding of a primary, secondary, text-only or icon-only button; its color still comes from the surface.
 
 ```html
 <div class="ds-btn-group ds-btn-group--end">
@@ -270,7 +270,7 @@ A set of related buttons with a parent container class that spaces them appropri
 
 **Side by side**
 
-- `.ds-btn-group` — The container. Flex, wrapping, vertically centred, gap `--ds-space-tight`. Nothing about buttons makes their spacing special: two side by side are siblings that belong together, so they take the same gap as any other such pair.
+- `.ds-btn-group` — The container. Flex, wrapping, vertically centered, gap `--ds-space-tight`. Nothing about buttons makes their spacing special: two side by side are siblings that belong together, so they take the same gap as any other such pair.
 
 **Stacked — .ds-btn-group--stack**
 
@@ -331,7 +331,7 @@ Buttons that each turn on one choice, such as a sort bar: the buttons join into 
 
 - **Use the right element.** Use a `<button>` for an action that happens on this page, and an `<a>` for anything that goes to another page or another place on this one. Both take the same classes. Do not put a click handler on a link or an `href` on a button.
 - **Every button needs a text label.** An icon-only button gets its name from a `<span class="is-sr-only">` inside it that says what the button does, such as “Copy link”. Without it, a screen reader says only “button”. Do not use `title` for this, and prefer the span to `aria-label`, because page translation tools skip attributes.
-- **Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognises in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu.
+- **Show the name unless the icon is universal.** An icon-only button suits the few icons nearly every reader recognizes in the place they expect them: the menu icon at the edge of a header, close in the corner of a dialog, the magnifying glass for search. Everywhere else, show the name beside the icon, and always where there is room for it, such as a row in a menu.
 - **Say what will happen.** Label a button with the action it performs: “Save changes”, “Download PDF”, “Delete file”. Avoid “OK”, “Yes” and “Submit” on their own, because they only make sense to someone who can see the whole screen.
 - **Disable, do not hide.** When an action is not available, keep the button in place and add the `disabled` attribute. A button that disappears leaves the user wondering where it went. When the user can do something to make the action available, use `aria-disabled="true"` instead and say what they need to do; see [Forms](forms.md#validation). `aria-disabled` stops nothing on its own: a press still fires, so the page's script has to ignore it, and without JavaScript only `disabled` works. Use `disabled` where it is plain from the page that the control is there; use `aria-disabled` where the reader must still be able to find it with the keyboard, such as in a toolbar.
-- **When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed="true"` or `"false"` on it and update it when it changes. A colour change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.md#switch) instead.
+- **When a button acts like a toggle.** If a button switches something on and off and stays pressed, set `aria-pressed="true"` or `"false"` on it and update it when it changes. A color change on its own tells a screen reader user nothing. For a setting that is saved, use the [switch](forms.md#switch) instead.

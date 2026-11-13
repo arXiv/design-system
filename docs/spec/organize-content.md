@@ -24,7 +24,7 @@ components:
     summary: "Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest."
     rules:
       - "**A line or two: a line below the main content.** A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion."
-      - "**A labelled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two."
+      - "**A labeled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two."
       - "**The rest of a list whose first items matter most: [show more](progressive-disclosure.md#show-more)**, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole."
       - "**A list or explanation the reader opens when needed: a [popover](progressive-disclosure.md#popover) or a [modal](modals.md)**, opened from a button with a visible label, such as “Categories (40)” or “About these charts” beside the heading; an icon on its own is easy to miss. A popover opens beside its button and leaves the page usable; a modal takes over the page while the reader looks through it."
       - "**A sentence about one label or control: a [tooltip](forms.md#tooltip).**"
@@ -33,7 +33,7 @@ components:
     title: "Where controls go"
     summary: "A control sits with what it changes. The more of the site it changes, the higher it sits on the page."
     rules:
-      - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
+      - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centered space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
       - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
       - "**A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones)."
       - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
@@ -99,7 +99,7 @@ Each kind of secondary content has a home that keeps the main content high and w
 
 **Rule.** **A line or two: a line below the main content.** A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion.
 
-**Rule.** **A labelled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two.
+**Rule.** **A labeled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two.
 
 **Rule.** **The rest of a list whose first items matter most: [show more](progressive-disclosure.md#show-more)**, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole.
 
@@ -113,7 +113,7 @@ Each kind of secondary content has a home that keeps the main content high and w
 
 A control sits with what it changes. The more of the site it changes, the higher it sits on the page.
 
-**Rule.** **A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules).
+**Rule.** **A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centered space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules).
 
 **Rule.** **A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation).
 

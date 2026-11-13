@@ -14,7 +14,7 @@ components:
     summary: "Every paper shows its dates under the title, and its versions once there is more than one. What is shown depends on how many versions there are, which one the reader is viewing, and whether the paper has been withdrawn or a version removed."
     classes:
       - name: ".ds-date-row"
-        does: "The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up."
+        does: "The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted color, with tabular figures so the digits line up."
       - name: "<time datetime>"
         does: "Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element."
       - name: ".is-sr-only"
@@ -22,9 +22,9 @@ components:
       - name: ".ds-version-list"
         does: "The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart."
       - name: ".ds-version"
-        does: "One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent."
+        does: "One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link color and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent."
       - name: "aria-current=\"true\""
-        does: "On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
+        does: "On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by color alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
       - name: ".is-sr-only"
         does: "Inside every prior-version link, after the visible \"v1\": \", version 1\". The visible \"v1\" on its own does not say which version the link opens. A screen reader reads the link as \"v1, version 1\"."
       - name: ".ds-alert.ds-alert--warning"
@@ -71,7 +71,7 @@ components:
       - "The inline list keeps its first three and last three and elides the middle with an ellipsis. The elided versions are still in the DOM, but hidden with `hidden` and `aria-hidden`.; The ellipsis has `aria-hidden` and a screen-reader-only span beside it says \"versions 4 through 9 hidden,\" so the reader knows there are more versions than they can see.; The version being viewed always stays visible, wherever it falls in the list. It may interrupt the ellipsis.; A text button displays the total count and expands the full list.; The expanded list shows all versions in a list, wrapping if necessary. No javascript required."
   - id: version-history-panel
     title: "Version history panel"
-    summary: "In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labelled Latest, and the one being read is labelled Viewing."
+    summary: "In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labeled Latest, and the one being read is labeled Viewing."
     classes:
       - name: ".ds-paper-versions"
         does: "An `<ol>` inside the Version history accordion, under Paper information in the sidebar (see [Papers](papers.md#the-sidebar)). Every version, newest first. Each entry is a `.ds-date-row` with the version, its date and its labels, then the comments the author wrote for that version."
@@ -143,7 +143,7 @@ Every paper shows its dates under the title, and its versions once there is more
 </p>
 ```
 
-- `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up.
+- `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted color, with tabular figures so the digits line up.
 - `<time datetime>` — Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element.
 - `.is-sr-only` — The separator. The visible "·" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next.
 
@@ -165,8 +165,8 @@ Every paper shows its dates under the title, and its versions once there is more
 ```
 
 - `.ds-version-list` — The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart.
-- `.ds-version` — One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent.
-- `aria-current="true"` — On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
+- `.ds-version` — One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link color and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent.
+- `aria-current="true"` — On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by color alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
 - `.is-sr-only` — Inside every prior-version link, after the visible "v1": ", version 1". The visible "v1" on its own does not say which version the link opens. A screen reader reads the link as "v1, version 1".
 
 **Viewing v1, latest is v3**
@@ -423,7 +423,7 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ## Version history panel
 
-In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labelled Latest, and the one being read is labelled Viewing.
+In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labeled Latest, and the one being read is labeled Viewing.
 
 **Viewing v3 of 3 (latest)**
 

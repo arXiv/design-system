@@ -1,4 +1,4 @@
-/* The TOC bar's behaviour, added to a control that already works.
+/* The TOC bar's behavior, added to a control that already works.
  *
  *   <script src="toc.js" defer></script>
  *
