@@ -56,8 +56,8 @@ components:
     title: "Text links"
     summary: "Links are typography too. Inline links in body text are always underlined (to pass WCAG 1.4.1). Standalone navigation links and groups of links that are not part of body text (headers, footers, author list) drop the underline to reduce noise."
     classes:
-      - name: ".ds-link"
-        does: "The inline text link. Both surfaces use `.ds-link` and the `--ds-link-*` tokens: the same grammar, the same names and the same values. Inside a `.ds-page` a bare `<a>` gets the same treatment without the class."
+      - name: "a"
+        does: "The inline text link: a bare `<a>` inside `.ds-page`, with no class. Both surfaces use the same `--ds-link-*` tokens and the same values."
       - name: "--ds-link, --ds-link-hover, --ds-link-visited"
         does: "Rest, hover and visited colours. The underline does not change between states."
       - name: "--ds-focus-ring"
@@ -227,7 +227,7 @@ Full state-by-state references (rest / hover / visited / focus / disabled, light
 Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 ```
 
-- `.ds-link` — The inline text link. Both surfaces use `.ds-link` and the `--ds-link-*` tokens: the same grammar, the same names and the same values. Inside a `.ds-page` a bare `<a>` gets the same treatment without the class.
+- `a` — The inline text link: a bare `<a>` inside `.ds-page`, with no class. Both surfaces use the same `--ds-link-*` tokens and the same values.
 - `--ds-link, --ds-link-hover, --ds-link-visited` — Rest, hover and visited colours. The underline does not change between states.
 - `--ds-focus-ring` — The 3px keyboard focus ring, drawn on `:focus-visible` only.
 

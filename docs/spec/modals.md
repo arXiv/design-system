@@ -53,7 +53,7 @@ rules:
   - "**Let the browser move focus.** `showModal()` moves focus into the dialog, and `close()` returns it to the control that opened it. Do not set focus by hand on open or on close, and always close with `close()`: a dialog hidden by removing its `open` attribute or by CSS never gives focus back."
   - "**Keep Escape.** The browser closes the dialog on Escape and fires a `cancel` event first. Only intercept that event to warn about unsaved changes, and then still offer a way to close."
   - "**Keep a visible close control, and name it.** Every modal needs a visible close. Escape is not enough: it is invisible, and it is not available to someone using a pointer alone or a touch screen. The `.ds-close` holds a `<span class=\"is-sr-only\">` that says what it closes, such as “Close figure viewer”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes."
-  - "**Confirm the action, do not just ask.** The primary button says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press."
+  - "**Confirm the action, do not just ask.** The button that confirms says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press."
 ---
 
 # Modal dialogs
@@ -88,7 +88,7 @@ Test keyboard-tabbing past the last control and scrolling the page behind the mo
   </div>
   <div class="ds-modal-footer">
     <button class="ds-btn ds-btn-text ds-modal-footer-start" type="button" data-close>Cancel</button>
-    <button class="ds-btn ds-btn-primary" type="button" data-close>Withdraw</button>
+    <button class="ds-btn ds-btn-destructive" type="button" data-close>Withdraw</button>
   </div>
 </dialog>
 ```
@@ -206,4 +206,4 @@ The reason this component is a `<dialog>` rather than a `<div role="dialog">` ar
 - **Let the browser move focus.** `showModal()` moves focus into the dialog, and `close()` returns it to the control that opened it. Do not set focus by hand on open or on close, and always close with `close()`: a dialog hidden by removing its `open` attribute or by CSS never gives focus back.
 - **Keep Escape.** The browser closes the dialog on Escape and fires a `cancel` event first. Only intercept that event to warn about unsaved changes, and then still offer a way to close.
 - **Keep a visible close control, and name it.** Every modal needs a visible close. Escape is not enough: it is invisible, and it is not available to someone using a pointer alone or a touch screen. The `.ds-close` holds a `<span class="is-sr-only">` that says what it closes, such as “Close figure viewer”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes.
-- **Confirm the action, do not just ask.** The primary button says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press.
+- **Confirm the action, do not just ask.** The button that confirms says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press.

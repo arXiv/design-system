@@ -14,6 +14,8 @@ components:
         does: "Adjacent destinations of equal weight but lower priority (TeX Source)."
       - name: ".ds-btn-text"
         does: "Real but minor actions beside a bigger choice: Copy link, Show all authors, Dismiss."
+      - name: ".ds-btn .ds-btn-destructive"
+        does: "In place of the primary when the action destroys or withdraws something: Withdraw in a confirmation dialog. Never beside a primary."
       - name: "Construction"
         does: "Both filled variants share the V3 build: a 1.5px gradient border (lighter top → darker bottom) from dual `padding-box`/`border-box` backgrounds, plus an inner vignette. Hover brightens; press drops 1px and deepens the vignette."
       - name: "Quiet tier"
@@ -146,11 +148,15 @@ arXiv has three button tiers: primary, secondary, and a quiet text-only button (
 <a class="ds-btn ds-btn-primary" href="/html/2604.22725v1">HTML</a>
 <a class="ds-btn" href="/src/2604.22725v1">TeX Source</a>
 <button class="ds-btn ds-btn-text" type="button">Copy link</button>
+
+<!-- Destructive, in place of the primary -->
+<button class="ds-btn ds-btn-destructive" type="button">Withdraw</button>
 ```
 
 - `.ds-btn-primary` — The page's call to action (HTML, PDF on the abstract page). One cluster per view.
 - `.ds-btn` — Adjacent destinations of equal weight but lower priority (TeX Source).
 - `.ds-btn-text` — Real but minor actions beside a bigger choice: Copy link, Show all authors, Dismiss.
+- `.ds-btn .ds-btn-destructive` — In place of the primary when the action destroys or withdraws something: Withdraw in a confirmation dialog. Never beside a primary.
 - `Construction` — Both filled variants share the V3 build: a 1.5px gradient border (lighter top → darker bottom) from dual `padding-box`/`border-box` backgrounds, plus an inner vignette. Hover brightens; press drops 1px and deepens the vignette.
 - `Quiet tier` — The text button borrows the link’s quietness, not its identity: Link Blue, never underlined, and hover is a background wash — the same feedback the other buttons give. Underlines stay with links, so a reader can still tell “this navigates” from “this acts here.”
 - `No outline tier` — The secondary is already white fill plus border, and on a white canvas a transparent fill is the same pixels as a white one.

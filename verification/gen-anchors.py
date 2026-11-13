@@ -2,8 +2,7 @@
 """
 Section anchors — generated, never hand-maintained.
 
-Every section heading (the h2 or h3 that opens a plain <section>) gets an `id`
-derived from its own text, written into
+Every section heading gets an `id` derived from its own text, written into
 the HTML rather than added at runtime: a real id works with JavaScript off,
 works for an incoming link from another page, and is there when the browser
 resolves the fragment on first load — none of which a script running at
@@ -27,13 +26,48 @@ JavaScript off, and regenerated, so nobody keeps it in step by hand.
 import re
 import sys
 import unicodedata
+from html.parser import HTMLParser
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 DOCS = REPO / "docs"
-# A section heading is the h2 or h3 that opens a plain <section>. Component
-# sections (a data card, for example) always have a class, so they never match.
-HEADING = re.compile(r"(<section>\s*)<(h[23])([^>]*)>(.*?)</\2>", re.S)
+# A section heading is an h2 or h3 with no class, outside a demo. A heading
+# inside a demo card, a whole-page demo or a sidebar names a block, not a part
+# of the page; a heading with a class is a component's label.
+HEADING = re.compile(r"<(h[23])([^>]*)>(.*?)</\1>", re.S)
+NOT_PAGE = ("ds-card", "page-demo")
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
+
+
+class Headings(HTMLParser):
+    """The offsets of the page's section headings, in order. Comments are skipped."""
+    def __init__(self, text):
+        super().__init__(convert_charrefs=True)
+        self.starts = [0]
+        for line in text.splitlines(keepends=True):
+            self.starts.append(self.starts[-1] + len(line))
+        self.stack, self.found = [], []
+        self.feed(text)
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        if tag in ("h2", "h3") and not a.get("class") and not any(
+                t == "aside" or set(c) & set(NOT_PAGE) for t, c in self.stack):
+            line, col = self.getpos()
+            self.found.append(self.starts[line - 1] + col)
+        if tag not in VOID:
+            self.stack.append((tag, (a.get("class") or "").split()))
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i][0] == tag:
+                del self.stack[i:]
+                break
+
+
+def headings(text):
+    """Each section heading as a regex match on the text."""
+    return [HEADING.match(text, pos) for pos in Headings(text).found]
 
 
 def slug(text):
@@ -47,8 +81,8 @@ def slug(text):
 def process(path, write):
     text = path.read_text(encoding="utf-8")
     seen, problems, out, last = {}, [], [], 0
-    for m in HEADING.finditer(text):
-        opening, tag, attrs, inner = m.group(1), m.group(2), m.group(3), m.group(4)
+    for m in headings(text):
+        tag, attrs, inner = m.group(1), m.group(2), m.group(3)
         existing = re.search(r'\bid="([^"]+)"', attrs)
         want = slug(inner)
         if not want:
@@ -60,7 +94,7 @@ def process(path, write):
             # Hand-written ids are kept: something links to them already.
             continue
         out.append(text[last:m.start()])
-        out.append(f'{opening}<{tag}{attrs} id="{want}">{inner}</{tag}>')
+        out.append(f'<{tag}{attrs} id="{want}">{inner}</{tag}>')
         last = m.end()
         problems.append(want)
     out.append(text[last:])
@@ -80,11 +114,10 @@ def contents(path, write):
         return False
     indent = "            "
     items = []
-    live = re.sub(r"<!--.*?-->", "", text, flags=re.S)  # a commented-out section is not in the contents
-    for h in HEADING.finditer(live):
-        hid = re.search(r'\bid="([^"]+)"', h.group(3))
+    for h in headings(text):   # a commented-out section is not in the contents
+        hid = re.search(r'\bid="([^"]+)"', h.group(2))
         if hid:
-            label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(4))).strip()
+            label = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", h.group(3))).strip()
             items.append(f'{indent}<li><a href="#{hid.group(1)}">{label}</a></li>')
     want = "\n" + "\n".join(items) + "\n" + indent[:-2]
     if m.group(2) == want:
