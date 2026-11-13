@@ -128,13 +128,6 @@ Three tokens set the shape of every page: the width of the content column, the g
 </main>
 ```
 
-```html
-/* A page that needs a different width changes the one token;
-   it never adds a second width beside it. Here: a dense internal
-   tool with tables that cannot compress. */
-:root { --ds-width-page: 1080px; }
-```
-
 - `--ds-width-page` — 850px. The width of the content column, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own.
 - `--ds-gutter` — `--ds-space-6`, 24px. The least space between the content column and the viewport edge. A `.ds-full` band uses the same token as its inline padding, so the band and the column cannot drift apart.
 - `--ds-space-section` — 48px. The container's `row-gap`: the space between one direct child and the next. A section has no margin of its own.
