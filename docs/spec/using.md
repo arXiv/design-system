@@ -26,7 +26,6 @@ components:
     group: "Building on the foundation"
     summary: "When building internal tools like arXiv Check or Admin Console pages, one class is added to `<html>` and a tier 2 stylesheet is added to the `<head>` section, in this order."
     rules:
-      - "internal-tools.css does not work on its own: `internal-tools.css` is **not** a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all."
       - "**The accent color defines internal pages.** Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment."
       - "**All you need is a parent class.** `.ds-internal` re-points `--ds-accent` and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on `<html>`. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough."
       - "**Internal tools are compact.** `.ds-internal` also sets less padding inside table cells and cards, through the density tokens (`--ds-cell-padding`, `--ds-card-padding`), so a dense screen holds more. There is no compact class: the density comes with the surface."
@@ -129,8 +128,6 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 <link rel="stylesheet" href="internal-tools.css">      <!-- tier 2 -->
 <script src="../theme.js"></script>
 ```
-
-**Rule.** internal-tools.css does not work on its own: `internal-tools.css` is **not** a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all.
 
 **Rule.** **The accent color defines internal pages.** Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.
 

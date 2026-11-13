@@ -7,8 +7,6 @@ components:
   - id: brand-colors
     title: "Brand colors"
     summary: "arXiv's defining brand colors grouped by prominence and role. These key colors are expanded upon in the design system with additional tints and shades, but the identity remains consistent."
-    rules:
-      - "Do not cross Open Blue and Access Lime: Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional and quickly tells staff which context they are working in."
   - id: links-and-interactive
     title: "Links and interactive"
     summary: "Link colors signal \"you can act on this\" and are a foundational part of accessibility. All link colors maintain accessible contrast levels with their background color in light and dark mode. In addition, inline links are always underlined and color is not the only signal."
@@ -48,8 +46,6 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 arXiv's defining brand colors grouped by prominence and role. These key colors are expanded upon in the design system with additional tints and shades, but the identity remains consistent.
 
 These colors harken back to arXiv's legacy as part of Cornell University. Campus Red is Cornell's primary brand color, while Publishing Pink was a complement color to make it our own. Campus Red can still be found in arXiv's primary logomark which was developed and trademarked in 2021. Since the arXiv spinout these colors are used sparingly when we need to reference our history or are co-branding with Cornell University.
-
-**Rule.** Do not cross Open Blue and Access Lime: Access Lime never appears on public pages; Open Blue never on internal tools. The color difference is functional and quickly tells staff which context they are working in.
 
 ## Links and interactive
 

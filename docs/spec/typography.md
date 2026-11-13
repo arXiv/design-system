@@ -352,3 +352,103 @@ No fixed line-heights, no pinned letter-spacing, no `!important` on font-family 
 - **Let text reflow at 200% zoom.** Do not give a box that holds text a fixed height, and do not cut text off with `overflow: hidden` unless there is another way to read all of it. At 400% page zoom a 1280px screen is a 320px screen, and the page must not scroll sideways there.
 - **Put text in text, not in images.** An image of words cannot be resized, translated, searched or read aloud. If an image must include words, the same words go in its `alt` text or next to it.
 - **Uppercase comes from CSS, never from the keyboard.** The panel label is uppercase because `.ds-panel-label` makes it so. Type it in sentence case, so copy-and-paste, search and screen readers get the real words.
+
+## Spec
+
+### Why IBM Plex
+
+Open source under the SIL Open Font License, so there is no licensing cost and no vendor dependency; self-hostable as woff2 from arXiv's own assets; one designer's family covering Sans, Condensed, Mono and Serif so nothing is mixed; broad language coverage including Latin Extended, Cyrillic, Greek, Arabic, Hebrew, Devanagari and Thai; and it pairs with STIX Two Math, which is built for the same technical context. The family was re-evaluated in June 2026 against Atkinson Hyperlegible Next, Source Sans 3, Inter and Public Sans, and kept — that comparison lives in [whiteboard/planning/proposals](../doc.html?src=whiteboard/planning/proposals/typeface-re-evaluation-2026-06.md), not here.
+
+### Tokens
+
+```
+--ds-font-sans:      "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+--ds-font-condensed: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+--ds-font-mono:      "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+--ds-font-serif:     "IBM Plex Serif", Georgia, "STIX Two Text", "Times New Roman", serif;
+```
+
+Every stack includes system fallbacks so text stays readable if the web fonts fail: sans falls to the OS system font, mono to the platform monospace. **There is no math token** — STIX Two Math is applied by the paper renderer on HTML paper pages, not by the design system, so the stylesheet does not declare one.
+
+### Available weights, and sanctioned ones
+
+Every weight and style IBM Plex ships is self-hosted — Thin 100, ExtraLight 200, Light 300, Regular 400, Text 450, Medium 500, SemiBold 600 and Bold 700, each with an italic, across Sans, Sans Condensed, Mono and Serif. That is 64 files and about 4 MB in the repository, and it costs a reader nothing: a `@font-face` rule downloads only when a page uses that face.
+
+**Available is not the same as approved.** Only the faces the design system uses are declared in [fonts.css](../fonts.css); the rest are present but commented out, so you can see what exists without going to look for it. Uncommenting one is how you turn it on — and it is a decision, not a formality.
+
+| Weight | Use it for |
+|---|---|
+| 400 Regular | Body copy, and anything that is read rather than scanned. |
+| 500 Medium | Navigation, table headers, the quieter emphasis. |
+| 600 SemiBold | Headings, button labels, and the label half of a label/value pair. |
+| 700 Bold | The h1, and nothing else — see the heading scale. |
+| 100, 200, 300, 450 | Lighter weights are present, but unused and commented out. See warning below. |
+
+Thin, ExtraLight and Light are in the repository but not used. At interface sizes their strokes are too fine for many readers to resolve even when the colour passes AA — the ratio measures the hue, not whether the letterform survives. **Body and interface text use 400 or heavier.** Anything lighter belongs at display sizes, if anywhere, and is worth testing before it ships.
+
+### The files
+
+Self-hosted woff2, from arXiv's static assets. No external font service — see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md) for why that one is a hard constraint.
+
+```
+/static/fonts/
+  IBMPlexSans-*.woff2            8 weights x roman/italic  = 16 files
+  IBMPlexSansCondensed-*.woff2   8 weights x roman/italic  = 16 files
+  IBMPlexMono-*.woff2            8 weights x roman/italic  = 16 files
+  IBMPlexSerif-*.woff2           8 weights x roman/italic  = 16 files
+  STIXTwoMath-Regular.woff2      ← HTML paper pages only
+```
+
+This repo's pattern pages serve the same files from `docs/fonts/`, declared in [fonts.css](../fonts.css), which every page links ahead of the stylesheet. The `@font-face` rules live in that separate file rather than in the design system itself, because consumers bundle the design system with their own font paths. Files come from [IBM/plex](https://github.com/IBM/plex) (OFL).
+
+### @font-face
+
+```
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/static/fonts/IBMPlexSans-Regular.woff2") format("woff2");
+}
+/* …one per weight and style… */
+
+@font-face {
+  font-family: "STIX Two Math";
+  font-weight: 400;
+  font-display: auto;
+  src: local("STIX Two Math"),
+       url("/static/fonts/STIXTwoMath-Regular.woff2") format("woff2");
+}
+```
+
+- `font-display: swap` for text: the fallback shows immediately and swaps when the real font arrives. Readability beats visual stability.
+- `font-display: auto` for STIX Two Math: maths in a fallback font can be actively wrong, so it is better to wait briefly.
+- `local()` for STIX Two Math skips the ~300KB download if the reader already has it.
+- Total: about 135KB for the Plex woff2 files, plus STIX only on paper pages.
+
+### Which faces each surface uses
+
+| Surface | Body | Labels | Code | Math |
+|---|---|---|---|---|
+| Abstract pages | Plex Sans | Plex Sans Condensed | Plex Mono | — |
+| HTML paper pages | Plex Sans | Plex Sans Condensed | Plex Mono | STIX Two Math |
+| Internal tools | Plex Sans | Plex Sans Condensed | Plex Mono | — |
+| Homepage, listings, search | Plex Sans | Plex Sans Condensed | Plex Mono | — |
+
+### Sizes in use
+
+The sizes the stylesheet sets, in rem, with the pixel size at the browser's default base size of 16px.
+
+| Use | Size | Weight | Face |
+|---|---|---|---|
+| Page heading (h1) | 1.75–2rem · 28–32px | 700 | Plex Sans |
+| Section heading (h2) | 1.5rem · 24px | 600 | Plex Sans |
+| Subsection heading (h3) | 1.25rem · 20px | 600 | Plex Sans |
+| h4; body text | 1rem · 16px | 600; 400 | Plex Sans |
+| Secondary text, captions | 0.875rem · 14px | 400 | Plex Sans |
+| Code blocks | 0.875rem · 14px | 400 | Plex Mono |
+| Inline code, identifiers | 0.9em of the text around it | 400 | Plex Mono |
+| Annotation (margin footnote, alt text) | 0.8125rem · 13px, italic | 400 | Plex Serif |
+| Header links | 0.8125rem · 13px | 500 | Plex Sans |
+| Panel labels, table headers | 0.75rem · 12px, uppercase | 600 | Plex Sans Condensed |

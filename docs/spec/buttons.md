@@ -26,8 +26,6 @@ components:
         does: "One look for every tier: a flat grey wash and the muted label, the same with `disabled` and with `aria-disabled=\"true\"`. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation)."
     notes:
       - "When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page."
-    rules:
-      - "Never mix the two primary accent colors: An Access Lime primary button on a public page, or an Open Blue button in an internal tool, is a policy violation. If the context is ambiguous, settle it first and record the answer in a code comment."
   - id: links-styled-as-buttons
     title: "Links styled as buttons"
     summary: "A control that goes to another page is a link, even when it looks like a button. The formats on the abstract page are the common case: each one is an `<a>` with the button classes, so it announces as a link, opens in a new tab, and works with JavaScript off."
@@ -160,8 +158,6 @@ arXiv has three button tiers: primary, secondary, and a quiet text-only button (
 - `Disabled` — One look for every tier: a flat grey wash and the muted label, the same with `disabled` and with `aria-disabled="true"`. An action that is merely not available yet takes `aria-disabled` instead — see [Forms](forms.md#validation).
 
 > When to use a text button vs a text link: Use a text button for actions that do not navigate to a new page. Use a text link when navigating to a new page or to an anchor link on the same page.
-
-**Rule.** Never mix the two primary accent colors: An Access Lime primary button on a public page, or an Open Blue button in an internal tool, is a policy violation. If the context is ambiguous, settle it first and record the answer in a code comment.
 
 ## Links styled as buttons
 

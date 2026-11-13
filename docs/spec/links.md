@@ -12,8 +12,6 @@ components:
         does: "Every anchor with an `href` inside a `.ds-page` takes the link treatment: the colour, the underline, and the hover, visited and focus states. There is no class to add, and the dark values arrive through the same token flip as everything else."
     notes:
       - "All states meet accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)"
-    rules:
-      - "Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode and 1.9:1 in dark mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline."
   - id: links-and-text-only-buttons
     title: "Links and text-only buttons"
     summary: "A link goes somewhere: it has an `href`, it is underlined, and it remembers being visited. A text-only button does something on this page, such as opening a panel or copying a value: it is Link Blue too, but has no underline and no visited state. Use the one that matches what happens when it is pressed. Text-only buttons are described on [Buttons](buttons.md#button-tiers)."
@@ -92,8 +90,6 @@ One link, four states. At rest it is Link Blue with a 1px underline set 2px belo
 - `<a href> inside .ds-page` — Every anchor with an `href` inside a `.ds-page` takes the link treatment: the colour, the underline, and the hover, visited and focus states. There is no class to add, and the dark values arrive through the same token flip as everything else.
 
 > All states meet accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA)
-
-**Rule.** Inline body links must be underlined: Color contrast against body text is only 3.0:1 in light mode and 1.9:1 in dark mode — too marginal to rely on alone. Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color). Standalone navigation links (header, footer, button-like surfaces) may omit the underline.
 
 ## Links and text-only buttons
 
@@ -185,6 +181,14 @@ A list of author names, a navigation bar, a footer column: these are lists in wh
 
 Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A). An underline is needed only where a link sits in running text; in a list, the layout shows which words are links.
 
+```
+<p class="ds-link-list">
+  <a href="/a/palomares_a_1">Adrian Palomares</a>,
+  <a href="/a/chen_m_1">Mei Lin Chen</a>,
+  <a href="/a/mensah_k_1">Kwame Mensah</a>
+</p>
+```
+
 ### Visited memory
 
 The Visited Purple is intentionally strong, not a faint after-state. Researchers reading long bibliographies and listings benefit from seeing what they have already followed up on; a too-subtle visited treatment defeats the purpose. If a specific surface (e.g., a navigation breadcrumb) needs to suppress visited styling, override `:visited { color: inherit }` locally.
@@ -198,3 +202,11 @@ The Visited Purple is intentionally strong, not a faint after-state. Researchers
 - **Do not remove the focus ring.** The stylesheet draws it on `:focus-visible`, so it appears for keyboard users and not on mouse click. An `outline: none` on a link takes it away for everyone.
 - **Links open in the same tab** unless the reader would lose work in progress. A reader's place in an HTML paper is work in progress, so a link from a paper to its PDF opens a new tab. A link that opens a new tab includes the external-link icon (`docs/icons/external-link.svg`) after its text, with `aria-hidden="true"` on the icon and “(opens in a new tab)” in an `.is-sr-only` span, so the change is announced and survives page translation. In a row of links that each already have an icon, such as a paper's TOC bar, the external-link icon is left out; the hidden text stays.
 - **In print, an external link shows its address after its text.** An in-page link, a button and a link that is an image do not. The stylesheet does this; nothing is needed in the markup.
+
+## Spec
+
+### Tokens
+
+Four interactive states — default, hover, visited, focus — driven by `--ds-link`, `--ds-link-hover` and `--ds-link-visited`, with the dark values arriving through the same token flip as everything else. Per [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md): an inline body link is underlined; a standalone link, such as one in navigation, may omit it.
+
+Read at runtime from `design-system.css` via `getComputedStyle`, so the values and ratios are those of the mode that is active. Use the theme control in the header to see the other mode. Contrast is measured on `--ds-surface`: 4.5:1 AA for the three text colours, and the 3:1 floor for the focus ring, which is a non-text cue.
