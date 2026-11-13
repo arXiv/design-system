@@ -347,7 +347,7 @@ def check_theme_control():
         ok(rule, f"{n} pages")
 
 
-# ── A contents bar needs its script ──
+# ── A TOC bar needs its script ──
 # The bar is markup, but its behaviour (menu closes on a choice, the current
 # section is named, the bar compacts once it sticks) is toc.js. A page that
 # has the one without the other looks right until it is scrolled.
@@ -355,7 +355,7 @@ TOC_SCRIPT = re.compile(r"<script[^>]*src=\"[^\"]*toc\.js\"")
 
 
 def check_toc_script():
-    rule = "every page with a contents bar loads toc.js"
+    rule = "every page with a TOC bar loads toc.js"
     n = 0
     for path in sorted((REPO / "docs").rglob("*.html")):
         text = path.read_text(encoding="utf-8", errors="replace")

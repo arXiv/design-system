@@ -18,7 +18,7 @@ the right trade while the system is new and nothing links in from outside;
 A heading that already carries a hand-written id keeps it. Those are anchors
 something already links to, and silently renaming them would break the link.
 
-A page with a contents bar (.ds-toc-menu) gets its list from the same
+A page with a TOC bar (.ds-toc-menu) gets its list from the same
 headings, for the same reason: written into the HTML, so it works with
 JavaScript off, and regenerated, so nobody keeps it in step by hand.
 """
