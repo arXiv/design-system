@@ -1478,15 +1478,16 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-table tbody th { font-weight: 600; background: var(--ds-tint-warm); }
 .ds-table tbody tr:last-child > * { border-bottom: none; }
 .ds-table tbody tr:hover > * { background: var(--ds-surface-hover); }
-/* The row's checkbox carries the selection; the tint is never the only signal. */
-.ds-table tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+/* A row whose checkbox is checked takes the accent tint. The checkbox carries
+   the selection; the tint is never the only signal. */
+.ds-table tbody tr:has(> td > input[type="checkbox"]:checked) > * { background: var(--ds-tint-accent); }
 .ds-table tbody tr.hidden { display: none; }
 
 /* Striped rows. The hover is a wash of the text colour, because the stripe
    already uses the plain hover colour. */
 .ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-tint-warm); }
 .ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
-.ds-table--striped tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+.ds-table--striped tbody tr:has(> td > input[type="checkbox"]:checked) > * { background: var(--ds-tint-accent); }
 
 /* SELECTING ITEMS IN A LIST — tables.html#selecting-items-in-a-list
    A list item whose first child is a checkbox: the box in a column of its own at

@@ -25,7 +25,7 @@ components:
       - name: ".ds-modal-body"
         does: "Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off."
       - name: "tabindex=\"0\", role=\"region\", aria-labelledby (added by script)"
-        does: "Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page."
+        does: "Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The script below does it."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.2](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) No Keyboard Trap (Level A), [WCAG 2.2 SC 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) Focus Order (Level A), and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) Reflow (Level AA) and [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A)"
@@ -133,8 +133,42 @@ document.getElementById('demo-confirm').close();
 </dialog>
 ```
 
+```html
+// The whole of it: showModal() to open, close() to close. Focus trap, focus
+// restore, Escape and stacking are the element's own doing, and the
+// scroll lock is in the stylesheet.
+document.querySelectorAll('[data-open]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.getElementById(btn.dataset.open).showModal();
+  });
+});
+
+// A body that scrolls but holds nothing focusable cannot be scrolled from
+// the keyboard in every browser. While it overflows, it becomes a tab stop
+// named by the dialog's title; when it fits, the tab stop goes away.
+document.querySelectorAll('.ds-modal-body').forEach(function (body) {
+  var dialog = body.closest('.ds-modal');
+  function sync() {
+    if (body.scrollHeight > body.clientHeight) {
+      body.setAttribute('tabindex', '0');
+      body.setAttribute('role', 'region');
+      body.setAttribute('aria-labelledby', dialog.getAttribute('aria-labelledby'));
+    } else {
+      body.removeAttribute('tabindex');
+      body.removeAttribute('role');
+      body.removeAttribute('aria-labelledby');
+    }
+  }
+  new ResizeObserver(sync).observe(body);
+  new MutationObserver(sync).observe(body, { childList: true, subtree: true, characterData: true });
+});
+document.querySelectorAll('.ds-modal [data-close]').forEach(function (btn) {
+  btn.addEventListener('click', function () { btn.closest('.ds-modal').close(); });
+});
+```
+
 - `.ds-modal-body` — Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off.
-- `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page.
+- `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The script below does it.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.2](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) No Keyboard Trap (Level A), [WCAG 2.2 SC 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) Focus Order (Level A), and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
