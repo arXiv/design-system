@@ -278,6 +278,10 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   background: var(--ds-canvas);
   margin: 0;
   -webkit-text-size-adjust: 100%;   /* stop iOS inflating text in landscape */
+  /* A long DOI, address or file name breaks rather than widen the page (WCAG 1.4.10).
+     break-word, not anywhere: inherited, anywhere would squeeze tables instead of
+     letting them scroll. A flex or grid child that holds long text keeps its own rule. */
+  overflow-wrap: break-word;
 }
 
 /* The shell. Centred, guttered, capped at the dense width. */
@@ -799,8 +803,9 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 
 /* ── On a dark or saturated field (.on-dark) — buttons.html
-   For a committed colour field, not a tint. Focus ring switches to
-   --ds-focus-ring-on-dark: the light-mode ring disappears here. */
+   For a committed colour field, not a tint. The field itself sets
+   --ds-focus-ring: var(--ds-focus-ring-on-dark), so every control on it,
+   a primary button included, gets a ring that shows. */
 .ds-btn.on-dark {
   background: none;
   border-color: rgba(255, 255, 255, 0.65);
@@ -818,9 +823,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   background: rgba(255, 255, 255, 0.14);
   border-color: #fff;
   box-shadow: none;
-}
-.ds-btn.on-dark:focus-visible {
-  outline: 3px solid var(--ds-focus-ring-on-dark);
 }
 
 /* ── Destructive (.ds-btn-destructive) — buttons.html
@@ -1045,7 +1047,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
   margin-bottom: var(--ds-space-2);
 }
 .ds-label-row > .ds-label { margin-bottom: 0; }
-.ds-label-row .ds-btn-icon { padding: 0.25em; }   /* 26px, clears the 24px target */
+.ds-label-row .ds-btn-icon { padding: 0.36em; }   /* 26px at the label's size, clears the 24px target */
 
 /* PAGER  (.ds-pagination) — pager.html
    Moving through a set one item at a time: a moderation queue, a run of
@@ -1677,7 +1679,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   line-height: 1.4;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  white-space: nowrap;
   text-decoration: none;
   background: var(--ds-tint-warm);
   border: 1px solid var(--ds-border);
@@ -1716,7 +1717,6 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   border: 0;
   border-radius: 999px;
   color: inherit;
-  opacity: 0.65;
   font-size: 0.8125rem;
   line-height: 1;
   cursor: pointer;
@@ -1724,8 +1724,8 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
 }
 /* On a touch screen the target reaches, unseen, to --ds-target. */
 .ds-tag-remove::after { content: ""; position: absolute; inset: min(0px, (100% - var(--ds-target)) / 2); }
-.ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
-.ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; opacity: 1; }
+.ds-tag-remove:hover { background: rgba(0, 0, 0, 0.08); }
+.ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; }
 
 /* A badge nested inside a tag — says where the tag came from, without
    competing with it. The only pill-inside-a-pill in the system. */
@@ -2141,7 +2141,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   box-shadow: inset 0 0 0 2px var(--ds-focus-ring);
 }
 .ds-form--compact .ds-input.is-invalid:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-error-border); }
-.ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-border); }
+.ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-fg); }
 /* Typed text under 16px makes iOS zoom the page on focus. */
 @media (pointer: coarse) { .ds-form--compact .ds-input { font-size: 1rem; } }
 @media (pointer: coarse) { .ds-form--compact > :is(.ds-check, a) { min-height: var(--ds-target); } }
@@ -2225,11 +2225,11 @@ select.ds-input:not([multiple]):not([size]) {
    was missing — everything used to be valid or rejected, with nothing in
    between for a problem that does not block. */
 .ds-input.is-warning {
-  border-color: var(--ds-warning-border);
+  border-color: var(--ds-warning-fg);   /* the edge clears 3:1; the yellow is the glow */
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-warning-border) 14%, transparent);
 }
 .ds-input.is-warning:focus-visible {
-  border-color: var(--ds-warning-border);
+  border-color: var(--ds-warning-fg);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-warning-border) 22%, transparent);
 }
 
@@ -2581,7 +2581,6 @@ html:has(.ds-modal[open]) {
   align-items: center;
   gap: 5px;
   min-height: 24px;
-  margin-block: -5px;
   padding: 0 var(--ds-space-1);
   font-family: var(--ds-font-sans);
   font-size: 0.6875rem;
@@ -3830,7 +3829,6 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--ds-text-muted);
 }
 
 /* ── 2. Black header bar ── */
