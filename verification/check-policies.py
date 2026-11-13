@@ -604,6 +604,41 @@ def check_plain_words():
         ok(rule, f"{n} files")
 
 
+# ── American spelling ──
+# STYLE.md, American spelling. Brand names keep theirs (Library Grey, so a
+# capital G is allowed), and so does an author's text, such as the sample
+# abstract on papers.html, which is copied as written.
+BRITISH = re.compile(
+    r"(?<![-\w./#])(colou?rs?\b(?<!colors\b)(?<!color\b)|colour\w*|centre\w*|centred|behaviour\w*|licence\w*"
+    r"|labell(?:ed|ing)|neighbour\w*|recognis\w*|organis\w*|optimis\w*|analys(?:e|ed|ing)\b"
+    r"|artefacts?|catalogue|programme|towards|grey\w*)(?![\w])")
+AUTHOR_TEXT = ("We investigate the scalar sector",)
+
+
+def check_american_spelling():
+    rule = "American spelling (STYLE.md)"
+    files = sorted((REPO / "docs").rglob("*.html")) + sorted((REPO / "docs").glob("*.md")) + [REPO / "AGENTS.md", REPO / "README.md"]
+    n = 0
+    for path in files:
+        if "spec" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if path.suffix == ".html":
+            text = re.sub(r"<(pre|script|style|code)\b.*?</\1>", " ", text, flags=re.S)
+            text = re.sub(r"<p>(?:(?!</p>).)*?(?:" + "|".join(map(re.escape, AUTHOR_TEXT)) + r").*?</p>", " ", text, flags=re.S)
+            text = re.sub(r"<[^>]+>", " ", text)
+        else:
+            text = re.sub(r"```.*?```", " ", text, flags=re.S)
+            text = re.sub(r"`[^`]*`|\]\([^)]*\)", " ", text)
+        n += 1
+        for m in BRITISH.finditer(text):
+            start = max(0, m.start() - 40)
+            context = " ".join(text[start:m.end() + 30].split())
+            fail(rule, str(path.relative_to(REPO)), f"“{m.group(0)}” in: …{context}…")
+    if rule not in FAILS:
+        ok(rule, f"{n} files")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -619,6 +654,7 @@ def main():
     check_permalink_script()
     check_no_changelog_prose()
     check_plain_words()
+    check_american_spelling()
     check_classes_documented()
     check_documented_classes_exist()
     check_section_anchors()

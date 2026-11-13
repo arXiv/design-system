@@ -1,12 +1,12 @@
 ---
 page: tables.html
 title: "Tables"
-summary: "The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by public pages and internal tools; internal tools change only the colours."
+summary: "The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by public pages and internal tools; internal tools change only the colors."
 stylesheet: design-system.css
 components:
   - id: the-table
     title: "The table"
-    summary: "One table, `.ds-table`, on public pages and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not."
+    summary: "One table, `.ds-table`, on public pages and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-color text on the warm tint, and a table without one does not."
     classes:
       - name: ".ds-table"
         does: "The whole table, on the `<table>` element: the frame, the row dividers and the row hover. Directly inside a card it has no frame of its own; the card is the frame."
@@ -17,7 +17,7 @@ components:
       - name: ".ds-table-footer"
         does: "A `<div>` below the table for row counts or pagination."
       - name: ".ds-tag--rectangle"
-        does: "The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No colour is mapped to New, Rep or Wdr."
+        does: "The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No color is mapped to New, Rep or Wdr."
       - name: "scope=\"col\""
         does: "Required on every `<th>` in the header row, so a screen reader reads the column name with each cell."
       - name: ".ds-table-scroll"
@@ -106,14 +106,14 @@ rules:
 
 # Tables
 
-The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by public pages and internal tools; internal tools change only the colours.
+The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by public pages and internal tools; internal tools change only the colors.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## The table
 
-One table, `.ds-table`, on public pages and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not.
+One table, `.ds-table`, on public pages and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-color text on the warm tint, and a table without one does not.
 
 **With a header row**
 
@@ -151,7 +151,7 @@ One table, `.ds-table`, on public pages and in internal tools. It has row divide
 - `<thead>` — Draws the header row. Leave it out and the table has none; no class turns the header row on or off.
 - `style="table-layout: fixed"` — Add it inline on the `<table>` when fixed column widths are needed. The table defaults to auto layout.
 - `.ds-table-footer` — A `<div>` below the table for row counts or pagination.
-- `.ds-tag--rectangle` — The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No colour is mapped to New, Rep or Wdr.
+- `.ds-tag--rectangle` — The Type column: a rectangular tag at the default level, one per row, documented on [Tags](tags.md#rectangular-labels). No color is mapped to New, Rep or Wdr.
 - `scope="col"` — Required on every `<th>` in the header row, so a screen reader reads the column name with each cell.
 - `.ds-table-scroll` — The wrapper. A table wider than the viewport scrolls inside it, so the page never scrolls sideways. It takes `role="region"`, an `aria-label` that names the table, and `tabindex="0"` so a keyboard user can reach it to scroll.
 

@@ -61,7 +61,7 @@ components:
         does: "Log out is a button in a form that posts, never a link, because a browser can follow a link by itself, and logging out changes the reader’s state."
   - id: on-small-screens
     title: "On small screens"
-    summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centred tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px."
+    summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centered tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px."
     classes:
       - name: "header.js"
         does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none. A page with the aspirational header loads this script and the one that opens the search overlay, as [The header unit](#the-header-unit) shows."
@@ -98,13 +98,13 @@ components:
       - name: ".ds-site-header--light"
         does: "The bar is white with Library Grey links, Repository Brown emphasis, a bottom edge in the Border color, and the standard focus ring."
       - name: ".ds-site-header-logo"
-        does: "On a property that is not arxiv.org, the slot may hold that property’s own wordmark as text; it takes the bar’s emphasis colour."
+        does: "On a property that is not arxiv.org, the slot may hold that property’s own wordmark as text; it takes the bar’s emphasis color."
     notes:
       - "The bar at the top of this page is the light variant, with dropdown groups."
   - id: internal-headers
     title: "Internal header"
     group: "Modifiers"
-    summary: "Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else."
+    summary: "Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s color tokens and nothing else."
     classes:
       - name: ".ds-site-header-logo img"
         does: "The tool’s own wordmark image, from `assets/images/logos/`. Its alt text names the tool in spoken form, such as “archive Admin Console”."
@@ -113,12 +113,12 @@ components:
       - name: ".ds-site-header-account--compact"
         does: "The account area as one icon button, for internal tools, where everyone is signed in and the account is rarely what they came for. The button’s name, “Account, signed in as Shamsi”, is `.is-sr-only` text; the menu’s first line shows the name, so a person on a shared computer can check whose account they are in. On a phone it folds into the menu, where the name shows beside the icon."
   - id: a-centred-tool-or-filter
-    title: "A centred tool or filter"
+    title: "A centered tool or filter"
     group: "Modifiers"
-    summary: "The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step."
+    summary: "The aspirational header has an optional centered space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centered in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step."
     classes:
       - name: ".ds-site-header-center"
-        does: "The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge in the bar's own dark background, with dark-mode fields."
+        does: "The centered space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge in the bar's own dark background, with dark-mode fields."
       - name: ".ds-site-header-center-label"
         does: "The button's word, such as “Subject”. The first thing to fold."
       - name: ".ds-filter-value"
@@ -132,9 +132,9 @@ components:
 rules:
   - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, before its sidebar (see [Papers](papers.md#full-papers)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
   - "**Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
-  - "**Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below."
-  - "**An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go)."
-  - "**The centred space folds last.** Its label goes, then its value, leaving the icon that opens it. It holds one tool or filter, never links."
+  - "**Navigation sits on the right.** The space after the logo stays empty, apart from the centered space below."
+  - "**An optional centered space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centered tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go)."
+  - "**The centered space folds last.** Its label goes, then its value, leaving the icon that opens it. It holds one tool or filter, never links."
   - "**No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation."
   - "**Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes on the line above the page heading, after the time the data was last updated."
   - "**Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit."
@@ -309,7 +309,7 @@ Signed in, the account area shows a greeting with the reader’s given name and 
 
 ## On small screens
 
-When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centred tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px.
+When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centered tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px.
 
 ```html
 <!-- Once per page, after the header. Nothing else changes. -->
@@ -384,13 +384,13 @@ For pages about arXiv from outside it, such as this documentation. `.ds-site-hea
 ```
 
 - `.ds-site-header--light` — The bar is white with Library Grey links, Repository Brown emphasis, a bottom edge in the Border color, and the standard focus ring.
-- `.ds-site-header-logo` — On a property that is not arxiv.org, the slot may hold that property’s own wordmark as text; it takes the bar’s emphasis colour.
+- `.ds-site-header-logo` — On a property that is not arxiv.org, the slot may hold that property’s own wordmark as text; it takes the bar’s emphasis color.
 
 > The bar at the top of this page is the light variant, with dropdown groups.
 
 ## Internal header  (Modifiers)
 
-Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s colour tokens and nothing else.
+Each internal tool chooses the search fields, navigation and wordmark its users need; the regions, their order and the rules stay the same. Internal headers use a compact account area, one icon button that opens the account menu, not the greeting and Account menu of the public header. Every internal tool uses an internal logo, not the public one, so the reader can tell they are in an internal tool. The internal stylesheet may re-point the bar’s color tokens and nothing else.
 
 ```html
 <div class="ds-internal">
@@ -439,9 +439,9 @@ Each internal tool chooses the search fields, navigation and wordmark its users 
 - `.ds-site-header-search` — A `<form role="search">` holding one `.ds-input` and its label, before the navigation, where public pages have the Search link. Two kinds of search are two of these. They stay in the bar while they fit, after the navigation and the account area have folded into the menu; on a phone they open from a Search button.
 - `.ds-site-header-account--compact` — The account area as one icon button, for internal tools, where everyone is signed in and the account is rarely what they came for. The button’s name, “Account, signed in as Shamsi”, is `.is-sr-only` text; the menu’s first line shows the name, so a person on a shared computer can check whose account they are in. On a phone it folds into the menu, where the name shows beside the icon.
 
-## A centred tool or filter  (Modifiers)
+## A centered tool or filter  (Modifiers)
 
-The aspirational header has an optional centred space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centred in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step.
+The aspirational header has an optional centered space, `.ds-site-header-center`, for one tool or filter that changes every page under the header, such as the subject every report in a dashboard is about. This space is reserved for tools that change or impact the entire site (or the portion of the site that uses that particular header). It comes straight after the logo and is centered in the room between the logo and the regions on the right. It folds last. As the viewport width decreases, the label is hidden first, then the value, leaving just an icon button on the narrowest of screens. Its full name stays for screen readers at every step.
 
 ```html
 <header class="ds-site-header">
@@ -463,7 +463,7 @@ The aspirational header has an optional centred space, `.ds-site-header-center`,
 <script src="filter-panel.js" defer></script>
 ```
 
-- `.ds-site-header-center` — The centred space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge in the bar's own dark background, with dark-mode fields.
+- `.ds-site-header-center` — The centered space, straight after the logo. It holds one button. A filter is a [Filters button](filters.md#multiple-choice-filters) with `.on-dark`, and its panel hangs from the bar's bottom edge in the bar's own dark background, with dark-mode fields.
 - `.ds-site-header-center-label` — The button's word, such as “Subject”. The first thing to fold.
 - `.ds-filter-value` — What is chosen, after the word. It folds next, leaving the icon. The page heading names the choice too, so the reader can still see it: see [Organize complex page content](organize-content.md#the-main-content-comes-first).
 - `.is-center-compact, .is-center-folded` — State classes `header.js` sets on the bar as it folds the label, then the value. They are never written by hand.
@@ -481,9 +481,9 @@ A page includes the header from `templates/` and writes the skip link before it,
 ### Design rules
 
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
-- **Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below.
-- **An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go).
-- **The centred space folds last.** Its label goes, then its value, leaving the icon that opens it. It holds one tool or filter, never links.
+- **Navigation sits on the right.** The space after the logo stays empty, apart from the centered space below.
+- **An optional centered space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centered tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go).
+- **The centered space folds last.** Its label goes, then its value, leaving the icon that opens it. It holds one tool or filter, never links.
 - **No more than four links in arxiv.org’s navigation.** The logo and Log in do not count (DESIGN-POLICIES). A host does not change the template’s navigation.
 - **Tools holds the theme control.** The transitional header also puts a page’s actions there; in the aspirational header they move to the TOC bar. A control that acts on the page’s data, such as Refresh, goes on the line above the page heading, after the time the data was last updated.
 - **Public search opens on request; internal search stays in view.** On arxiv.org, Search is a link before the navigation. Internal tools keep their search fields in the bar while they fit.
@@ -507,8 +507,8 @@ A page includes the header from `templates/` and writes the skip link before it,
 
 ### Surface tokens
 
-How the bar is coloured, and how a variant changes it.
+How the bar is colored, and how a variant changes it.
 
-`.ds-site-header` declares seven `--ds-hdr-*` tokens on itself: background, text, emphasis text, hover, focus ring, bottom border and divider. Every rule in the bar reads one of them, so a variant is a re-pointing of tokens and never a property override: `.ds-site-header--light` sets all seven and nothing else. A property with its own colours does the same.
+`.ds-site-header` declares seven `--ds-hdr-*` tokens on itself: background, text, emphasis text, hover, focus ring, bottom border and divider. Every rule in the bar reads one of them, so a variant is a re-pointing of tokens and never a property override: `.ds-site-header--light` sets all seven and nothing else. A property with its own colors does the same.
 
 The focus ring is the one to notice: the standard Link Blue ring is invisible against Repository Brown, so the dark surface needs its own. Because it is a token rather than a rule, a property that switches surface gets the correct ring without knowing that it needed to.

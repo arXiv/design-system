@@ -16,7 +16,7 @@
  * would lose that setting the first time it was touched.
  *
  * With no JavaScript there is no button and the page follows the OS, which is
- * the behaviour every page had before this existed. Nothing is lost.
+ * the behavior every page had before this existed. Nothing is lost.
  *
  * A page whose <html> already has data-theme in its markup is locked to that
  * theme: this leaves the attribute alone and shows no control.

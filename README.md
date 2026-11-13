@@ -44,7 +44,7 @@ Mockups and canonical pages are both visible on the published site, so that stak
 The full list is in `docs/DESIGN-POLICIES.md`, which wins wherever this summary falls short.
 
 - **Typography:** IBM Plex family, self-hosted. No external font services, ever.
-- **Color:** Repository Brown and warm greys as neutrals; Link Blue, Archival Blue and Open Blue; Access Lime is internal-only. Campus Red (`#b31b1b`) is heritage, used only in the logo's X.
+- **Color:** Repository Brown and warm grays as neutrals; Link Blue, Archival Blue and Open Blue; Access Lime is internal-only. Campus Red (`#b31b1b`) is heritage, used only in the logo's X.
 - **Accessibility:** WCAG 2.1 AA is the legal floor; 2.2 AA is the working target. Ongoing accessibility gains are a key arXiv value, not a checkbox.
 - **No metrics on public pages:** no view counts, downloads, or citation counts. arXiv does not rank or promote papers.
 - **Header:** a single bar, with no Cornell branding after the spinout.

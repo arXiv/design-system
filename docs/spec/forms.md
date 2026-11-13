@@ -70,7 +70,7 @@ components:
       - name: ".field-messages"
         does: "An `<ol>` when one field has several problems. Each `<li>` takes its own tier class, and the list takes the `id` the control points at. The control takes the class of the worst tier in the list."
       - name: "[disabled]"
-        does: "On the control. The label and hint stay; the control greys out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled=\"true\"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials."
+        does: "On the control. The label and hint stay; the control grays out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled=\"true\"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials."
       - name: "aria-describedby=\"hb-h hb-m\""
         does: "Names the hint first, then the message, so a screen reader reads them in the order they appear."
   - id: alerts-in-forms
@@ -92,13 +92,13 @@ components:
       - name: ".ds-switch"
         does: "The `<label>` that wraps the whole control. The visible text goes inside it, because that is what names the switch; a switch with only a heading beside it has no accessible name."
       - name: "role=\"switch\""
-        does: "On the checkbox input. With it a screen reader says “on” and “off”; without it, “checkbox, checked”. The input stays a real checkbox, so the keyboard behaviour, the state and the form value are native and it works with no JavaScript."
+        does: "On the checkbox input. With it a screen reader says “on” and “off”; without it, “checkbox, checked”. The input stays a real checkbox, so the keyboard behavior, the state and the form value are native and it works with no JavaScript."
       - name: ".ds-switch-track, .ds-switch-thumb"
         does: "The drawn background and the thumb that moves across it. Both required, nested as shown, directly after the input. Only the background fill changes with the state: the Border color when off, the accent when on (Open Blue public, Access Lime inside `.ds-internal`). The Strong Border edge and the Repository Brown thumb stay the same in both states and both themes."
       - name: ".ds-switch-label"
-        does: "The visible text. Its colour follows the state; nothing else about it changes."
+        does: "The visible text. Its color follows the state; nothing else about it changes."
       - name: "[disabled]"
-        does: "On the input. The background and the label grey out together."
+        does: "On the input. The background and the label gray out together."
   - id: segmented-control
     title: "Segmented control"
     summary: "An exclusive choice rendered as adjacent buttons, for a decision where every option should stay visible. Two to four options; past that it is a `<select>` or a radio group, because a row of six buttons stops being scannable and starts being a wall."
@@ -110,7 +110,7 @@ components:
       - name: ".ds-seg-btn"
         does: "One option: a `<label>` holding a native `<input type=\"radio\">`, all with one `name`. A radio group, drawn as joined buttons: the browser keeps one option selected, the arrow keys move between them, and it works without JavaScript. The form it belongs to saves the choice; where the choice acts at once, a script listens for the change."
       - name: ".ds-seg-btn--positive, .ds-seg-btn--negative"
-        does: "Accept and reject; a bare `.ds-seg-btn` is informational. They take the success, info and error tokens and mean the same thing those mean everywhere else; they are not free colours to pick from, and they flip for dark mode with the rest of the status palette."
+        does: "Accept and reject; a bare `.ds-seg-btn` is informational. They take the success, info and error tokens and mean the same thing those mean everywhere else; they are not free colors to pick from, and they flip for dark mode with the rest of the status palette."
       - name: "checked"
         does: "On the selected option's radio. The stylesheet draws the selected option from it, so no class and no script are needed, and a screen reader says which one is selected. Undecided is no radio checked."
     notes:
@@ -154,7 +154,7 @@ rules:
   - "**Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required=\"true\"` on every required control: required fields have no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`."
   - "**Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else. A message is in the page, and named there, only while it applies; a hidden message that is still named is read out on a valid field."
   - "**Use `aria-invalid` for errors only.** Set `aria-invalid=\"true\"` on a control in the error tier and remove it when the error clears. A warning is not invalid, and an info message is not a problem at all."
-  - "**Say the tier in words.** Colour and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix."
+  - "**Say the tier in words.** Color and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix."
   - "**Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the summary, so a screen reader reads the count and the list before anything else, or to the first invalid field when the form has no summary, such as a compact form."
   - "**Name the failure in the page title, and give the summary no role.** When the server sends the page back with errors, the page's `<title>` starts with “Error:”, the first thing a screen reader announces on the new page. Focus already makes the summary heard, and a role on an alert that is in the page as it loads is not reliably announced (see [Alerts](alerts.md))."
   - "**Prefer `aria-disabled` to `disabled` for a control that could explain itself.** `disabled` leaves the tab order entirely, so a user who cannot proceed finds nothing there and no reason why. The two must look identical."
@@ -311,7 +311,7 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 - `.is-info` — On the control, for the info tier: arXiv changed the value and is telling the author. No `aria-invalid`.
 - `.field-error, .field-warning, .field-info` — The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Write the message, and add its `id` to `aria-describedby`, only while it applies: a screen reader reads a described message even when it is hidden.
 - `.field-messages` — An `<ol>` when one field has several problems. Each `<li>` takes its own tier class, and the list takes the `id` the control points at. The control takes the class of the worst tier in the list.
-- `[disabled]` — On the control. The label and hint stay; the control greys out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled="true"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials.
+- `[disabled]` — On the control. The label and hint stay; the control grays out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled="true"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials.
 
 ```html
 <div class="ds-field ds-field--full">
@@ -387,10 +387,10 @@ A boolean that applies the moment it is flipped. If the change needs a Save step
 ```
 
 - `.ds-switch` — The `<label>` that wraps the whole control. The visible text goes inside it, because that is what names the switch; a switch with only a heading beside it has no accessible name.
-- `role="switch"` — On the checkbox input. With it a screen reader says “on” and “off”; without it, “checkbox, checked”. The input stays a real checkbox, so the keyboard behaviour, the state and the form value are native and it works with no JavaScript.
+- `role="switch"` — On the checkbox input. With it a screen reader says “on” and “off”; without it, “checkbox, checked”. The input stays a real checkbox, so the keyboard behavior, the state and the form value are native and it works with no JavaScript.
 - `.ds-switch-track, .ds-switch-thumb` — The drawn background and the thumb that moves across it. Both required, nested as shown, directly after the input. Only the background fill changes with the state: the Border color when off, the accent when on (Open Blue public, Access Lime inside `.ds-internal`). The Strong Border edge and the Repository Brown thumb stay the same in both states and both themes.
-- `.ds-switch-label` — The visible text. Its colour follows the state; nothing else about it changes.
-- `[disabled]` — On the input. The background and the label grey out together.
+- `.ds-switch-label` — The visible text. Its color follows the state; nothing else about it changes.
+- `[disabled]` — On the input. The background and the label gray out together.
 
 ## Segmented control
 
@@ -408,7 +408,7 @@ An exclusive choice rendered as adjacent buttons, for a decision where every opt
 - `.ds-seg` — A `<fieldset>` holding two to four `.ds-seg-btn`.
 - `<legend>` — Required. It is the group's accessible name: without it a screen reader announces three buttons and never says what they decide. Hide it with `.is-sr-only` when the surrounding text already says it; hide it, do not omit it.
 - `.ds-seg-btn` — One option: a `<label>` holding a native `<input type="radio">`, all with one `name`. A radio group, drawn as joined buttons: the browser keeps one option selected, the arrow keys move between them, and it works without JavaScript. The form it belongs to saves the choice; where the choice acts at once, a script listens for the change.
-- `.ds-seg-btn--positive, .ds-seg-btn--negative` — Accept and reject; a bare `.ds-seg-btn` is informational. They take the success, info and error tokens and mean the same thing those mean everywhere else; they are not free colours to pick from, and they flip for dark mode with the rest of the status palette.
+- `.ds-seg-btn--positive, .ds-seg-btn--negative` — Accept and reject; a bare `.ds-seg-btn` is informational. They take the success, info and error tokens and mean the same thing those mean everywhere else; they are not free colors to pick from, and they flip for dark mode with the rest of the status palette.
 - `checked` — On the selected option's radio. The stylesheet draws the selected option from it, so no class and no script are needed, and a screen reader says which one is selected. Undecided is no radio checked.
 
 > Nothing is selected until something is selected: the undecided example is the resting state of a decision nobody has made yet, and it is a real state, not a bug to hide by pre-selecting the middle option.
@@ -502,7 +502,7 @@ What each tier means for the person filling the form in.
 |---|---|---|
 | **Error** | No | Blocking. The value is not acceptable and must be corrected. |
 | **Warning** | Yes | Accepted, but the value may be suspect or cause issues later on. |
-| **Info** | Yes | When used in validation it means arXiv changed the value automatically (for example, normalising whitespace). Nothing is wrong; the author is being informed. |
+| **Info** | Yes | When used in validation it means arXiv changed the value automatically (for example, normalizing whitespace). Nothing is wrong; the author is being informed. |
 
 ### Layout
 
@@ -517,7 +517,7 @@ What each tier means for the person filling the form in.
 - **Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required="true"` on every required control: required fields have no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`.
 - **Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else. A message is in the page, and named there, only while it applies; a hidden message that is still named is read out on a valid field.
 - **Use `aria-invalid` for errors only.** Set `aria-invalid="true"` on a control in the error tier and remove it when the error clears. A warning is not invalid, and an info message is not a problem at all.
-- **Say the tier in words.** Colour and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix.
+- **Say the tier in words.** Color and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix.
 - **Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the summary, so a screen reader reads the count and the list before anything else, or to the first invalid field when the form has no summary, such as a compact form.
 - **Name the failure in the page title, and give the summary no role.** When the server sends the page back with errors, the page's `<title>` starts with “Error:”, the first thing a screen reader announces on the new page. Focus already makes the summary heard, and a role on an alert that is in the page as it loads is not reliably announced (see [Alerts](alerts.md)).
 - **Prefer `aria-disabled` to `disabled` for a control that could explain itself.** `disabled` leaves the tab order entirely, so a user who cannot proceed finds nothing there and no reason why. The two must look identical.

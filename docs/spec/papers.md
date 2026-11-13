@@ -34,7 +34,7 @@ components:
       - name: "<a class=\"ds-tag\">"
         does: "Each category is a link to its listing of recent papers, with `.ds-tag--keep-case` so the code keeps its case. See [Tags](tags.md)."
       - name: ".ds-tag--info"
-        does: "On the primary category only. The others are the plain grey tag."
+        does: "On the primary category only. The others are the plain gray tag."
       - name: ".ds-tooltip"
         does: "The full name of the category, on hover and on focus, named by the link's `aria-describedby`. The primary one adds “(primary)”. Load `tooltip.js` once on the page. See [Tooltip](forms.md#tooltip)."
     notes:
@@ -46,7 +46,7 @@ components:
       - name: "<main>"
         does: "The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper."
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centered, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
       - name: "<section>"
         does: "The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own."
       - name: "<h1>"
@@ -120,7 +120,7 @@ components:
       - name: ".ds-toc-bar"
         does: "The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
       - name: ".ds-paper-bar-logo"
-        does: "The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
+        does: "The one-color Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
       - name: ".ds-toc-menu"
         does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type."
       - name: ".ds-paper-tools"
@@ -287,7 +287,7 @@ A paper's subject categories show as tags, primary first. Each code links to its
 ```
 
 - `<a class="ds-tag">` — Each category is a link to its listing of recent papers, with `.ds-tag--keep-case` so the code keeps its case. See [Tags](tags.md).
-- `.ds-tag--info` — On the primary category only. The others are the plain grey tag.
+- `.ds-tag--info` — On the primary category only. The others are the plain gray tag.
 - `.ds-tooltip` — The full name of the category, on hover and on focus, named by the link's `aria-describedby`. The primary one adds “(primary)”. Load `tooltip.js` once on the page. See [Tooltip](forms.md#tooltip).
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)
@@ -340,7 +340,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 ```
 
 - `<main>` — The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper.
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centered, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<section>` — The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
@@ -565,7 +565,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 ```
 
 - `.ds-toc-bar` — The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
-- `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
+- `.ds-paper-bar-logo` — The one-color Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
 - `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
 - `.ds-paper-tools` — PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`.
 

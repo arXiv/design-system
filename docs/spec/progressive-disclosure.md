@@ -11,7 +11,7 @@ components:
       - name: ".ds-acc"
         does: "On a `<details>`. Ruled: no box, no fill, no horizontal padding. The label sits on the same left edge as the prose around it, with a rule above and below. The `<summary>` is the label; the +/− marker comes from the stylesheet."
       - name: ".ds-acc-body"
-        does: "Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen. Each label is grey and a step smaller than the value."
+        does: "Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen. Each label is gray and a step smaller than the value."
       - name: ".ds-acc-stack"
         does: "The container for a list of disclosures. Stacked in it they butt together and read as one ruled list: each shared edge is a single line, because the preceding item's lower rule is the next item's upper one."
       - name: "[open]"
@@ -20,12 +20,12 @@ components:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: show-more
     title: "Show more"
-    summary: "While an accordion hides an entire labelled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link."
+    summary: "While an accordion hides an entire labeled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link."
     classes:
       - name: ".ds-show-more"
-        does: "On a `<button type=\"button\">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and `show-more.js` shows it."
+        does: "On a `<button type=\"button\">` at the end of the visible part. It takes the link color, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and `show-more.js` shows it."
       - name: ".ds-show-more--among-links"
-        does: "For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link."
+        does: "For a tail at the end of a run of links, such as an author list: gray and italic, so the control does not read as one more link."
       - name: "[aria-expanded]"
         does: "`\"false\"` / `\"true\"`, flipped on every toggle. Without it the control announces as a button that does something unspecified."
       - name: "[aria-controls]"
@@ -73,7 +73,7 @@ components:
       - name: "tabs.js"
         does: "Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading."
       - name: ".ds-tabs-list"
-        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layouts.md#secondary-zones). The row wraps on a narrow screen."
+        does: "The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light gray in light mode) inside a [secondary band](layouts.md#secondary-zones). The row wraps on a narrow screen."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: accordion-inside-a-card
@@ -99,17 +99,17 @@ components:
 rules:
   - "A view has one level of tabs. Tabs inside a tab panel are not used."
   - "The question that separates them is not how much is hidden. It is what relationship the hidden thing has to what the reader is looking at."
-  - "**Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open."
+  - "**Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a license, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open."
   - "**Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed."
   - "**Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here."
   - "**One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`."
   - "**One panel, one label.** If a summary needs a sentence to explain what is inside, the content is not a section and probably wants show-more or a page of its own."
   - "**An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back."
-  - "**Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right."
+  - "**Show more among links is gray and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbors is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link color is right."
   - "**A popover holds short content the reader opens on request**: a reference or a footnote, an explanation, a list, or a set of filters. Nothing the reader needs to finish their task is only in a popover."
   - "**Nothing animates.** These components have no transitions, so there is nothing for `prefers-reduced-motion` to switch off. An accordion that animates its height also animates the position of everything below it, which is motion a reader did not ask for."
   - "**A popover sits above sticky chrome** (`z-index: 110`, per the [Z-layer scale](../doc.html?src=docs/DESIGN-POLICIES.md)). A popover is always the thing the reader just asked for, so it is never the thing that gets hidden."
-  - "**Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behaviour and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one."
+  - "**Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behavior and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one."
   - "**In a `<details>`, the summary is the whole label.** Never put a second interactive control inside it — a link or button in a `<summary>` is reachable but its activation fights the disclosure's own."
   - "**Hide with the `hidden` attribute, not with a class.** Content hidden by a class that fails to load is invisible but still tabbable, which puts a keyboard user in a place they cannot see."
   - "**Every custom toggle owns `aria-expanded`.** A show-more button and a popover trigger are not `<details>`, so they state it themselves. Its absence is the single most common defect in this pattern: the control announces as a button, does something visible to everyone else, and says nothing."
@@ -159,7 +159,7 @@ Using the native `<details>/<summary>` elements means no JavaScript is needed, a
 ```
 
 - `.ds-acc` — On a `<details>`. Ruled: no box, no fill, no horizontal padding. The label sits on the same left edge as the prose around it, with a rule above and below. The `<summary>` is the label; the +/− marker comes from the stylesheet.
-- `.ds-acc-body` — Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen. Each label is grey and a step smaller than the value.
+- `.ds-acc-body` — Holds the panel content, directly after the `<summary>`. A `<dl>` inside it renders as label and value pairs, one column on a narrow screen. Each label is gray and a step smaller than the value.
 - `.ds-acc-stack` — The container for a list of disclosures. Stacked in it they butt together and read as one ruled list: each shared edge is a single line, because the preceding item's lower rule is the next item's upper one.
 - `[open]` — Present on the one panel that starts open, if any. See [Which affordance](#which-affordance) under Rules.
 
@@ -167,7 +167,7 @@ Using the native `<details>/<summary>` elements means no JavaScript is needed, a
 
 ## Show more
 
-While an accordion hides an entire labelled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link.
+While an accordion hides an entire labeled section, the 'show more' control reveals the hidden *tail end* of partially displayed content. When hiding the remainder of a list we display the additional item count in the link.
 
 ```html
 <!-- The rest of a paragraph -->
@@ -192,8 +192,8 @@ While an accordion hides an entire labelled section, the 'show more' control rev
 <script src="show-more.js" defer></script>
 ```
 
-- `.ds-show-more` — On a `<button type="button">` at the end of the visible part. It takes the link colour, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and `show-more.js` shows it.
-- `.ds-show-more--among-links` — For a tail at the end of a run of links, such as an author list: grey and italic, so the control does not read as one more link.
+- `.ds-show-more` — On a `<button type="button">` at the end of the visible part. It takes the link color, because in running text it is the one thing a reader can act on. An accordion is `<details>`, so the browser supplies the semantics; a tail cannot be, so this is a real `<button>` that has to declare for itself what the browser would otherwise have said, with the three attributes below. It starts `hidden`, and `show-more.js` shows it.
+- `.ds-show-more--among-links` — For a tail at the end of a run of links, such as an author list: gray and italic, so the control does not read as one more link.
 - `[aria-expanded]` — `"false"` / `"true"`, flipped on every toggle. Without it the control announces as a button that does something unspecified.
 - `[aria-controls]` — The id of the region it reveals. Several ids, separated by spaces, open and close together, as a version list's ellipsis and the versions behind it do ([Indicate which version is being read](versions.md#version-row)).
 - `.ds-show-more-tail` — On the region. While the page loads, it keeps the tail closed before the script runs, so a long author list does not show in full and then collapse. Without JavaScript it does nothing, and the whole text shows.
@@ -258,7 +258,7 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 - `.ds-tabs` — Holds two or more panels. `data-label` names the set for a screen reader.
 - `.ds-tabs-panel` — One view, a `<section>` that starts with a heading. The heading becomes the tab label.
 - `tabs.js` — Builds the tab list from the panel headings and adds the roles, the selected state and the keyboard: Tab reaches the selected tab, the arrow keys move between tabs, Home and End go to the first and last. Moving to a tab shows its panel. Without the script, every panel shows under its own heading.
-- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light grey in light mode) inside a [secondary band](layouts.md#secondary-zones). The row wraps on a narrow screen.
+- `.ds-tabs-list` — The row of tabs, added by the script. The selected tab is bold, a box joined to its panel with the accent along its top. It takes the background of the zone it sits in: the page ground (white in light mode), or the secondary zone's tint (light gray in light mode) inside a [secondary band](layouts.md#secondary-zones). The row wraps on a narrow screen.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
@@ -349,18 +349,18 @@ The question that separates them is not how much is hidden. It is what relations
 
 | Use | When the hidden content is | Costs the reader |
 |---|---|---|
-| Accordion `.ds-acc` | A **labelled section** the reader can decide about from its label alone — Versions, Paper information, Related. More than a line or two; a single line goes on the page. | One click, stays on the page, keeps their place. |
+| Accordion `.ds-acc` | A **labeled section** the reader can decide about from its label alone — Versions, Paper information, Related. More than a line or two; a single line goes on the page. | One click, stays on the page, keeps their place. |
 | Show more `.ds-show-more` | The **tail of something already begun** — authors nine through twenty-two, the rest of an abstract. There is no label to give it, because it is not a different thing. | One click, expands in place, no new surface. |
 | Popover `.ds-popover` | A **lookup** the reader wants without leaving their sentence — what reference 47 is, what footnote 3 says. | Nothing permanent. It closes on Escape and does not move the page. |
-| A link to a full page | Something with **its own identity** — a different paper, an author's other work, the full licence. | Leaves the page. Pay this only when the destination deserves a URL. |
+| A link to a full page | Something with **its own identity** — a different paper, an author's other work, the full license. | Leaves the page. Pay this only when the destination deserves a URL. |
 
-- **Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a licence, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open.
+- **Never put must-see information only behind a disclosure.** Anything legally or practically required, such as a warning or a license, also appears in the page's always-visible flow: the older-version warning is in the main column even though the full history lives in the Versions accordion. A closed accordion, a folded margin note and a popover are all places a reader may never open.
 - **Disclosure is not a fix for too much content.** If a page needs six accordions to be tolerable, the page has a structure problem and hiding things postpones it. Ask what can be cut or moved before asking what can be collapsed.
 - **Default state is closed**, except that a single most-relevant panel may start open. Open state is not persisted — predictability beats memory here.
 - **One panel open at a time is for panels read one at a time.** When a reader needs two panels open together to compare them, leave the group without a `name`.
 - **One panel, one label.** If a summary needs a sentence to explain what is inside, the content is not a section and probably wants show-more or a page of its own.
 - **An abstract cut short is show more, not an accordion.** This holds when the excerpt starts partway through the abstract, as a search result’s can: the full abstract replaces the excerpt in place, and Show less puts the excerpt back.
-- **Show more among links is grey and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbours is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link colour is right.
+- **Show more among links is gray and italic.** At the end of a run of links — author names, category links — a Link Blue “show all 22 authors” is one more link in that run, indistinguishable from a name. It is not a link: it goes nowhere, it changes this page. Reading as a different *kind* of thing than its neighbors is the whole job, which is what `.ds-show-more--among-links` is for. Anywhere else, the default link color is right.
 - **A popover holds short content the reader opens on request**: a reference or a footnote, an explanation, a list, or a set of filters. Nothing the reader needs to finish their task is only in a popover.
 
 ### Motion and layering
@@ -370,7 +370,7 @@ The question that separates them is not how much is hidden. It is what relations
 
 ### Accessibility essentials
 
-- **Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behaviour and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one.
+- **Prefer native markup.** Where a disclosure can be a `<details>` element, as the accordion and the TOC bar are, use it. It includes the expanded state, the keyboard behavior and the announcement without any script, and find-in-page can open a closed panel to reveal a match. A hand-built accordion loses all four, and losing find-in-page on a research site is the expensive one.
 - **In a `<details>`, the summary is the whole label.** Never put a second interactive control inside it — a link or button in a `<summary>` is reachable but its activation fights the disclosure's own.
 - **Hide with the `hidden` attribute, not with a class.** Content hidden by a class that fails to load is invisible but still tabbable, which puts a keyboard user in a place they cannot see.
 - **Every custom toggle owns `aria-expanded`.** A show-more button and a popover trigger are not `<details>`, so they state it themselves. Its absence is the single most common defect in this pattern: the control announces as a button, does something visible to everyone else, and says nothing.

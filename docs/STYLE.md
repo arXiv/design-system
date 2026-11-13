@@ -32,7 +32,7 @@ An alert is an alert everywhere — never a notification, toast, banner, or mess
 
 ### Say what it is, and stop
 
-A description states what the thing is and does. Add a reason only when a builder would otherwise get it wrong, and keep it to one short sentence. Name a colour by its palette name.
+A description states what the thing is and does. Add a reason only when a builder would otherwise get it wrong, and keep it to one short sentence. Name a color by its palette name.
 
 Write: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
 
@@ -48,6 +48,10 @@ Use the plain word:
 | type, format, column | track |
 
 `check-policies.py` fails a page that uses a word from the right-hand column. "Tracking" in the sense of surveillance is allowed.
+
+### American spelling
+
+Write color, center, behavior, license, gray, labeled. Brand names keep their own spelling, such as Library Grey, and so does text copied from an author, such as an abstract. `check-policies.py` fails a page that uses the British spelling.
 
 ---
 

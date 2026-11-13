@@ -26,25 +26,25 @@ components:
       - "Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users."
   - id: notes
     title: "Notes"
-    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.md) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them."
+    summary: "A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.md) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colors on every surface; `.ds-internal` does not change them."
     classes:
       - name: ".ds-note"
-        does: "The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance."
+        does: "The box, on a `<div>` in the flow of the page. On its own it is the gray register: guidance."
       - name: ".ds-note-label"
         does: "The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it. When the passage has no label of its own, write a short one that names what the reader must know, such as “Before you change your email address”."
       - name: ".ds-note--essential"
-        does: "The blue register: a requirement. It uses the info status colours."
+        does: "The blue register: a requirement. It uses the info status colors."
       - name: ".ds-note--internal"
         does: "The lime register: how the component differs in internal tools."
       - name: ".ds-note-gotcha"
         does: "A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead."
     rules:
-      - "**Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a colour only earns a register when it has a job. There is no background-colour utility class, because a tint that a page picks freely teaches the reader nothing."
-      - "**No left edge and no icon.** Both belong to the alert, and the tab already does the work of saying what kind of box this is — in words, so nothing has to be read out of a colour."
+      - "**Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a color only earns a register when it has a job. There is no background-color utility class, because a tint that a page picks freely teaches the reader nothing."
+      - "**No left edge and no icon.** Both belong to the alert, and the tab already does the work of saying what kind of box this is — in words, so nothing has to be read out of a color."
   - id: suggested-icons
     title: "Icon options"
     group: "Modifiers"
-    summary: "Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each has its own colours, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text conveys the meaning."
+    summary: "Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each has its own colors, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text conveys the meaning."
   - id: color-variations
     title: "Color variations"
     group: "Modifiers"
@@ -58,7 +58,7 @@ rules:
   - "Easy to get wrong: A note can include a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph."
   - "**Give the band a name.** Keep `role=\"region\"` and `aria-label=\"Announcement\"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it."
   - "**Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role=\"alert\"` or `aria-live` would make every page announce it aloud, on every visit, before anything else."
-  - "**The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden=\"true\"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense."
+  - "**The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden=\"true\"`, or an empty `alt`), and the band’s color says nothing on its own. Read the sentence without the icon and the color; it must still make sense."
   - "**The link is a real link.** An `<a>` with an `href`, so it works with JavaScript off and opens in a new tab if the reader wants. Never a button that navigates."
   - "**Name the dismiss control.** The `.ds-close` button needs its `<span class=\"is-sr-only\">Dismiss announcement</span>`. Do not use `title` or `aria-label` for this; page translation tools skip attributes."
   - "**After a dismiss, focus has somewhere to go.** Removing the band removes the focused button. Move focus to the site header’s first item, so a keyboard user is not dropped back to the top of the document."
@@ -115,7 +115,7 @@ Announcement band messages must be concise and actionable, with a short link lab
 
 ## Notes
 
-A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.md) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colours on every surface; `.ds-internal` does not change them.
+A box in the flow of a page that names its own register before the reader starts the paragraph: a requirement, a piece of guidance, the way a component differs on the internal surface. The tab is the whole design. It is also what keeps a note from reading as an [alert](alerts.md) — an alert reports a state as of right now and can be dismissed, a note is always true and stays. A note keeps its colors on every surface; `.ds-internal` does not change them.
 
 ```html
 <div class="ds-note ds-note--essential">
@@ -125,19 +125,19 @@ A box in the flow of a page that names its own register before the reader starts
 </div>
 ```
 
-- `.ds-note` — The box, on a `<div>` in the flow of the page. On its own it is the grey register: guidance.
+- `.ds-note` — The box, on a `<div>` in the flow of the page. On its own it is the gray register: guidance.
 - `.ds-note-label` — The tab, and the note's first child. The label is a heading, at whatever level the page is up to: `.ds-note-label` resets the type completely, so `h2` through `h4` all render the same tab. Keeping it a heading keeps the note in the document outline, which is how a screen-reader user finds it. When the passage has no label of its own, write a short one that names what the reader must know, such as “Before you change your email address”.
-- `.ds-note--essential` — The blue register: a requirement. It uses the info status colours.
+- `.ds-note--essential` — The blue register: a requirement. It uses the info status colors.
 - `.ds-note--internal` — The lime register: how the component differs in internal tools.
 - `.ds-note-gotcha` — A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead.
 
-**Rule.** **Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a colour only earns a register when it has a job. There is no background-colour utility class, because a tint that a page picks freely teaches the reader nothing.
+**Rule.** **Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a color only earns a register when it has a job. There is no background-color utility class, because a tint that a page picks freely teaches the reader nothing.
 
-**Rule.** **No left edge and no icon.** Both belong to the alert, and the tab already does the work of saying what kind of box this is — in words, so nothing has to be read out of a colour.
+**Rule.** **No left edge and no icon.** Both belong to the alert, and the tab already does the work of saying what kind of box this is — in words, so nothing has to be read out of a color.
 
 ## Icon options  (Modifiers)
 
-Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each has its own colours, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text conveys the meaning.
+Icons are important for conveying meaning quickly and effectively. The small smileybones are drawn for this small use case. Each has its own colors, so it goes in as an image, not as a true svg icon. No alt text needed, the icon is purely decorative and the text conveys the meaning.
 
 ```html
 <img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">
@@ -197,7 +197,7 @@ Open Blue is the band's default color, and should be overridden sparingly. For m
 
 - **Give the band a name.** Keep `role="region"` and `aria-label="Announcement"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it.
 - **Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role="alert"` or `aria-live` would make every page announce it aloud, on every visit, before anything else.
-- **The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden="true"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense.
+- **The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden="true"`, or an empty `alt`), and the band’s color says nothing on its own. Read the sentence without the icon and the color; it must still make sense.
 - **The link is a real link.** An `<a>` with an `href`, so it works with JavaScript off and opens in a new tab if the reader wants. Never a button that navigates.
 - **Name the dismiss control.** The `.ds-close` button needs its `<span class="is-sr-only">Dismiss announcement</span>`. Do not use `title` or `aria-label` for this; page translation tools skip attributes.
 - **After a dismiss, focus has somewhere to go.** Removing the band removes the focused button. Move focus to the site header’s first item, so a keyboard user is not dropped back to the top of the document.
