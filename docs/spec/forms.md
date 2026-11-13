@@ -108,11 +108,11 @@ components:
       - name: "<legend>"
         does: "Required. It is the group's accessible name: without it a screen reader announces three buttons and never says what they decide. Hide it with `.is-sr-only` when the surrounding text already says it; hide it, do not omit it."
       - name: ".ds-seg-btn"
-        does: "One option, a `<button type=\"button\">`. Buttons and not a radio group on purpose: this is for a decision that acts when clicked. A choice that is part of a form that gets submitted is a radio group."
+        does: "One option: a `<label>` holding a native `<input type=\"radio\">`, all with one `name`. A radio group, drawn as joined buttons: the browser keeps one option selected, the arrow keys move between them, and it works without JavaScript. The form it belongs to saves the choice; where the choice acts at once, a script listens for the change."
       - name: ".ds-seg-btn--positive, .ds-seg-btn--negative"
         does: "Accept and reject; a bare `.ds-seg-btn` is informational. They take the success, info and error tokens and mean the same thing those mean everywhere else; they are not free colours to pick from, and they flip for dark mode with the rest of the status palette."
-      - name: ".is-active"
-        does: "The selected option, with `aria-pressed=\"true\"`; every other option has `aria-pressed=\"false\"`, so a screen reader says which one is selected. Set by script when an option is clicked, and removed from the others; the stylesheet gives the buttons no behaviour."
+      - name: "checked"
+        does: "On the selected option's radio. The stylesheet draws the selected option from it, so no class and no script are needed, and a screen reader says which one is selected. Undecided is no radio checked."
     notes:
       - "Nothing is selected until something is selected: the undecided example is the resting state of a decision nobody has made yet, and it is a real state, not a bug to hide by pre-selecting the middle option."
   - id: tooltip
@@ -401,17 +401,17 @@ An exclusive choice rendered as adjacent buttons, for a decision where every opt
 ```html
 <fieldset class="ds-seg">
   <legend class="is-sr-only">Positive example</legend>
-  <button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--positive is-active">Author</button>
-  <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-  <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+  <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="decision" value="author" checked>Author</label>
+  <label class="ds-seg-btn"><input type="radio" name="decision" value="proxy">Proxy</label>
+  <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="decision" value="no">No</label>
 </fieldset>
 ```
 
 - `.ds-seg` — A `<fieldset>` holding two to four `.ds-seg-btn`.
 - `<legend>` — Required. It is the group's accessible name: without it a screen reader announces three buttons and never says what they decide. Hide it with `.is-sr-only` when the surrounding text already says it; hide it, do not omit it.
-- `.ds-seg-btn` — One option, a `<button type="button">`. Buttons and not a radio group on purpose: this is for a decision that acts when clicked. A choice that is part of a form that gets submitted is a radio group.
+- `.ds-seg-btn` — One option: a `<label>` holding a native `<input type="radio">`, all with one `name`. A radio group, drawn as joined buttons: the browser keeps one option selected, the arrow keys move between them, and it works without JavaScript. The form it belongs to saves the choice; where the choice acts at once, a script listens for the change.
 - `.ds-seg-btn--positive, .ds-seg-btn--negative` — Accept and reject; a bare `.ds-seg-btn` is informational. They take the success, info and error tokens and mean the same thing those mean everywhere else; they are not free colours to pick from, and they flip for dark mode with the rest of the status palette.
-- `.is-active` — The selected option, with `aria-pressed="true"`; every other option has `aria-pressed="false"`, so a screen reader says which one is selected. Set by script when an option is clicked, and removed from the others; the stylesheet gives the buttons no behaviour.
+- `checked` — On the selected option's radio. The stylesheet draws the selected option from it, so no class and no script are needed, and a screen reader says which one is selected. Undecided is no radio checked.
 
 > Nothing is selected until something is selected: the undecided example is the resting state of a decision nobody has made yet, and it is a real state, not a bug to hide by pre-selecting the middle option.
 
