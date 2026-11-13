@@ -24,7 +24,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 1. Read `docs/DESIGN-POLICIES.md` — hard constraints. Non-negotiable.
 2. Read `docs/brand.html` — the *why*; use it when no explicit rule covers your case.
 3. Use the routing table to read **only** what your task touches. Do not read the whole repo.
-4. **Find out whether the page belongs to a set**, such as arXiv's help pages, and what the set already uses: the opening band and the contents bar are on every page of a set or on none. If the brief does not say, ask; if you cannot ask, say in your final message what you assumed (`docs/organize-content.html#rules`).
+4. **Find out whether the page belongs to a set**, such as arXiv's help pages, and what the set already uses: the opening band and the TOC bar are on every page of a set or on none. If the brief does not say, ask; if you cannot ask, say in your final message what you assumed (`docs/organize-content.html#rules`).
 5. For each pattern page the table names, read its digest first: `docs/spec/<page>.md`, such as `docs/spec/filters.md` for `docs/filters.html`. Open the HTML page when the digest does not answer your question, or when the page has no digest yet (`docs/spec/index.md` lists those).
 
 ## Before you finish: review the layout
