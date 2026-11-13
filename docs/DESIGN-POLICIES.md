@@ -85,7 +85,7 @@ arXiv's compliance floor is **WCAG 2.1 Level AA** — the standard the Accessibl
 ## Buttons
 
 - **Three tiers in each context:** primary, secondary and text.
-- **Disabled is a flat neutral grey, never opacity** (see *Colors, Dimming*), and its label still clears AA. `aria-disabled` and `disabled` look identical.
+- **Disabled is a flat neutral grey, never opacity** (see *Colors, Dimming*). `aria-disabled` and `disabled` look identical, on every tier.
 - **A control that navigates is a link.** Text buttons are never underlined.
 - **The values live in `design-system.css`:** radius, padding, shadow, press and timing. `buttons.html` shows them.
 
