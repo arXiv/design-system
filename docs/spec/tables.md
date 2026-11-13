@@ -73,7 +73,7 @@ components:
     summary: "The same selection when the set is a list rather than a table, such as a list of papers. Each item starts with its checkbox, lined up with the item's first line. The actions on the selection sit in the header bar above the list, as for a table. A control that acts on one item only sits at the end of that item, on the right."
     classes:
       - name: "<input type=\"checkbox\">"
-        does: "The first child of each item, then its `<label class=\"is-sr-only\">`, which names the item: “Select” and the paper's title. The box is 24px, in a column of its own, and lines up with the item's first line; everything after it sits beside it. No class."
+        does: "The first child of each item, then its `<label class=\"is-sr-only\">`, which names the item: “Select” and the paper's title. The box is 16px like every checkbox, in a column 24px wide, which is its target, and lines up with the item's first line; everything after it sits beside it. No class."
       - name: ".ds-card-bar"
         does: "The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). An action on the selection says so: “Remove selected”, with the trash icon."
       - name: ".ds-btn-group.ds-btn-group--end"
@@ -340,7 +340,7 @@ The same selection when the set is a list rather than a table, such as a list of
 </div>
 ```
 
-- `<input type="checkbox">` — The first child of each item, then its `<label class="is-sr-only">`, which names the item: “Select” and the paper's title. The box is 24px, in a column of its own, and lines up with the item's first line; everything after it sits beside it. No class.
+- `<input type="checkbox">` — The first child of each item, then its `<label class="is-sr-only">`, which names the item: “Select” and the paper's title. The box is 16px like every checkbox, in a column 24px wide, which is its target, and lines up with the item's first line; everything after it sits beside it. No class.
 - `.ds-card-bar` — The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). An action on the selection says so: “Remove selected”, with the trash icon.
 - `.ds-btn-group.ds-btn-group--end` — The last child of an item: the controls for that item only, on the right, as a form's action bar is. Each control's name includes the item's, in an `.is-sr-only` span, because “Remove” alone does not say which.
 

@@ -163,7 +163,7 @@
 <pre><code>font-family: var(--ds-font-sans);</code></pre>
           <dl>
             <dt>--ds-font-sans</dt>
-            <dd>The default: where no other face applies, this is the answer. Weights 400 / 500 / 600.</dd>
+            <dd>The default: where no other face applies, this is the answer. Weights 400 / 500 / 600 / 700, and 400 italic for emphasis.</dd>
           </dl>
         </div>
       </details>
@@ -201,7 +201,7 @@
 <pre><code>font-family: var(--ds-font-mono);</code></pre>
           <dl>
             <dt>--ds-font-mono</dt>
-            <dd>Identifiers and code. Weights 400 / 500. Inline <code>&lt;code&gt;</code> and <code>&lt;pre&gt;</code> already use it; see <a href="#code-blocks-and-the-copy-button">Code blocks</a> below.</dd>
+            <dd>Identifiers and code. Weights 400 / 500; 600 and 700 for a note's label and a version mark. Inline <code>&lt;code&gt;</code> and <code>&lt;pre&gt;</code> already use it; see <a href="#code-blocks-and-the-copy-button">Code blocks</a> below.</dd>
           </dl>
         </div>
       </details>
@@ -475,9 +475,8 @@
 <pre><code>&lt;p class="ds-panel-label"&gt;Paper information&lt;/p&gt;</code></pre>
           <dl>
             <dt>.ds-panel-label</dt>
-            <dd>One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · <code>--ds-text-muted</code>. Use it wherever this treatment appears — panel
-            headings, column labels, the label above a group of controls — on whichever element
-            is semantically right. A component that owns its internal spacing takes the margin back.</dd>
+            <dd>One class for the label of a panel, a column or a group of controls: 0.75rem · 600 · Condensed · uppercase · 0.04em · <code>--ds-text-muted</code>, on whichever element
+            is semantically right. A component that owns its internal spacing takes the margin back. A few small components, such as a data card and a popover, set the same treatment at their own smaller size.</dd>
           </dl>
         </div>
       </details>
@@ -521,10 +520,10 @@
       <table class="ds-table">
         <thead><tr><th>Face · weights</th><th>Internal tools</th><th>Public site</th><th>Outreach</th></tr></thead>
         <tbody>
-          <tr><td>IBM Plex Sans · 400 / 500 / 600</td><td>✓ all text</td><td>✓ all text</td><td>✓ all text</td></tr>
-          <tr><td>IBM Plex Sans · 700 + 700 <em>italic</em></td><td>✓ h1 only</td><td>✓ h1 only</td><td>✓ the one heading that must not read as an article</td></tr>
+          <tr><td>IBM Plex Sans · 400 / 500 / 600, 400 <em>italic</em></td><td>✓ all text</td><td>✓ all text</td><td>✓ all text</td></tr>
+          <tr><td>IBM Plex Sans · 700</td><td>✓ h1, alert titles, a pressed toggle</td><td>✓ h1, alert titles, a pressed toggle</td><td>✓ the one heading that must not read as an article</td></tr>
           <tr><td>IBM Plex Sans Condensed · 500 / 600</td><td>✓ labels, table headers</td><td>✓ labels</td><td>✓ labels</td></tr>
-          <tr><td>IBM Plex Mono · 400 / 500</td><td>✓ IDs, code</td><td>✓ arXiv IDs, code</td><td>✓ code, plus a display register (wordmark, standfirst)</td></tr>
+          <tr><td>IBM Plex Mono · 400 / 500, 600 / 700</td><td>✓ IDs, code; 600 and 700 for note labels</td><td>✓ arXiv IDs, code; 600 and 700 for note labels and version marks</td><td>✓ code, plus a display register (wordmark, standfirst)</td></tr>
           <tr><td>IBM Plex Serif · 400 <em>italic</em></td><td>annotation voice only (<code>.ds-annotation</code>)</td><td>annotation voice only (<code>.ds-annotation</code>)</td><td>✓ emphasis, bylines, prev/next</td></tr>
           <tr><td>IBM Plex Serif · 400 / 600 upright</td><td>—</td><td>—</td><td>✓ headlines to display size, pull quotes, drop caps</td></tr>
           <tr><td>STIX Two Math · 400</td><td>—</td><td>✓ math in HTML papers</td><td>—</td></tr>
@@ -552,8 +551,8 @@
       <li><strong>On a laptop, the ratio is 1.25</strong> — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem.
       A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in
       their head and type without checking. The rounding is what makes h1 land on exactly double the body size.</li>
-      <li><strong>700 appears once, at h1.</strong> IBM Plex ships nothing heavier, so 700 is the ceiling and it
-      is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule
+      <li><strong>Among headings, 700 is the h1's alone.</strong> IBM Plex ships nothing heavier, so 700 is the ceiling,
+      and among headings it is spent on the one that names the page. Every heading below it is 600. Always state the weight: a rule
       that sets only <code>font-size</code> inherits the browser default bold, which is how several pages ended
       up with an h3 heavier than the h2 above it.</li>
       <li><strong>Space above is at least twice the space below.</strong> A heading belongs to the text it
@@ -564,7 +563,7 @@
       Most of its size is in rem
       and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only
       zoom scales only the rem part, so there it grows a little less than body text.</li>
-      <li><strong>The 11px uppercase Condensed label is not a heading level.</strong> Set in
+      <li><strong>The uppercase Condensed label is not a heading level.</strong> Set in
       <code>--ds-font-condensed</code> and <code>--ds-text-muted</code>, it marks a panel or a column and
       stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size
       above, not a label.</li>
@@ -673,7 +672,7 @@
           <tr><td>400 Regular</td><td>Body copy, and anything that is read rather than scanned.</td></tr>
           <tr><td>500 Medium</td><td>Navigation, table headers, the quieter emphasis.</td></tr>
           <tr><td>600 SemiBold</td><td>Headings, button labels, and the label half of a label/value pair.</td></tr>
-          <tr><td>700 Bold</td><td>The h1, and nothing else — see the heading scale.</td></tr>
+          <tr><td>700 Bold</td><td>The h1, alert titles and a pressed toggle's label — see the heading scale.</td></tr>
           <tr><td>100, 200, 300, 450</td><td>Lighter weights are present, but unused and commented out. See warning below.</td></tr>
         </tbody>
       </table>
@@ -728,8 +727,7 @@
       arrives. Readability beats visual stability.</li>
       <li><code>font-display: auto</code> for STIX Two Math: maths in a fallback font can be actively wrong, so it
       is better to wait briefly.</li>
-      <li><code>local()</code> for STIX Two Math skips the ~300KB download if the reader already has it.</li>
-      <li>Total: about 135KB for the Plex woff2 files, plus STIX only on paper pages.</li>
+      <li><code>local()</code> for STIX Two Math skips the download if the reader already has it. Only paper pages load STIX.</li>
     </ul>
   </section>
 
@@ -765,6 +763,13 @@
           <tr><td>Annotation (margin footnote, alt text)</td><td>0.8125rem · 13px, italic</td><td>400</td><td>Plex Serif</td></tr>
           <tr><td>Header links</td><td>0.8125rem · 13px</td><td>500</td><td>Plex Sans</td></tr>
           <tr><td>Panel labels, table headers</td><td>0.75rem · 12px, uppercase</td><td>600</td><td>Plex Sans Condensed</td></tr>
+          <tr><td>Popover title, switch label</td><td>0.6875rem · 11px, uppercase</td><td>600</td><td>Plex Sans Condensed</td></tr>
+          <tr><td>Tags</td><td>0.6875rem · 11px, uppercase</td><td>500</td><td>Plex Mono</td></tr>
+          <tr><td>Data card labels</td><td>0.625rem · 10px, uppercase</td><td>600</td><td>Plex Sans Condensed</td></tr>
+          <tr><td>Modal title</td><td>1.125rem · 18px</td><td>600</td><td>Plex Sans</td></tr>
+          <tr><td>Accordion label, modal body</td><td>0.95rem · 15.2px</td><td>600; 400</td><td>Plex Sans</td></tr>
+          <tr><td>Tables</td><td>0.9375rem · 15px</td><td>400</td><td>Plex Sans</td></tr>
+          <tr><td>Accordion body, TOC bar list</td><td>0.85rem · 13.6px</td><td>400</td><td>Plex Sans</td></tr>
         </tbody>
       </table>
     </div>
