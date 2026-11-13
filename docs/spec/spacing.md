@@ -121,11 +121,11 @@ The gap *between* sections should be clearly larger than the gap *within* a sect
 Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layouts](layouts.md#the-page-container).
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <header class="ds-page-header">…</header>
   <section>…</section>   <!-- --ds-space-section above it, from the container -->
   <section>…</section>
-</div>
+</main>
 ```
 
 ```html

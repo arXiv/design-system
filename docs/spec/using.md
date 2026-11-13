@@ -20,6 +20,7 @@ components:
     summary: "This is all you need for a public arXiv page. Copy it and follow the comments."
     rules:
       - "**`class=\"ds-page\"` on the body is not optional.** A page without it gets components on unstyled ground. The foundation hangs on the class rather than on `<body>` so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten."
+      - "**One `<main>`, with `id=\"main\"`, is the page container.** The skip link, before the header, goes to it, and the header and footer sit outside it. See [Hosting the header](header.md#hosting-the-header) and [Site footer](footer.md)."
   - id: internal-tools
     title: "Internal tools"
     group: "Building on the foundation"
@@ -100,14 +101,21 @@ This is all you need for a public arXiv page. Copy it and follow the comments.
 </head>
 
 <body class="ds-page">
-  <div class="ds-container">
+  <a class="ds-skip-link" href="#main">Skip to main content</a>
+  <!-- the site header, included from templates/: see Site header -->
+
+  <main id="main" class="ds-container">
     <!-- add section elements as direct children here -->
-  </div>
+  </main>
+
+  <!-- the site footer, included from templates/: see Site footer -->
 </body>
 </html>
 ```
 
 **Rule.** **`class="ds-page"` on the body is not optional.** A page without it gets components on unstyled ground. The foundation hangs on the class rather than on `<body>` so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten.
+
+**Rule.** **One `<main>`, with `id="main"`, is the page container.** The skip link, before the header, goes to it, and the header and footer sit outside it. See [Hosting the header](header.md#hosting-the-header) and [Site footer](footer.md).
 
 ## Internal tools  (Building on the foundation)
 
@@ -139,10 +147,10 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 `.ds-container` is a grid with various options for managing section layout.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
 <section>…</section>                   <!-- content track -->
 <section class="ds-full ds-zone-secondary">…</section>  <!-- edge to edge, tinted -->
-</div>
+</main>
 ```
 
 **Rule.** **Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.
