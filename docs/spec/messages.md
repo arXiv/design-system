@@ -1,6 +1,6 @@
 ---
 page: messages.html
-title: "Special messages"
+title: "Messaging"
 summary: "When arXiv has something special to say on the platform itself, this is how we do it. We are starting with a small announcement band above the header. Other options will be added as our communications team finds the need."
 stylesheet: design-system.css
 components:
@@ -48,7 +48,7 @@ components:
   - id: color-variations
     title: "Color variations"
     group: "Modifiers"
-    summary: "Open Blue is our default banner color, and should be overridden sparingly. For messages that call for a different treatment, two color variations are available: Black for maintenance and service notices, 'Smileybones yellow' for events."
+    summary: "Open Blue is the band's default color, and should be overridden sparingly. For messages that call for a different treatment, two color variations are available: Black for maintenance and service notices, 'Smileybones yellow' for events. The announcements file has no field to choose a variation yet, so every announcement it serves is drawn in Open Blue."
     classes:
       - name: ".ds-announcement--maintenance"
         does: "For service notices: maintenance windows, outages, deadlines. The band takes the header’s dark ground in both themes, with light text and the light link blue."
@@ -65,7 +65,7 @@ rules:
   - "**Nothing the page needs lives in the band.** A dismissed band never comes back for that reader, so a link they must be able to find belongs in the page too."
 ---
 
-# Special messages
+# Messaging
 
 When arXiv has something special to say on the platform itself, this is how we do it. We are starting with a small announcement band above the header. Other options will be added as our communications team finds the need.
 
@@ -153,7 +153,7 @@ Icons are important for conveying meaning quickly and effectively. The small smi
 
 ## Color variations  (Modifiers)
 
-Open Blue is our default banner color, and should be overridden sparingly. For messages that call for a different treatment, two color variations are available: Black for maintenance and service notices, 'Smileybones yellow' for events.
+Open Blue is the band's default color, and should be overridden sparingly. For messages that call for a different treatment, two color variations are available: Black for maintenance and service notices, 'Smileybones yellow' for events. The announcements file has no field to choose a variation yet, so every announcement it serves is drawn in Open Blue.
 
 ```html
 <div class="ds-announcement ds-announcement--maintenance" role="region" aria-label="Announcement">

@@ -1,7 +1,7 @@
 ---
 page: header.html
 title: "Site header"
-summary: "The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.md)."
+summary: "The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement band can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.md)."
 stylesheet: design-system.css
 components:
   - id: transitional-header
@@ -154,7 +154,7 @@ rules:
 
 # Site header
 
-The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement banner can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.md).
+The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left, and navigation, search, and account links on the right. An optional, dismissible announcement band can be displayed above the header. Absolute consistency across all pages is critical. The header is in transition. Pages on arxiv.org use the [transitional header](#transitional-header) from `templates/` now, and will move to the [aspirational header](#aspirational-header) after the migration. Internal pages have their own header and variations, see [Internal header](#internal-headers) for an example. The bars under the header, such as secondary navigation and steps, are on [Navigation](navigation.md).
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.

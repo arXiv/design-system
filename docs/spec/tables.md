@@ -1,12 +1,12 @@
 ---
 page: tables.html
 title: "Tables"
-summary: "The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours."
+summary: "The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by public pages and internal tools; internal tools change only the colours."
 stylesheet: design-system.css
 components:
   - id: the-table
     title: "The table"
-    summary: "One table, `.ds-table`, on the public site and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not."
+    summary: "One table, `.ds-table`, on public pages and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not."
     classes:
       - name: ".ds-table"
         does: "The whole table, on the `<table>` element: the frame, the row dividers and the row hover. Directly inside a card it has no frame of its own; the card is the frame."
@@ -105,14 +105,14 @@ rules:
 
 # Tables
 
-The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by the public site and internal tools; internal tools change only the colours.
+The table and what can be built on it: sortable columns, filters, row selection and bulk actions. All of it is shared by public pages and internal tools; internal tools change only the colours.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
 
 ## The table
 
-One table, `.ds-table`, on the public site and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not.
+One table, `.ds-table`, on public pages and in internal tools. It has row dividers and a row hover. The header row comes from the markup: a table with a `<thead>` has one, in condensed uppercase body-colour text on the warm tint, and a table without one does not.
 
 **With a header row**
 
