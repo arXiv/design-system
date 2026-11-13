@@ -148,10 +148,10 @@ def check_tokens_defined():
 # DESIGN-POLICIES: "Do not introduce one-off hex values." A colour written
 # straight into a rule, instead of into a token, is one. White and black are
 # allowed, at any opacity, and so are the component-internal constants listed
-# in docs/color-mapping.md. The list is read from there so the exceptions are
-# written down once.
+# on docs/colors.html, in the Tier 2 rule. The list is read from there so the
+# exceptions are written down once.
 COLOUR = re.compile(r"#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?)\([^)]*\)")
-CONSTANTS_DOC = REPO / "docs" / "color-mapping.md"
+CONSTANTS_DOC = REPO / "docs" / "colors.html"
 
 
 def rgb(colour):
@@ -168,13 +168,13 @@ def rgb(colour):
 
 def check_colours_from_tokens():
     rule = "colours come from tokens (white, black and listed constants allowed)"
-    line = next((l for l in CONSTANTS_DOC.read_text().splitlines()
-                 if "**Component-internal constants**" in l), None)
-    if line is None:
+    m = re.search(r"Tier 2 — component-internal constants</strong>(.*?)<strong>Tier 3",
+                  CONSTANTS_DOC.read_text(), flags=re.S)
+    if m is None:
         return fail(rule, str(CONSTANTS_DOC.relative_to(REPO)),
-                    "no **Component-internal constants** line to read the exceptions from")
+                    "no Tier 2 rule to read the exceptions from")
     allowed = {(255, 255, 255), (0, 0, 0)}
-    allowed |= {rgb(c) for c in COLOUR.findall(" ".join(re.findall(r"`([^`]+)`", line)))}
+    allowed |= {rgb(c) for c in COLOUR.findall(" ".join(re.findall(r"<code>([^<]+)</code>", m.group(1))))}
     n = 0
     for f in CSS_FILES:
         # Blank comments rather than drop them, so line numbers stay true.
@@ -189,7 +189,7 @@ def check_colours_from_tokens():
                     at = text[: d.start(2) + c.start()].count("\n") + 1
                     fail(rule, f"{f.relative_to(REPO)}:{at}",
                          f"{d.group(1)}: {c.group(0)} — use a token, or list it as a "
-                         "component-internal constant in docs/color-mapping.md")
+                         "component-internal constant on docs/colors.html")
     if rule not in FAILS:
         ok(rule, f"{n} raw colours, all allowed")
 
@@ -455,6 +455,31 @@ def check_classes_documented():
         ok(rule, f"{len(classes)} classes, {len(SCRIPT_OWNED)} script-owned")
 
 
+# ── Every class the docs name exists ──
+# The other direction: a class a page or a rule document tells builders to
+# write must be in a stylesheet or a shared script. A documented class that
+# exists nowhere is written by a builder and does nothing.
+def check_documented_classes_exist():
+    rule = "every .ds- or .is- class the docs name exists"
+    known = set()
+    for f in list((REPO / "docs").glob("*.css")) + list((REPO / "templates").rglob("*.css")):
+        known |= set(re.findall(r"\.((?:ds|is)-[\w-]+)", f.read_text(encoding="utf-8", errors="replace")))
+    for f in list((REPO / "docs").glob("*.js")) + list((REPO / "templates").rglob("*.js")):
+        known |= set(re.findall(r"\b((?:ds|is)-[\w-]+)", f.read_text(encoding="utf-8", errors="replace")))
+    docs = [p for p in (REPO / "docs").rglob("*.html") if p.name != "doc.html"]
+    docs += [REPO / "AGENTS.md"] + list((REPO / "docs").glob("*.md"))
+    n = 0
+    for path in docs:
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for m in re.finditer(r"(?<![\w-])\.((?:ds|is)-[a-z0-9-]*[a-z0-9])", text):
+            n += 1
+            if m.group(1) not in known:
+                line = text[: m.start()].count("\n") + 1
+                fail(rule, f"{path.relative_to(REPO)}:{line}", f".{m.group(1)} is in no stylesheet or script")
+    if rule not in FAILS:
+        ok(rule, f"{n} mentions")
+
+
 # ── Section anchors are generated and current ──
 # Delegates to gen-anchors.py so the rule lives in one place: the script that
 # writes the ids is the script that knows what they should be.
@@ -577,6 +602,7 @@ def main():
     check_no_changelog_prose()
     check_plain_words()
     check_classes_documented()
+    check_documented_classes_exist()
     check_section_anchors()
     check_generated_current()
     print()
