@@ -167,6 +167,12 @@
           <textarea class="ds-input is-invalid" id="f-reason" required aria-required="true" aria-invalid="true" aria-describedby="f-reason-err"></textarea>
           <p class="field-error" id="f-reason-err">Give a reason. It appears publicly on the abstract page.</p>
         </div>
+        <fieldset class="ds-field">
+          <legend class="ds-label">License</legend>
+          <label class="ds-check"><input type="radio" name="f-license" value="cc-by" checked><span>CC BY 4.0</span></label>
+          <label class="ds-check"><input type="radio" name="f-license" value="cc-by-sa"><span>CC BY-SA 4.0</span></label>
+          <label class="ds-check"><input type="radio" name="f-license" value="arxiv"><span>arXiv non-exclusive license</span></label>
+        </fieldset>
 
         <label class="ds-check">
           <input type="checkbox" checked>
@@ -202,6 +208,12 @@
     &lt;label class="ds-label" for="f-orcid"&gt;ORCID iD&lt;span class="label-optional"&gt;(optional)&lt;/span&gt;&lt;/label&gt;
     &lt;input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000"&gt;
   &lt;/div&gt;
+  &lt;fieldset class="ds-field"&gt;
+    &lt;legend class="ds-label"&gt;License&lt;/legend&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="radio" name="license" value="cc-by" checked&gt;&lt;span&gt;CC BY 4.0&lt;/span&gt;&lt;/label&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="radio" name="license" value="cc-by-sa"&gt;&lt;span&gt;CC BY-SA 4.0&lt;/span&gt;&lt;/label&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="radio" name="license" value="arxiv"&gt;&lt;span&gt;arXiv non-exclusive license&lt;/span&gt;&lt;/label&gt;
+  &lt;/fieldset&gt;
   &lt;label class="ds-check"&gt;
     &lt;input type="checkbox" checked&gt;
     &lt;span&gt;Email me when the moderators respond&lt;/span&gt;
@@ -233,6 +245,8 @@
             <dd>Help text, after the control. Give it an <code>id</code> and name it in the
             control's <code>aria-describedby</code>. Say what good input looks like <em>before</em>
             someone gets it wrong.</dd>
+            <dt>&lt;fieldset&gt;, &lt;legend class="ds-label"&gt;</dt>
+            <dd>A group of controls that answer one question, such as a radio group: a <code>&lt;fieldset class="ds-field"&gt;</code> whose <code>&lt;legend&gt;</code> asks it, then one <code>.ds-check</code> per option, each with <code>type="radio"</code> and the same <code>name</code>. The base styles take away the browser's box. Keep the legend short: a screen reader may read it before every option.</dd>
             <dt>.ds-check</dt>
             <dd>A checkbox or radio row: a <code>&lt;label&gt;</code> holding the native control and
             a <code>&lt;span&gt;</code> with the text. The whole label is the target.</dd>
@@ -472,8 +486,9 @@
             No <code>aria-invalid</code>.</dd>
             <dt>.field-error, .field-warning, .field-info</dt>
             <dd>The message, <strong>after</strong> the control and after the hint when there is one, one class per tier. Needs an
-            <code>id</code> that the control's <code>aria-describedby</code> names. Keep it
-            <code>hidden</code> until it applies.</dd>
+            <code>id</code> that the control's <code>aria-describedby</code> names. Write the message, and add its
+            <code>id</code> to <code>aria-describedby</code>, only while it applies: a screen reader reads a
+            described message even when it is hidden.</dd>
             <dt>.field-messages</dt>
             <dd>An <code>&lt;ol&gt;</code> when one field has several problems. Each
             <code>&lt;li&gt;</code> takes its own tier class, and the list takes the <code>id</code>
@@ -923,7 +938,8 @@
       <li><strong>Connect every hint and message to its control.</strong> Give each
       <code>.ds-hint</code> and each message an <code>id</code>, and list them in the control's
       <code>aria-describedby</code>. Without that a screen reader announces the field and nothing
-      else.</li>
+      else. A message is in the page, and named there, only while it applies; a hidden message that
+      is still named is read out on a valid field.</li>
       <li><strong>Use <code>aria-invalid</code> for errors only.</strong> Set
       <code>aria-invalid="true"</code> on a control in the error tier and remove it when the error
       clears. A warning is not invalid, and an info message is not a problem at all.</li>

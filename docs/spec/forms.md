@@ -20,6 +20,8 @@ components:
         does: "The control. Goes on `input`, `select` and `textarea` alike."
       - name: ".ds-hint"
         does: "Help text, after the control. Give it an `id` and name it in the control's `aria-describedby`. Say what good input looks like *before* someone gets it wrong."
+      - name: "<fieldset>, <legend class=\"ds-label\">"
+        does: "A group of controls that answer one question, such as a radio group: a `<fieldset class=\"ds-field\">` whose `<legend>` asks it, then one `.ds-check` per option, each with `type=\"radio\"` and the same `name`. The base styles take away the browser's box. Keep the legend short: a screen reader may read it before every option."
       - name: ".ds-check"
         does: "A checkbox or radio row: a `<label>` holding the native control and a `<span>` with the text. The whole label is the target."
     notes:
@@ -64,7 +66,7 @@ components:
       - name: ".is-info"
         does: "On the control, for the info tier: arXiv changed the value and is telling the author. No `aria-invalid`."
       - name: ".field-error, .field-warning, .field-info"
-        does: "The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Keep it `hidden` until it applies."
+        does: "The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Write the message, and add its `id` to `aria-describedby`, only while it applies: a screen reader reads a described message even when it is hidden."
       - name: ".field-messages"
         does: "An `<ol>` when one field has several problems. Each `<li>` takes its own tier class, and the list takes the `id` the control points at. The control takes the class of the worst tier in the list."
       - name: "[disabled]"
@@ -152,7 +154,7 @@ rules:
   - "**Disabled, not missing.** An action that is unavailable renders disabled, with the reason in a tooltip, or as help text under the actions where there is room (see [Tooltip](#tooltip)). The reader can see it exists and is not left wondering what is happening."
   - "**Every control has a label.** Put a real `<label for>` on every control, pointing at the control's `id`. Hide it with `.is-sr-only` when there is no room for it; do not leave it out."
   - "**Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required=\"true\"` on every required control: required fields have no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`."
-  - "**Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else."
+  - "**Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else. A message is in the page, and named there, only while it applies; a hidden message that is still named is read out on a valid field."
   - "**Use `aria-invalid` for errors only.** Set `aria-invalid=\"true\"` on a control in the error tier and remove it when the error clears. A warning is not invalid, and an info message is not a problem at all."
   - "**Say the tier in words.** Colour and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix."
   - "**Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the summary, so a screen reader reads the count and the list before anything else, or to the first invalid field when the form has no summary, such as a compact form."
@@ -190,6 +192,12 @@ A field is a label (for example, Email address), a control (for example, input f
     <label class="ds-label" for="f-orcid">ORCID iD<span class="label-optional">(optional)</span></label>
     <input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000">
   </div>
+  <fieldset class="ds-field">
+    <legend class="ds-label">License</legend>
+    <label class="ds-check"><input type="radio" name="license" value="cc-by" checked><span>CC BY 4.0</span></label>
+    <label class="ds-check"><input type="radio" name="license" value="cc-by-sa"><span>CC BY-SA 4.0</span></label>
+    <label class="ds-check"><input type="radio" name="license" value="arxiv"><span>arXiv non-exclusive license</span></label>
+  </fieldset>
   <label class="ds-check">
     <input type="checkbox" checked>
     <span>Email me when the moderators respond</span>
@@ -207,6 +215,7 @@ A field is a label (for example, Email address), a control (for example, input f
 - `.label-optional` — On the label of an *optional* field, holding the word `(optional)`. Required fields have no marker; they take `required` and `aria-required="true"` on the control instead.
 - `.ds-input` — The control. Goes on `input`, `select` and `textarea` alike.
 - `.ds-hint` — Help text, after the control. Give it an `id` and name it in the control's `aria-describedby`. Say what good input looks like *before* someone gets it wrong.
+- `<fieldset>, <legend class="ds-label">` — A group of controls that answer one question, such as a radio group: a `<fieldset class="ds-field">` whose `<legend>` asks it, then one `.ds-check` per option, each with `type="radio"` and the same `name`. The base styles take away the browser's box. Keep the legend short: a screen reader may read it before every option.
 - `.ds-check` — A checkbox or radio row: a `<label>` holding the native control and a `<span>` with the text. The whole label is the target.
 
 > Field widths are set by the type of control, on the assumption that the element already tells you about how much someone will type. If you need to override a default width, two classes are available (see [Field width](#field-width)).
@@ -302,7 +311,7 @@ Fields can be in three possible states: normal, validated, or disabled. Validati
 - `.is-invalid` — On the control, for the error tier. Pair with `aria-invalid="true"`.
 - `.is-warning` — On the control, for the warning tier. No `aria-invalid`: the value is accepted.
 - `.is-info` — On the control, for the info tier: arXiv changed the value and is telling the author. No `aria-invalid`.
-- `.field-error, .field-warning, .field-info` — The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Keep it `hidden` until it applies.
+- `.field-error, .field-warning, .field-info` — The message, **after** the control and after the hint when there is one, one class per tier. Needs an `id` that the control's `aria-describedby` names. Write the message, and add its `id` to `aria-describedby`, only while it applies: a screen reader reads a described message even when it is hidden.
 - `.field-messages` — An `<ol>` when one field has several problems. Each `<li>` takes its own tier class, and the list takes the `id` the control points at. The control takes the class of the worst tier in the list.
 - `[disabled]` — On the control. The label and hint stay; the control greys out and leaves the tab order. For a control that could explain why it is unavailable, prefer `aria-disabled="true"`, which looks the same; on a field, pair it with `readonly`, because `aria-disabled` alone does not stop typing. See the accessibility essentials.
 
@@ -509,7 +518,7 @@ What each tier means for the person filling the form in.
 
 - **Every control has a label.** Put a real `<label for>` on every control, pointing at the control's `id`. Hide it with `.is-sr-only` when there is no room for it; do not leave it out.
 - **Mark the optional fields, not the required ones.** Put `(optional)` inside the visible label of an optional field. Put `required` and `aria-required="true"` on every required control: required fields have no visual marker, so this pair is the only signal a screen reader gets. Never put either word in `aria-label` or `title`.
-- **Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else.
+- **Connect every hint and message to its control.** Give each `.ds-hint` and each message an `id`, and list them in the control's `aria-describedby`. Without that a screen reader announces the field and nothing else. A message is in the page, and named there, only while it applies; a hidden message that is still named is read out on a valid field.
 - **Use `aria-invalid` for errors only.** Set `aria-invalid="true"` on a control in the error tier and remove it when the error clears. A warning is not invalid, and an info message is not a problem at all.
 - **Say the tier in words.** Colour and a border are never the only signal (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden “Error:” or “Warning:” prefix.
 - **Validate on submit, then move focus.** Do not tell someone they are wrong while they are still typing. Once a field is invalid, re-check it on every `input` event so the error clears the moment it is fixed. When submission fails, move focus to the summary, so a screen reader reads the count and the list before anything else, or to the first invalid field when the form has no summary, such as a compact form.
