@@ -15,7 +15,7 @@ components:
       - name: ".ds-site-footer-main"
         does: "The main column: the acknowledgement line, then the link row."
       - name: ".ack-member-inline"
-        does: "The reader's member institution, after “member institutions”, when arXiv recognises the network they are on, such as a campus: the template's `member_institution`, which the [templates README](../doc.html?src=templates/README.md) describes. Empty for an anonymous reader. The aspirational footer below shows one."
+        does: "The reader's member institution, after “member institutions”, when arXiv recognizes the network they are on, such as a campus: the template's `member_institution`, which the [templates README](../doc.html?src=templates/README.md) describes. Empty for an anonymous reader. The aspirational footer below shows one."
       - name: ".ds-site-footer-links"
         does: "The link row, on a `<nav aria-label=\"Site navigation\">`. Plain `<a>` elements that wrap as a line; underlined on hover only."
       - name: ".ds-site-footer-sep"
@@ -31,7 +31,7 @@ components:
 rules:
   - "Wording has been carefully workshopped by leadership and must maintain an exact-match to the approved deployment."
   - "Which links the footer includes is set in [Design policies](../doc.html?src=docs/DESIGN-POLICIES.md)."
-  - "Type sizes are rem so browser font-size overrides propagate (see [accessibility priorities](../doc.html?src=docs/accessibility-priorities.md))."
+  - "Type sizes are rem so browser font-size overrides propagate (see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md), *Magnification*)."
   - "The stylesheet hides the footer in print, so only the content prints, not the chrome."
   - "Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied."
   - "**Use appropriate landmarks.** The unit is a real `<footer>`, and the link row is a `<nav aria-label=\"Site navigation\">`, so a screen reader user can jump to either one from a list of landmarks."
@@ -78,7 +78,7 @@ The footer in production now. A page includes it from `templates/` rather than c
 - `.ds-site-footer` — The whole unit, on a `<footer>` element. Canvas ground with a hairline rule above it; hidden in print.
 - `.ds-site-footer-grid` — The row that holds the footer's columns. Columns that do not fit side by side wrap onto their own lines.
 - `.ds-site-footer-main` — The main column: the acknowledgement line, then the link row.
-- `.ack-member-inline` — The reader's member institution, after “member institutions”, when arXiv recognises the network they are on, such as a campus: the template's `member_institution`, which the [templates README](../doc.html?src=templates/README.md) describes. Empty for an anonymous reader. The aspirational footer below shows one.
+- `.ack-member-inline` — The reader's member institution, after “member institutions”, when arXiv recognizes the network they are on, such as a campus: the template's `member_institution`, which the [templates README](../doc.html?src=templates/README.md) describes. Empty for an anonymous reader. The aspirational footer below shows one.
 - `.ds-site-footer-links` — The link row, on a `<nav aria-label="Site navigation">`. Plain `<a>` elements that wrap as a line; underlined on hover only.
 - `.ds-site-footer-sep` — The dot between two links. A `<span>` holding a middle dot, with `aria-hidden="true"`.
 - `target="_blank"` — Only on the Operational Status link, which leaves arxiv.org. It takes `rel="noopener noreferrer"` and a `.is-sr-only` “(opens in new tab)” inside the link text.
@@ -119,7 +119,7 @@ The footer arxiv.org will move to. It differs from the transitional footer in tw
 
 ### Type and print
 
-- Type sizes are rem so browser font-size overrides propagate (see [accessibility priorities](../doc.html?src=docs/accessibility-priorities.md)).
+- Type sizes are rem so browser font-size overrides propagate (see [DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md), *Magnification*).
 - The stylesheet hides the footer in print, so only the content prints, not the chrome.
 - Adding an image or icon? Be sure it has a max-width or height so that it does not print or flash full size before styles are applied.
 

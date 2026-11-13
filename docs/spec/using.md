@@ -20,13 +20,13 @@ components:
     summary: "This is all you need for a public arXiv page. Copy it and follow the comments."
     rules:
       - "**`class=\"ds-page\"` on the body is not optional.** A page without it gets components on unstyled ground. The foundation hangs on the class rather than on `<body>` so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten."
+      - "**One `<main>`, with `id=\"main\"`, is the page container.** The skip link, before the header, goes to it, and the header and footer sit outside it. See [Hosting the header](header.md#hosting-the-header) and [Site footer](footer.md)."
   - id: internal-tools
     title: "Internal tools"
     group: "Building on the foundation"
     summary: "When building internal tools like arXiv Check or Admin Console pages, one class is added to `<html>` and a tier 2 stylesheet is added to the `<head>` section, in this order."
     rules:
-      - "internal-tools.css does not work on its own: `internal-tools.css` is **not** a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all."
-      - "**The accent color defines internal pages.** Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment."
+      - "**The accent color defines internal pages.** Access Lime is highly differentiated from the Open Blue of public pages and clearly signals that you are in a different environment."
       - "**All you need is a parent class.** `.ds-internal` re-points `--ds-accent` and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on `<html>`. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough."
       - "**Internal tools are compact.** `.ds-internal` also sets less padding inside table cells and cards, through the density tokens (`--ds-cell-padding`, `--ds-card-padding`), so a dense screen holds more. There is no compact class: the density comes with the surface."
       - "**Never copy a component into the tier 2 stylesheet to restyle it.** If it needs to look different on your surface, what you need is a token change, not a second copy. A component that exists twice creates drift and lots of sad devs."
@@ -37,8 +37,8 @@ components:
     summary: "`.ds-container` is a grid with various options for managing section layout."
     rules:
       - "**Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does."
-      - "**Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
-      - "**Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it."
+      - "**Full width.** A colored band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments."
+      - "**Page width.** Every page has one width. A dense internal tool that needs more uses the [wide page](layouts.md#wide-page); nothing else changes the width."
   - id: combining-components
     title: "Combining components"
     group: "Building on the foundation"
@@ -100,14 +100,21 @@ This is all you need for a public arXiv page. Copy it and follow the comments.
 </head>
 
 <body class="ds-page">
-  <div class="ds-container">
+  <a class="ds-skip-link" href="#main">Skip to main content</a>
+  <!-- the site header, included from templates/: see Site header -->
+
+  <main id="main" class="ds-container">
     <!-- add section elements as direct children here -->
-  </div>
+  </main>
+
+  <!-- the site footer, included from templates/: see Site footer -->
 </body>
 </html>
 ```
 
 **Rule.** **`class="ds-page"` on the body is not optional.** A page without it gets components on unstyled ground. The foundation hangs on the class rather than on `<body>` so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten.
+
+**Rule.** **One `<main>`, with `id="main"`, is the page container.** The skip link, before the header, goes to it, and the header and footer sit outside it. See [Hosting the header](header.md#hosting-the-header) and [Site footer](footer.md).
 
 ## Internal tools  (Building on the foundation)
 
@@ -122,9 +129,7 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 <script src="../theme.js"></script>
 ```
 
-**Rule.** internal-tools.css does not work on its own: `internal-tools.css` is **not** a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all.
-
-**Rule.** **The accent color defines internal pages.** Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.
+**Rule.** **The accent color defines internal pages.** Access Lime is highly differentiated from the Open Blue of public pages and clearly signals that you are in a different environment.
 
 **Rule.** **All you need is a parent class.** `.ds-internal` re-points `--ds-accent` and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on `<html>`. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough.
 
@@ -139,17 +144,17 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 `.ds-container` is a grid with various options for managing section layout.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
 <section>…</section>                   <!-- content track -->
 <section class="ds-full ds-zone-secondary">…</section>  <!-- edge to edge, tinted -->
-</div>
+</main>
 ```
 
 **Rule.** **Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.
 
-**Rule.** **Full width.** A coloured band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
+**Rule.** **Full width.** A colored band that runs edge to edge gets `.ds-full` with a zone class (see [Secondary zones](layouts.md#secondary-zones)). Do not add negative margins or use viewport units for placement. Using a calculation like `calc(-50vw + 50%)` overhangs the section band and causes the page to scroll sideways in some environments.
 
-**Rule.** **Page width.** Width comes from `--ds-width-page` and `--ds-gutter`. Need to change the page width? Repoint one of the tokens, do not add a second width beside it.
+**Rule.** **Page width.** Every page has one width. A dense internal tool that needs more uses the [wide page](layouts.md#wide-page); nothing else changes the width.
 
 ## Combining components  (Building on the foundation)
 

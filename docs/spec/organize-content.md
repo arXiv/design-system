@@ -24,7 +24,7 @@ components:
     summary: "Each kind of secondary content has a home that keeps the main content high and wide. Compare at least two homes for each piece, and keep the one that leaves the main content highest and widest."
     rules:
       - "**A line or two: a line below the main content.** A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion."
-      - "**A labelled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two."
+      - "**A labeled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two."
       - "**The rest of a list whose first items matter most: [show more](progressive-disclosure.md#show-more)**, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole."
       - "**A list or explanation the reader opens when needed: a [popover](progressive-disclosure.md#popover) or a [modal](modals.md)**, opened from a button with a visible label, such as “Categories (40)” or “About these charts” beside the heading; an icon on its own is easy to miss. A popover opens beside its button and leaves the page usable; a modal takes over the page while the reader looks through it."
       - "**A sentence about one label or control: a [tooltip](forms.md#tooltip).**"
@@ -33,9 +33,9 @@ components:
     title: "Where controls go"
     summary: "A control sits with what it changes. The more of the site it changes, the higher it sits on the page."
     rules:
-      - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
+      - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centered space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
       - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
-      - "**A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Secondary zones](layouts.md#secondary-zones)."
+      - "**A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones)."
       - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
       - "**Selecting items in a list: the checkbox at the start of each item, and the actions on the selection in the set's header bar.** A control for one item only goes at the end of that item, on the right. See [Selecting items in a list](tables.md#selecting-items-in-a-list)."
       - "**A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's."
@@ -43,14 +43,14 @@ components:
     title: "Long pages"
     summary: "Long pages need special consideration of their organization. The longer the page, the more we need to think about [navigation](navigation.md), defining [page zones](layouts.md#secondary-zones), and [not losing your place](../references.html#getting-back-after-a-jump)."
     rules:
-      - "**The contents bar hangs from the opening band.** A page with a contents bar has an opening band with its title and an introduction of one to five sentences. See [Secondary zones](layouts.md#secondary-zones). A paper is the exception: its contents bar holds the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar))."
-      - "**On a page with a contents bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own."
+      - "**The TOC bar hangs from the opening band.** See [Secondary zones](layouts.md#secondary-zones)."
+      - "**On a page with a TOC bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own."
 rules:
   - "**Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout."
   - "**Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters."
-  - "**A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the contents bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed."
+  - "**A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the TOC bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed."
   - "**In a set that uses the opening band, every page has an introduction**: one to five sentences that say what the whole page is for. Use the page's own text only if it introduces the whole page; a sentence that opens a section introduces that section, not the page. Otherwise write a sentence or two."
-  - "**A page outside a set, or in a set without the band, decides for itself.** Without the band it has no contents bar and no introduction."
+  - "**A page outside a set, or in a set without the band, decides for itself.** Without the band it has no TOC bar and no introduction."
   - "**When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading."
   - "**A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing."
   - "**A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading."
@@ -99,7 +99,7 @@ Each kind of secondary content has a home that keeps the main content high and w
 
 **Rule.** **A line or two: a line below the main content.** A short note, such as what the figures count, reads as a footnote. It needs no heading and no accordion.
 
-**Rule.** **A labelled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two.
+**Rule.** **A labeled section the reader may want: an [accordion](progressive-disclosure.md#accordion)** below the main content. An accordion holds more than a line or two.
 
 **Rule.** **The rest of a list whose first items matter most: [show more](progressive-disclosure.md#show-more)**, such as authors after the first eight. A list of equal items, such as the categories a report covers, is shown or hidden whole.
 
@@ -113,11 +113,11 @@ Each kind of secondary content has a home that keeps the main content high and w
 
 A control sits with what it changes. The more of the site it changes, the higher it sits on the page.
 
-**Rule.** **A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centred space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules).
+**Rule.** **A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centered space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules).
 
 **Rule.** **A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation).
 
-**Rule.** **A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Secondary zones](layouts.md#secondary-zones).
+**Rule.** **A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones).
 
 **Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
 
@@ -129,17 +129,17 @@ A control sits with what it changes. The more of the site it changes, the higher
 
 Long pages need special consideration of their organization. The longer the page, the more we need to think about [navigation](navigation.md), defining [page zones](layouts.md#secondary-zones), and [not losing your place](../references.html#getting-back-after-a-jump).
 
-**Rule.** **The contents bar hangs from the opening band.** A page with a contents bar has an opening band with its title and an introduction of one to five sentences. See [Secondary zones](layouts.md#secondary-zones). A paper is the exception: its contents bar holds the paper's tools and sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar)).
+**Rule.** **The TOC bar hangs from the opening band.** See [Secondary zones](layouts.md#secondary-zones).
 
-**Rule.** **On a page with a contents bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own.
+**Rule.** **On a page with a TOC bar, all content sits under headings**, so the bar lists every part of the page. An introduction longer than five sentences keeps its first sentences in the band; the rest goes under a heading of its own.
 
 ## Rules
 
 - **Choose typographic and proximity-based organization patterns first**, and reach for visible containers only when called for. This is the organizing principle to follow throughout.
 - **Use only the questions the content raises.** When a page uses more than one layer, they stack in this order: navigation, then tabs, then filters.
-- **A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the contents bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed.
+- **A page in a set follows the set.** Pages in one section of a site, such as arXiv's help pages, share one template: the opening band and the TOC bar are on every page of the set or on none. Before choosing, find out whether the page belongs to a set and what the set already uses. If no one has said, ask; if you cannot ask, say what you assumed.
 - **In a set that uses the opening band, every page has an introduction**: one to five sentences that say what the whole page is for. Use the page's own text only if it introduces the whole page; a sentence that opens a section introduces that section, not the page. Otherwise write a sentence or two.
-- **A page outside a set, or in a set without the band, decides for itself.** Without the band it has no contents bar and no introduction.
+- **A page outside a set, or in a set without the band, decides for itself.** Without the band it has no TOC bar and no introduction.
 - **When a filter sets what the whole page is about, the page heading names the choice**, as in “Charts for cs”, and so does the page's `<title>`, so tabs, history and bookmarks tell the choices apart. With nothing chosen, the heading is the view alone. A filter that narrows one set on the page never changes the heading.
 - **A page with little on it needs no section headings.** The page heading names it; a heading such as “Subject groups” under “All sections” adds nothing.
 - **A link in the header navigation is not repeated on the page**, and no link on the page repeats the page heading.

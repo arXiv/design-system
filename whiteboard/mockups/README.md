@@ -38,7 +38,7 @@ Mockups iterate quickly. Patterns that stabilize get promoted to the canonical d
 |---|---|
 | Validated component CSS + tokens | [`../docs/design-system.css`](../../docs/design-system.css) |
 | Component demo pages | [`../docs/public/`](../../docs/public/) (`buttons.html`, `link-styles.html`, etc.) |
-| Color palette and rules | [`../docs/color-mapping.md`](../../docs/color-mapping.md) |
+| Color palette and rules | [`../docs/colors.html`](../../docs/colors.html) |
 | Typography system | [`../docs/typography.md`](../../docs/typography.md) |
 | Non-negotiable design rules | [`../docs/DESIGN-POLICIES.md`](../../docs/DESIGN-POLICIES.md) |
 | Pattern roadmap (what's promoted, what's queued) | [`../docs/public/README.md`](../../docs/public/README.md) |

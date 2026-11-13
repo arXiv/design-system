@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html" aria-current="page">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -114,6 +112,7 @@
           <ol>
             <li><a href="#core-linked-files">Core linked files</a></li>
             <li><a href="#basic-page-markup">Basic page markup</a></li>
+            <li><a href="#building-on-the-foundation">Building on the foundation</a></li>
             <li><a href="#internal-tools">Internal tools</a></li>
             <li><a href="#container-options">Container options</a></li>
             <li><a href="#combining-components">Combining components</a></li>
@@ -165,14 +164,20 @@
 &lt;/head&gt;
 
 &lt;body class="ds-page"&gt;
-  &lt;div class="ds-container"&gt;
+  &lt;a class="ds-skip-link" href="#main"&gt;Skip to main content&lt;/a&gt;
+  &lt;!-- the site header, included from templates/: see Site header --&gt;
+
+  &lt;main id="main" class="ds-container"&gt;
     &lt;!-- add section elements as direct children here --&gt;
-  &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;!-- the site footer, included from templates/: see Site footer --&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
     <ul class="notes">
       <li><strong><code>class="ds-page"</code> on the body is not optional.</strong> A page without it gets components on unstyled ground. The foundation hangs on the class rather than on <code>&lt;body&gt;</code> so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten.</li>
+      <li><strong>One <code>&lt;main&gt;</code>, with <code>id="main"</code>, is the page container.</strong> The skip link, before the header, goes to it, and the header and footer sit outside it. See <a href="header.html#hosting-the-header">Hosting the header</a> and <a href="footer.html">Site footer</a>.</li>
     </ul>
 
     <div class="ds-note ds-note--essential">
@@ -192,7 +197,7 @@
   </section>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Building on the foundation</h2>
+  <h2 id="building-on-the-foundation">Building on the foundation</h2>
 
   <!-- ── Internal tools ── -->
   <section>
@@ -206,16 +211,13 @@
 &lt;link rel="stylesheet" href="internal-tools.css"&gt;      &lt;!-- tier 2 --&gt;
 &lt;script src="../theme.js"&gt;&lt;/script&gt;</code></pre>
 
-    <div class="ds-alert ds-alert--error">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">internal-tools.css does not work on its own</p>
-        <p><code>internal-tools.css</code> is <strong>not</strong> a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all.</p>
-      </div>
+    <div class="ds-note ds-note--essential">
+      <h4 class="ds-note-label">internal-tools.css does not work on its own</h4>
+      <p><code>internal-tools.css</code> is <strong>not</strong> a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all.</p>
     </div>
 
     <ul class="notes">
-      <li><strong>The accent color defines internal pages.</strong> Access Lime is highly differentiated from the public site's Open Blue and clearly signals that you are in a different environment.</li>
+      <li><strong>The accent color defines internal pages.</strong> Access Lime is highly differentiated from the Open Blue of public pages and clearly signals that you are in a different environment.</li>
       <li><strong>All you need is a parent class.</strong> <code>.ds-internal</code> re-points <code>--ds-accent</code> and its family to Access Lime, and every component inside it that reaches for the accent follows without being told. It works on any parent, so a page that shows both surfaces puts it on a wrapper instead of on <code>&lt;html&gt;</code>. There is no second copy of the button, the tag or the switch inside the tier 2 stylesheet: it is not needed. Just a handful of new styles and overrides, and that class on the wrapper, are enough.</li>
       <li><strong>Internal tools are compact.</strong> <code>.ds-internal</code> also sets less padding inside table cells and cards, through the density tokens (<code>--ds-cell-padding</code>, <code>--ds-card-padding</code>), so a dense screen holds more. There is no compact class: the density comes with the surface.</li>
       <li><strong>Never copy a component into the tier 2 stylesheet to restyle it.</strong> If it needs to look
@@ -232,15 +234,14 @@
 
     <ul class="notes">
       <li><strong>Sections.</strong> The container's direct children are <code>&lt;section&gt;</code> elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.</li>
-      <li><strong>Full width.</strong> A coloured band that runs edge to edge gets <code>.ds-full</code> with a zone class (see <a href="layouts.html#secondary-zones">Secondary zones</a>). Do not add negative margins or use viewport units for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
-      <li><strong>Page width.</strong> Width comes from <code>--ds-width-page</code> and <code>--ds-gutter</code>.
-      Need to change the page width? Repoint one of the tokens, do not add a second width beside it.</li>
+      <li><strong>Full width.</strong> A colored band that runs edge to edge gets <code>.ds-full</code> with a zone class (see <a href="layouts.html#secondary-zones">Secondary zones</a>). Do not add negative margins or use viewport units for placement. Using a calculation like <code>calc(-50vw + 50%)</code> overhangs the section band and causes the page to scroll sideways in some environments.</li>
+      <li><strong>Page width.</strong> Every page has one width. A dense internal tool that needs more uses the <a href="layouts.html#wide-page">wide page</a>; nothing else changes the width.</li>
     </ul>
 
-    <pre><code>&lt;div class="ds-container"&gt;
+    <pre><code>&lt;main class="ds-container"&gt;
 &lt;section&gt;&hellip;&lt;/section&gt;                   &lt;!-- content track --&gt;
 &lt;section class="ds-full ds-zone-secondary"&gt;&hellip;&lt;/section&gt;  &lt;!-- edge to edge, tinted --&gt;
-&lt;/div&gt;</code></pre>
+&lt;/main&gt;</code></pre>
   </section>
 
   <section>
@@ -254,7 +255,7 @@
   </section>
   </div>
 
-</div>
+</main>
 
 <script src="header.js" defer></script>
 <script src="tooltip.js" defer></script>

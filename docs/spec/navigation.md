@@ -9,9 +9,9 @@ components:
     summary: "A row of section links directly under the header, for an area that has its own sections, such as the account pages. It wraps onto a second line rather than scrolling sideways, so every section stays visible on a phone and at high zoom. Its links are tabs, in the same style as [tabs](progressive-disclosure.md#tabs) within a page: the current one is a box joined to what follows it, with the accent along its top."
     classes:
       - name: ".ds-subnav"
-        does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have. Hidden in print."
+        does: "A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role=\"tab\"`, which would promise arrow-key behavior that page links do not have. Hidden in print."
       - name: "aria-current=\"page\""
-        does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layouts.md#secondary-zones)."
+        does: "On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on color alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light gray in light mode) when the page opens with a [secondary band](layouts.md#secondary-zones)."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: two-levels-of-navigation
@@ -27,7 +27,7 @@ components:
       - name: "<script src=\"subnav.js\" defer>, .ds-subnav-views, .is-views-folded, .is-menu-row"
         does: "The script, once per page. It builds the View menu (`.ds-subnav-views`) from the row's links and sets the state classes on the row: `.is-views-folded` when the views do not fit beside the section menu, and `.is-menu-row` when the section menu takes a row of its own. It closes an open menu on Escape and on a click outside. Without the script the tabs wrap."
     notes:
-      - "The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colours."
+      - "The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colors."
     rules:
       - "**Two levels at most.** A third level is a sign the content needs restructuring."
       - "**Each row keeps the same links on every page it appears on.** Only the current link changes."
@@ -44,7 +44,7 @@ components:
       - name: "<a> for a complete step"
         does: "A link, with the check mark and `.is-sr-only` text “, completed”."
       - name: "aria-current=\"step\""
-        does: "On the link for the current step. Its name is bold, and its circle has a heavier border in the accent colour."
+        does: "On the link for the current step. Its name is bold, and its circle has a heavier border in the accent color."
       - name: ".ds-step-label"
         does: "The step's name, with the same name in `data-label`. Every step keeps the width of its name in bold, so the row does not move when the current step changes."
       - name: "<a> for an available step"
@@ -66,11 +66,11 @@ components:
       - name: ".ds-toc-menu"
         does: "The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`."
       - name: ".ds-toc-bar"
-        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. It comes directly after the page's opening band, a `.ds-zone-secondary` band with the title and an introduction, and sits on that band’s bottom edge; a page with the bar always has that band ([Secondary zones](layouts.md#secondary-zones)), except a paper, whose bar sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar)). By default the bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one ([Organize complex page content](organize-content.md#rules)), and whether it sticks is the developer’s call; a page keeps at most one sticky bar ([DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md))."
+        does: "The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. It comes directly after the page's opening band and sits on that band’s bottom edge ([Secondary zones](layouts.md#secondary-zones)). By default the bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one ([Organize complex page content](organize-content.md#rules)), and it sticks unless it has `.ds-toc-bar--scrolls`; a page keeps at most one sticky bar ([DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md))."
       - name: ".ds-toc-bar--scrolls"
         does: "The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport."
       - name: ".ds-toc-bar-inner"
-        does: "The bar’s three-slot grid, which keeps the control centred whatever sits beside it."
+        does: "The bar’s three-slot grid, which keeps the control centered whatever sits beside it."
       - name: "[data-toc-scope]"
         does: "Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`."
     rules:
@@ -91,10 +91,10 @@ components:
         does: "On a parent, it turns the current step’s circle Access Lime."
 rules:
   - "**Name each bar.** The `<nav>` takes an `aria-label` that names the area, such as “Account sections” or “Submission steps”, so a screen reader can tell it from the header's navigation."
-  - "**Mark the current page or step with `aria-current`.** The tab's shape and weight show it too, so the current section never depends on colour alone."
-  - "**Links, not tabs.** Each view is its own page, so the row holds plain links and never `role=\"tab\"`, which would promise arrow-key behaviour that page links do not have."
+  - "**Mark the current page or step with `aria-current`.** The tab's shape and weight show it too, so the current section never depends on color alone."
+  - "**Links, not tabs.** Each view is its own page, so the row holds plain links and never `role=\"tab\"`, which would promise arrow-key behavior that page links do not have."
   - "**The menus close from the keyboard.** The section menu and the View menu are `<details>`, so they open and close with no script; `subnav.js` also closes an open menu on Escape and returns focus to its summary."
-  - "**The TOC bar's list is a disclosure, not an ARIA menu.** `role=\"menu\"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role=\"menu\"` here would make a screen reader promise keyboard behaviour the component does not have."
+  - "**The TOC bar's list is a disclosure, not an ARIA menu.** `role=\"menu\"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role=\"menu\"` here would make a screen reader promise keyboard behavior the component does not have."
   - "**Mark where the reader is in the TOC bar.** `toc.js` gives the link to the current section `aria-current=\"location\"`."
   - "**Escape closes the TOC bar's list** and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it."
   - "**A step not available yet is not a tab stop.** It is a `<span>`, and its `.is-sr-only` text says “, not available yet”."
@@ -121,8 +121,8 @@ A row of section links directly under the header, for an area that has its own s
 </nav>
 ```
 
-- `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behaviour that page links do not have. Hidden in print.
-- `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on colour alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light grey in light mode) when the page opens with a [secondary band](layouts.md#secondary-zones).
+- `.ds-subnav` — A `<nav>` directly after the header, with an `aria-label` that names the area, such as “Account sections”. Plain links; never `role="tab"`, which would promise arrow-key behavior that page links do not have. Hidden in print.
+- `aria-current="page"` — On the link for the current page. It shows as a bold tab joined to the page below, with the accent along its top, so the current section never depends on color alone, and a screen reader announces it. The current tab takes the background of the zone below it: the page ground (white in light mode) above primary content, or the secondary zone's tint (light gray in light mode) when the page opens with a [secondary band](layouts.md#secondary-zones).
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)
 
@@ -152,7 +152,7 @@ An area with its own sections, each with several views, such as a report with pa
 - `<a> for each view` — The row's own links, after the section menu, in the [tab style](#secondary-navigation). Each view is its own page.
 - `<script src="subnav.js" defer>, .ds-subnav-views, .is-views-folded, .is-menu-row` — The script, once per page. It builds the View menu (`.ds-subnav-views`) from the row's links and sets the state classes on the row: `.is-views-folded` when the views do not fit beside the section menu, and `.is-menu-row` when the section menu takes a row of its own. It closes an open menu on Escape and on a click outside. Without the script the tabs wrap.
 
-> The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colours.
+> The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colors.
 
 **Rule.** **Two levels at most.** A third level is a sign the content needs restructuring.
 
@@ -180,7 +180,7 @@ The steps of one ordered process, such as a submission, and which one the reader
 - `.ds-subnav--steps` — On the secondary navigation bar. It holds an `<ol role="list">`, one `<li>` per step. It wraps onto more lines on a narrow screen, so every step stays visible.
 - `.ds-step-number` — The step number in a circle, hidden from screen readers because the list gives the position. A complete step shows a check mark instead of its number.
 - `<a> for a complete step` — A link, with the check mark and `.is-sr-only` text “, completed”.
-- `aria-current="step"` — On the link for the current step. Its name is bold, and its circle has a heavier border in the accent colour.
+- `aria-current="step"` — On the link for the current step. Its name is bold, and its circle has a heavier border in the accent color.
 - `.ds-step-label` — The step's name, with the same name in `data-label`. Every step keeps the width of its name in bold, so the row does not move when the current step changes.
 - `<a> for an available step` — A link with its number.
 - `<span> for a step not available yet` — A `<span>`, not a link, so it is not a tab stop. A dashed circle and `.is-sr-only` text “, not available yet”.
@@ -194,7 +194,7 @@ The steps of one ordered process, such as a submission, and which one the reader
 Need in-page navigation? The TOC bar is a row that holds a single disclosure control, which opens a list of the page’s sections. By default the bar is sticky: it stays at the top of the viewport while the reader scrolls through the page. It can scroll away with the page instead.
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <div class="ds-full ds-zone-secondary">
     <header class="ds-page-header">
       <h1>Page title</h1>
@@ -221,16 +221,16 @@ Need in-page navigation? The TOC bar is a row that holds a single disclosure con
   </div>
 
   <section>…</section>
-</div>
+</main>
 <script src="toc.js" defer></script>
 ```
 
 - `.ds-toc` — The control, a `<details>`. It works on its own anywhere, and it opens with JavaScript off.
 - `.ds-toc-trigger` — The `<summary>`. Holds the list icon, `.ds-toc-text` with its `.ds-toc-prefix`, and `.ds-toc-chevron`.
 - `.ds-toc-menu` — The list, a `<nav>` holding an `<ol>`. The link to the current section gets `.is-current`. A page whose sections are numbered puts each number in `.ds-toc-num`.
-- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. It comes directly after the page's opening band, a `.ds-zone-secondary` band with the title and an introduction, and sits on that band’s bottom edge; a page with the bar always has that band ([Secondary zones](layouts.md#secondary-zones)), except a paper, whose bar sits under the site header ([The TOC bar on a paper](papers.md#paper-toc-bar)). By default the bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one ([Organize complex page content](organize-content.md#rules)), and whether it sticks is the developer’s call; a page keeps at most one sticky bar ([DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md)).
+- `.ds-toc-bar` — The edge-to-edge row that holds the control. A direct child of `.ds-container`, with `.ds-full`. It comes directly after the page's opening band and sits on that band’s bottom edge ([Secondary zones](layouts.md#secondary-zones)). By default the bar is sticky: it keeps to the top of the viewport, where it becomes `.is-stuck` and tightens, and it sets `scroll-padding-top` so an anchor lands below it. On a viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one ([Organize complex page content](organize-content.md#rules)), and it sticks unless it has `.ds-toc-bar--scrolls`; a page keeps at most one sticky bar ([DESIGN-POLICIES](../doc.html?src=docs/DESIGN-POLICIES.md)).
 - `.ds-toc-bar--scrolls` — The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport.
-- `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centred whatever sits beside it.
+- `.ds-toc-bar-inner` — The bar’s three-slot grid, which keeps the control centered whatever sits beside it.
 - `[data-toc-scope]` — Optional, on `.ds-toc`: a selector for the element whose headings fill an empty list. Without it, `toc.js` reads `<main>`, or the whole page when there is no `<main>`.
 
 **Rule.** **Write the list.** Write the `<ol>` in the page, with one link for every `h2` and `h3` that has an `id`, so the list works with JavaScript off. `toc.js` fills an empty list when the page loads, as a fallback. These docs write theirs with `verification/gen-anchors.py`, which fills the `<ol>` from the page’s section headings; `--check` fails when the two disagree.
@@ -298,10 +298,10 @@ The secondary navigation and steps in an internal tool. `.ds-internal` on a pare
 ### Accessibility essentials
 
 - **Name each bar.** The `<nav>` takes an `aria-label` that names the area, such as “Account sections” or “Submission steps”, so a screen reader can tell it from the header's navigation.
-- **Mark the current page or step with `aria-current`.** The tab's shape and weight show it too, so the current section never depends on colour alone.
-- **Links, not tabs.** Each view is its own page, so the row holds plain links and never `role="tab"`, which would promise arrow-key behaviour that page links do not have.
+- **Mark the current page or step with `aria-current`.** The tab's shape and weight show it too, so the current section never depends on color alone.
+- **Links, not tabs.** Each view is its own page, so the row holds plain links and never `role="tab"`, which would promise arrow-key behavior that page links do not have.
 - **The menus close from the keyboard.** The section menu and the View menu are `<details>`, so they open and close with no script; `subnav.js` also closes an open menu on Escape and returns focus to its summary.
-- **The TOC bar's list is a disclosure, not an ARIA menu.** `role="menu"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role="menu"` here would make a screen reader promise keyboard behaviour the component does not have.
+- **The TOC bar's list is a disclosure, not an ARIA menu.** `role="menu"` is for application menus — the kind with arrow-key roving focus and menu items that are not links. A list of links is a disclosure, and W3C’s own guidance is to build it this way. Using `role="menu"` here would make a screen reader promise keyboard behavior the component does not have.
 - **Mark where the reader is in the TOC bar.** `toc.js` gives the link to the current section `aria-current="location"`.
 - **Escape closes the TOC bar's list** and returns focus to its control, but only when focus was inside the list — Escape pressed elsewhere on the page must not move it.
 - **A step not available yet is not a tab stop.** It is a `<span>`, and its `.is-sr-only` text says “, not available yet”.

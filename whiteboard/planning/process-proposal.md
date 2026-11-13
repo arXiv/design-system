@@ -15,7 +15,7 @@ After a work session, Claude sends back more than Shamsi can take in: long messa
 
 Anything longer goes in a file, and the message links to it.
 
-**2. One decision at a time.** Claude asks only what it cannot decide from the docs or a sensible default. Questions that can wait, wait, and are listed in `HANDOFF.md` instead of in the message.
+**2. One decision at a time.** Claude asks only what it cannot decide from the docs or a sensible default. Questions that can wait, wait, and are listed in `NEXT-STEPS.md` instead of in the message.
 
 **3. New prose goes in a file, not the message.** Every sentence Claude writes for the docs is still listed, so Shamsi can wordsmith, but in one file per session, linked from the message.
 

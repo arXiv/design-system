@@ -18,7 +18,7 @@ components:
         does: "Steps through the requests. It sits above the card, because it changes everything in it: the table and its actions change together when the reader moves on."
       - name: ".ds-card-bar"
         does: "The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.md#bulk-actions)."
-      - name: ".ds-table, .is-selected"
+      - name: ".ds-table"
         does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection)."
     notes:
       - "Only use a pager when the user can focus on just one item at a time without needing context from others in the set."
@@ -33,7 +33,7 @@ components:
       - name: ".ds-pagination-pages"
         does: "An `<ol>` of links, one for each page shown. The current page takes `aria-current=\"page\"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis. On a narrow screen the page numbers are hidden, and the pager is one row: Previous, the position, Next."
       - name: "a.ds-btn.ds-btn-text"
-        does: "Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled=\"true\"` and `.is-disabled`."
+        does: "Previous and Next are links, because each page has its own address. At either end of the list there is no page to go to, so that one is a `<button type=\"button\" disabled>` with the same classes: it keeps its place, and a screen reader skips it."
       - name: ".ds-pagination-label"
         does: "The words Previous and Next, on every pager. On a narrow screen only the arrows show, and screen readers still read the words."
       - name: ".ds-card-bar"
@@ -111,7 +111,7 @@ This component group is for moving through items one at a time, such as a modera
 
 - `.ds-pagination` — Steps through the requests. It sits above the card, because it changes everything in it: the table and its actions change together when the reader moves on.
 - `.ds-card-bar` — The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.md#bulk-actions).
-- `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection).
+- `.ds-table` — The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection).
 
 > Only use a pager when the user can focus on just one item at a time without needing context from others in the set.
 
@@ -122,7 +122,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 ```html
 <nav class="ds-pagination" aria-label="Search results pages">
   <span class="ds-pagination-position">1–50 of 8,291 results</span>
-  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+  <button type="button" class="ds-btn ds-btn-text" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></button>
   <ol class="ds-pagination-pages">
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
@@ -139,7 +139,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 - `.ds-pagination` — A `<nav>` with an `aria-label` saying which list it pages through. Holds the position, Previous, the page numbers and Next, in that order.
 - `.ds-pagination-position` — Which items are on this page and how many there are in all, such as “1–50 of 8,291 results”.
 - `.ds-pagination-pages` — An `<ol>` of links, one for each page shown. The current page takes `aria-current="page"`. Each link includes the word “Page” in `.is-sr-only` text, so a screen reader says “Page 2” and not “2”. A gap in the numbers is a list item holding an ellipsis. On a narrow screen the page numbers are hidden, and the pager is one row: Previous, the position, Next.
-- `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list the link has no `href` and takes `aria-disabled="true"` and `.is-disabled`.
+- `a.ds-btn.ds-btn-text` — Previous and Next are links, because each page has its own address. At either end of the list there is no page to go to, so that one is a `<button type="button" disabled>` with the same classes: it keeps its place, and a screen reader skips it.
 - `.ds-pagination-label` — The words Previous and Next, on every pager. On a narrow screen only the arrows show, and screen readers still read the words.
 
 ```html
@@ -194,7 +194,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 ```html
 <nav class="ds-pagination ds-pagination--top" aria-label="Search results pages">
   <span class="ds-pagination-position">1–50 of 8,291 results</span>
-  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+  <button type="button" class="ds-btn ds-btn-text" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></button>
   <ol class="ds-pagination-pages">
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>
@@ -212,7 +212,7 @@ Numbered pages are for a long list split across pages, such as search results, w
 </ol>
 <nav class="ds-pagination ds-pagination--bottom" aria-label="Search results pages, below the list">
   <span class="ds-pagination-position">1–50 of 8,291 results</span>
-  <a class="ds-btn ds-btn-text is-disabled" aria-disabled="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></a>
+  <button type="button" class="ds-btn ds-btn-text" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> <span class="ds-pagination-label">Previous</span></button>
   <ol class="ds-pagination-pages">
     <li><a href="?page=1" aria-current="page"><span class="is-sr-only">Page </span>1</a></li>
     <li><a href="?page=2"><span class="is-sr-only">Page </span>2</a></li>

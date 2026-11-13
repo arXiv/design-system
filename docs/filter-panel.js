@@ -7,7 +7,7 @@
  * gives it the row's background (--ds-menu-bg). From the dark header it also gets dark
  * mode, so its text and fields read on that background. A button in no row hangs the
  * panel from its own bottom edge. The script keeps aria-expanded on the button current.
- * Without it the browser centres the panel on the page's own surface.
+ * Without it the browser centers the panel on the page's own surface.
  */
 (function () {
   var ROWS = '.ds-site-header, .ds-card-bar';

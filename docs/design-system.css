@@ -22,17 +22,17 @@
    (DESIGN-POLICIES.md). Mockup-specific classes belong in the mockup's
    own <style> block.
 
-   Tokens live in `:root` as CSS custom properties (see color-mapping.md
+   Tokens live in `:root` as CSS custom properties (see colors.html
    for the full palette and why each color exists).
 
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
   /* ── Primitives: the named brand palette ───────────────────────────
-     These name a COLOUR. They never change between themes, and no
+     These name a Color. They never change between themes, and no
      component rule uses them — components use the semantic tokens below,
-     which name a JOB. Retuning a brand colour is one edit here.
-     Full palette with contrast figures: color-mapping.md. */
+     which name a JOB. Retuning a brand color is one edit here.
+     The palette, what each color is for, and safe pairings: colors.html. */
   --ds-repository-brown:  #1c1a17;
   --ds-library-grey:      #6b6459;
   --ds-open-blue:         #a5d6fe;
@@ -53,7 +53,7 @@
   --ds-danger-red-dark:   #e57373;   /* red on a dark ground: dark mode, and the code block in both */
   --ds-visited-purple:    #7b2fbe;
   /* Access Lime, the whole ramp. Tier 1 names it for the same reason it names
-     Open Blue's: a primitive names a COLOUR, and a colour is nameable whether
+     Open Blue's: a primitive names a Color, and a color is nameable whether
      or not this surface uses it. Naming it here is what lets a public page
      point at internal-tools material — an Internal variant note, the buttons
      page showing both accents — without copying a hex. Which surface takes it
@@ -66,11 +66,9 @@
   --ds-access-lime-wash:     #f0f9e8;
   --ds-access-lime-wash-2:   #e2f3d0;
   --ds-access-lime-wash-3:   #d4edb8;
-  --ds-access-lime-faded:    #e6efb8;
-  --ds-access-lime-faded-fg: #8a9a5a;
   --ds-smileybones-yellow:#ffe000;
 
-  /* ── Semantic: what each colour is FOR ─────────────────────────────
+  /* ── Semantic: what each color is FOR ─────────────────────────────
      Components use only these. A surface that wants its own accent
      re-points them; it never redefines a component. */
   --ds-text:              var(--ds-repository-brown);
@@ -81,7 +79,6 @@
   --ds-canvas:            #ffffff;                     /* the page ground */
   --ds-surface:           #ffffff;
   --ds-surface-hover:     var(--ds-tint-warm);         /* a row or control under the pointer */
-  --ds-surface-muted:     var(--ds-tint-warm);         /* old name for --ds-tint-warm */
   --ds-zone-secondary-bg: var(--ds-tint-warm);     /* the tinted band — SECONDARY ZONES */
 
   /* Destructive: delete, withdraw, revoke. One tier on every surface. */
@@ -90,7 +87,6 @@
   --ds-danger-active:         #9a0007;
   --ds-danger-wash-hover:     #fdf0f0;
   --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-disabled-fg:    #c47878;
   --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
   --ds-danger-fg-hover:       var(--ds-danger-hover);
   --ds-chrome:            var(--ds-repository-brown);  /* header bar, skip link */
@@ -99,7 +95,6 @@
 
   --ds-border:            var(--ds-grey-25);                     /* decorative hairline, 1.42:1 —
                                                           never the sole edge of a control */
-  --ds-border-muted:      var(--ds-border);            /* old name for --ds-border */
   --ds-border-strong:     var(--ds-grey-80);  /* 3.61:1 — interactive boundaries */
 
   --ds-link:              var(--ds-link-blue);
@@ -110,15 +105,15 @@
 
   --ds-accent:            var(--ds-open-blue);
   --ds-accent-hover:      var(--ds-blue-70);
-  --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor colour */
+  --ds-accent-strong:     var(--ds-archival-blue);     /* section accents, anchor color */
   --ds-accent-wash:       var(--ds-blue-50);                     /* inline active state */
-  /* The two tints. A component fill uses one of these or a status colour; a new fill colour is agreed with the design team first. */
+  /* The two tints. A component fill uses one of these or a status color; a new fill color is agreed with the design team first. */
   --ds-tint-warm:         var(--ds-grey-10);
   --ds-tint-accent:       var(--ds-blue-20);
   --ds-accent-surface:    var(--ds-blue-20);                     /* popover panel */
   --ds-accent-border:     var(--ds-blue-70);
 
-  /* Button construction — the colours a surface changes. Geometry, shadows
+  /* Button construction — the colors a surface changes. Geometry, shadows
      and states live on .ds-btn*; .ds-internal re-points these and nothing
      else. */
   --ds-btn-primary-rim-a:          #b0d5ed;
@@ -162,7 +157,7 @@
   --ds-note-mark-fg:       #ffffff;
   --ds-note-mark-internal: var(--ds-access-lime-deep);
 
-  /* A select's arrow. A background image cannot take the text colour, so the
+  /* A select's arrow. A background image cannot take the text color, so the
      dark blocks restate it. */
   --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 
@@ -217,7 +212,7 @@
   --ds-reach: max(0px, (var(--ds-target) - var(--ds-compact-h)) / 2);
 
   /* A dropdown's arrow: the chevron-down icon (docs/icons) at a heavier stroke,
-     used as a mask so it takes the text colour. */
+     used as a mask so it takes the text color. */
   --ds-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 
   /* Density: the padding inside controls, table cells and cards.
@@ -256,6 +251,24 @@
    padding. */
 [class^="ds-"], [class*=" ds-"] { box-sizing: border-box; }
 
+/* The hidden attribute hides, on every element, whatever display a component
+   sets. A script that reveals a part writes it hidden and removes the attribute.
+   until-found is left alone, so the browser can still find text in it. */
+[hidden]:not([hidden="until-found"]) { display: none !important; }
+
+/* Reduced motion: no animation and no transition, on a page or in a component.
+   A script that moves the page checks the same setting itself, because
+   scrollIntoView's smooth scroll ignores CSS (DESIGN-POLICIES). */
+@media (prefers-reduced-motion: reduce) {
+  [class*="ds-"], [class*="ds-"] *, [class*="ds-"]::before, [class*="ds-"]::after,
+  [class*="ds-"] *::before, [class*="ds-"] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Reserve the scrollbar's width whether or not the page scrolls. Without
    this, anything that locks scrolling — a modal — removes the scrollbar and
    the page jumps sideways underneath it. Scoped to pages that opt into the
@@ -274,9 +287,13 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   background: var(--ds-canvas);
   margin: 0;
   -webkit-text-size-adjust: 100%;   /* stop iOS inflating text in landscape */
+  /* A long DOI, address or file name breaks rather than widen the page (WCAG 1.4.10).
+     break-word, not anywhere: inherited, anywhere would squeeze tables instead of
+     letting them scroll. A flex or grid child that holds long text keeps its own rule. */
+  overflow-wrap: break-word;
 }
 
-/* The shell. Centred, guttered, capped at the dense width. */
+/* The shell. Centered, guttered, capped at the dense width. */
 /* The shell, and the owner of section rhythm. Space between regions belongs
    to the container, not to the regions: a section does not know what follows
    it, so it cannot know how far away that should be. One gap value here
@@ -294,7 +311,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   display: grid;
   align-content: start;
 
-  /* Three tracks, not a max-width. The centre track holds the content and the
+  /* Three tracks, not a max-width. The center track holds the content and the
      two side tracks are the margins — so a band that must run edge to edge
      spans `full` and needs no negative margins and no viewport units.
 
@@ -317,7 +334,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* Everything sits in the content track unless it asks not to. */
 .ds-container > * { grid-column: content; }
 
-/* A band that runs to the viewport edges — a reference zone, a coloured
+/* A band that runs to the viewport edges — a reference zone, a colored
    section, a full-width figure. The inline padding brings its contents back
    onto the content track, derived from the same width rather than restated,
    so the band and the column cannot drift apart. */
@@ -331,7 +348,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 /* SECONDARY ZONES  (.ds-zone-secondary) — layouts.html
    The page ground is white. A tinted band holds what introduces or supports
    the page: put .ds-zone-secondary on a .ds-full band. Named for role, not
-   colour, because the ground changes in dark mode. */
+   color, because the ground changes in dark mode. */
 .ds-container > .ds-zone-secondary {
   background: var(--ds-zone-secondary-bg);
   padding-block: var(--ds-space-section);
@@ -370,7 +387,7 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 .ds-container > .ds-zone-secondary:first-child:has(> .ds-page-header) { padding-bottom: var(--ds-space-8); }
 
 /* The lede under a page title or a section heading (.ds-section-desc) is body
-   text, in body colour: it often says the most important thing in the section.
+   text, in body color: it often says the most important thing in the section.
    The class has no styles of its own; it marks the section's summary for the
    digests. */
 
@@ -412,19 +429,33 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
   margin: var(--ds-space-8) 0;
 }
 
+/* A fieldset groups the controls that answer one question, such as a radio group,
+   and its legend asks it. The browser's box goes (GOV.UK's reset); the legend
+   takes .ds-label, like any field's label. */
+:where(.ds-page) fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+:where(.ds-page) legend { padding: 0; }
+
 /* ── Links ───────────────────────────────────────────────────────────
    Every bare anchor inside a .ds-page is the inline link; there is no
    class to add. Hover thickens the underline as well as deepening the
-   colour: the colour step alone is under 1.4:1 and easy to miss, and
+   color: the color step alone is under 1.4:1 and easy to miss, and
    text-decoration is painted, not laid out, so the page does not shift. */
 :where(.ds-page) a               { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 :where(.ds-page) a:hover         { color: var(--ds-link-hover); text-decoration-thickness: 0.15em; }
 :where(.ds-page) a:visited       { color: var(--ds-link-visited); }
+/* An icon takes the height of its line unless something sizes it: an svg with
+   no width attribute is 1em square. Any component rule overrides this. */
+:where(.ds-page) svg:where(:not([width])) { width: 1em; height: 1em; }
+/* Form controls take the page's font, not the browser's smaller control font. */
+:where(.ds-page) :is(input, button, select, textarea) { font: inherit; }
+/* One size for every checkbox and radio. Where it has no visible label to lend
+   it a target, such as in a table row, its cell or column gives it 24px. */
+:where(.ds-page) input:is([type="checkbox"], [type="radio"]) { width: 1rem; height: 1rem; margin: 0; accent-color: var(--ds-link); }
 /* A list in which every item is a link: no underline at rest, since no ordinary text sits beside it. */
 .ds-link-list a { text-decoration: none; }
 .ds-link-list a:hover { text-decoration: underline; }
-/* The page the reader is on stays in the list as a link: the text colour and
-   bold, so it does not rest on colour alone; aria-current names it. */
+/* The page the reader is on stays in the list as a link: the text color and
+   bold, so it does not rest on color alone; aria-current names it. */
 .ds-link-list a[aria-current="page"] { color: var(--ds-text); font-weight: 600; }
 /* A long list of links, on a <ul>: no bullets, and as many columns as fit,
    each at least 14rem, so the list reads down each column, then across. */
@@ -466,6 +497,9 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
    host the button itself, because it scrolls — an absolutely positioned child
    would scroll out of view with the code. */
 .ds-code { position: relative; }
+/* The text keeps clear of the copy button, so a long first line can scroll out
+   from under it. The Cite block's copy button sits in the same corner. */
+:is(.ds-code, .ds-paper-cite) pre { padding-inline-end: calc(28px + var(--ds-space-4)); }
 /* The button sits over the code's top corner, on a solid ground: a long
    line scrolls under it and is hidden, rather than showing through. */
 .ds-code-copy {
@@ -617,9 +651,9 @@ button:not(.is-failed) > svg.ds-copy-failed,
   transition: transform 0.15s;
 }
 .ds-site-header-dropdown[open] > summary::after { transform: rotate(180deg); }
-/* Forced colours drop backgrounds, which would hide the drawn arrow. */
+/* Forced colors drop backgrounds, which would hide the drawn arrow. */
 @media (forced-colors: active) {
-  .ds-site-header-dropdown > summary::after { forced-color-adjust: none; background: CanvasText; }
+  .ds-site-header-dropdown > summary::after { background: CanvasText; }
 }
 .ds-site-header-dropdown > summary:hover,
 .ds-site-header-dropdown[open] > summary {
@@ -647,8 +681,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
   flex-direction: column;
   min-width: min(16rem, 100vw - 32px);
   background: var(--ds-hdr-bg);
-  border-top: 1px solid var(--ds-hdr-divider);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);   /* the summoned-surface shadow; the bar's own edge is its top */
   padding: 0;
   z-index: 60;
 }
@@ -771,26 +804,18 @@ button:not(.is-failed) > svg.ds-copy-failed,
 
 /* ── Secondary on tinted surface (.on-tint) — buttons.html
    Add to a default-tier .ds-btn when the ground is not white. Its white fill
-   would otherwise read as a hole in the tint. */
+   would otherwise read as a hole in the tint. It changes the fill tokens only,
+   so the rims and both themes follow the secondary button. */
 .ds-btn.on-tint {
-  background:
-    linear-gradient(var(--ds-tint-warm), var(--ds-tint-warm)) padding-box,
-    linear-gradient(to bottom, var(--ds-grey-25), var(--ds-grey-55)) border-box;
-}
-.ds-btn.on-tint:hover {
-  background:
-    linear-gradient(var(--ds-surface), var(--ds-surface)) padding-box,
-    linear-gradient(to bottom, #c8c4be, var(--ds-border-strong)) border-box;
-}
-.ds-btn.on-tint:active {
-  background:
-    linear-gradient(var(--ds-tint-warm), var(--ds-tint-warm)) padding-box,
-    linear-gradient(var(--ds-border-strong), var(--ds-border-strong)) border-box;
+  --ds-btn-secondary-bg:        var(--ds-tint-warm);
+  --ds-btn-secondary-bg-hover:  var(--ds-surface);
+  --ds-btn-secondary-bg-active: var(--ds-tint-warm);
 }
 
 /* ── On a dark or saturated field (.on-dark) — buttons.html
-   For a committed colour field, not a tint. Focus ring switches to
-   --ds-focus-ring-on-dark: the light-mode ring disappears here. */
+   For a committed color field, not a tint. The field itself sets
+   --ds-focus-ring: var(--ds-focus-ring-on-dark), so every control on it,
+   a primary button included, gets a ring that shows. */
 .ds-btn.on-dark {
   background: none;
   border-color: rgba(255, 255, 255, 0.65);
@@ -808,9 +833,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   background: rgba(255, 255, 255, 0.14);
   border-color: #fff;
   box-shadow: none;
-}
-.ds-btn.on-dark:focus-visible {
-  outline: 3px solid var(--ds-focus-ring-on-dark);
 }
 
 /* ── Destructive (.ds-btn-destructive) — buttons.html
@@ -842,28 +864,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   box-shadow: inset 0 0 10px rgba(90, 10, 10, 0.42);
 }
 
-/* ── Disabled — buttons.html
-   Flat neutral fill, not reduced opacity: opacity dims border and label
-   by the same amount and can render a light fill invisible. Both
-   :disabled and .is-disabled, because <a> cannot take the attribute —
-   an <a> also needs its href removed and aria-disabled set. */
-.ds-btn:disabled,
-.ds-btn[aria-disabled="true"],
-.ds-btn.is-disabled,
-.ds-btn:disabled:hover,
-.ds-btn[aria-disabled="true"]:hover,
-.ds-btn.is-disabled:hover,
-.ds-btn:disabled:active,
-.ds-btn[aria-disabled="true"]:active,
-.ds-btn.is-disabled:active {
-  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash, so the flat fill shows on every ground in both themes */
-  border-color: transparent;
-  color: var(--ds-text-muted);
-  box-shadow: none;
-  transform: none;
-  cursor: not-allowed;
-}
-
 /* ── Text button (.ds-btn-text) — the quiet third tier — buttons.html
    Link Blue but NEVER underlined: it is a control, not a link. Hover is
    a background wash, the same feedback the other tiers give. */
@@ -884,15 +884,9 @@ button:not(.is-failed) > svg.ds-copy-failed,
   background: var(--ds-btn-text-bg-active);
   color: var(--ds-btn-text-fg-hover);
 }
-.ds-btn-text:disabled,
-.ds-btn-text.is-disabled {
-  color: var(--ds-text-disabled);
-  background: none;
-  cursor: not-allowed;
-}
 
 /* ── Quiet destructive (.ds-btn-text.ds-btn-destructive) — buttons.html
-   The text tier in the danger colour: a remove action in a table row or a
+   The text tier in the danger color: a remove action in a table row or a
    toolbar, where a filled red on every row would be alarm rather than
    information. Same confirmation rule as the filled tier. */
 .ds-btn-text.ds-btn-destructive {
@@ -910,15 +904,10 @@ button:not(.is-failed) > svg.ds-copy-failed,
   color: var(--ds-danger-fg-hover);
   box-shadow: none;
 }
-.ds-btn-text.ds-btn-destructive:disabled,
-.ds-btn-text.ds-btn-destructive.is-disabled {
-  background: none;
-  color: var(--ds-danger-disabled-fg);
-}
 
 /* ── Icon-only control (.ds-btn-icon) — buttons.html
    A shape modifier, not a tier: compose it with one. Square by
-   aspect-ratio so it stays exactly as tall as a labelled button beside
+   aspect-ratio so it stays exactly as tall as a labeled button beside
    it. The accessible name is REQUIRED — .is-sr-only text, because the
    icon is aria-hidden and the control would otherwise announce as
    "button" and nothing more. */
@@ -986,7 +975,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
   /* A wash mixed from the host's own foreground, so one rule works on
      white, on the announcement's pale blue, and on all four alert
      palettes without the control knowing which it is on. */
-  /* One flat wash for every host. Mid-grey at low alpha darkens a light
+  /* One flat wash for every host. Mid-gray at low alpha darkens a light
      ground and lightens a dark one, so the same value reads on white, on the
      announcement band, on all four alert palettes and on dark chrome.
      color-mix(in srgb, currentColor 10%, transparent) would tint the wash
@@ -1058,11 +1047,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .ds-tooltip-host:hover > .ds-tooltip,
 .ds-tooltip-host:focus-within > .ds-tooltip { display: block; }
-/* Escape sets [hidden], and this has to beat "still hovering" — so it needs
-   to MATCH the specificity of the rules above (:hover and :focus-within each
-   count as a class, making those 0-3-0) and come after them. Ordering and an
-   equal-weight selector, rather than !important. */
-.ds-tooltip-host > .ds-tooltip[hidden] { display: none; }
+/* Escape sets [hidden], which beats "still hovering" through the base rule for hidden. */
 
 /* LABEL WITH A TOOLTIP  (.ds-label-row) — forms.html */
 .ds-label-row {
@@ -1072,7 +1057,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
   margin-bottom: var(--ds-space-2);
 }
 .ds-label-row > .ds-label { margin-bottom: 0; }
-.ds-label-row .ds-btn-icon { padding: 0.25em; }   /* 26px, clears the 24px target */
+.ds-label-row .ds-btn-icon { padding: 0.36em; }   /* 26px at the label's size, clears the 24px target */
 
 /* PAGER  (.ds-pagination) — pager.html
    Moving through a set one item at a time: a moderation queue, a run of
@@ -1189,7 +1174,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
    in this system, and role="switch" is what makes a screen reader say
    "on"/"off" rather than "checked".
    Built on a real <input type="checkbox" role="switch">: native keyboard
-   behaviour and state, works with no JavaScript, and the track and thumb
+   behavior and state, works with no JavaScript, and the track and thumb
    are decoration. The visible label must be inside the <label>. */
 .ds-switch {
   display: inline-flex;
@@ -1236,7 +1221,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-switch:has(input:disabled) { cursor: not-allowed; color: var(--ds-text-disabled); }
 .ds-switch:has(input:disabled) .ds-switch-label { color: var(--ds-text-disabled); }
 /* High contrast: the system replaces the track's and thumb's fills, so both are drawn
-   with borders, which it keeps in the text colour. The thumb's place says on or off. */
+   with borders, which it keeps in the text color. The thumb's place says on or off. */
 @media (forced-colors: active) {
   .ds-switch-track { border: 1px solid; }
   .ds-switch-thumb { top: 1px; left: 1px; box-sizing: border-box; border: 6.5px solid; }
@@ -1246,10 +1231,10 @@ button:not(.is-failed) > svg.ds-copy-failed,
    is a label like any other. It must not change weight with the state: a
    bolder face is a wider face, so the label grows about 1.7px on toggle and
    shoves every control after it along the row. State is carried by the
-   thumb's position, the track colour and this colour; the weight was a
+   thumb's position, the track color and this color; the weight was a
    fourth cue that cost layout stability, which is a bad trade.
    The general rule: never signal state with anything that changes text
-   metrics — weight, size, family, letter-spacing. Colour is free. */
+   metrics — weight, size, family, letter-spacing. Color is free. */
 .ds-switch-label {
   font-family: var(--ds-font-condensed);
   font-size: 0.6875rem;
@@ -1262,11 +1247,8 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-switch input:checked ~ .ds-switch-label { color: var(--ds-text); }
 
 /* The thumb's travel is the only thing here that carries meaning by
-   moving — state is also in the colour and in the label weight, so
+   moving — state is also in the color and in the label weight, so
    removing the motion loses nothing. */
-@media (prefers-reduced-motion: reduce) {
-  .ds-switch-track, .ds-switch-thumb, .ds-switch-label { transition: none; }
-}
 
 /* DIVIDER  (.ds-divider) — dividers.html
    A rule between things. Reach for it only when whitespace has already
@@ -1370,7 +1352,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .ds-card:has(> .ds-card-bar) > .ds-pagination:last-child .ds-pagination-pages a:is([aria-current="page"], :hover) { background: var(--ds-canvas); }
 :where(.ds-card) > :is(h2, h3) { font-size: 1rem; margin: 0 0 var(--ds-space-tight); }   /* the card's own title, at whatever level the page needs; prose inside a card keeps its rhythm */
-:where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its colour */
+:where(.ds-card) > p { color: var(--ds-text-muted); }   /* the card's own copy; a component inside keeps its color */
 /* A status tag first in a card sits in the top corner, beside the heading. */
 .ds-card > .ds-tag:first-child { float: right; margin: 0 0 0 var(--ds-space-3); }
 .ds-card > .ds-tag:first-child + * { margin-block-start: 0; }
@@ -1387,19 +1369,19 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .ds-card--data > dl {
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));   /* pairs sit side by side when there is room, one column when there is not */
+  display: flex;
+  flex-wrap: wrap;   /* pairs sit side by side when there is room, and the pairs in the last row widen to fill it */
   gap: 1px;
   background: var(--ds-border);   /* shows only in the gaps: a hairline between pairs in both directions, none at the edges */
 }
 .ds-card--data > dl > div {
+  flex: 1 1 12rem;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-1);
   padding: var(--ds-space-3) var(--ds-space-4);
   background: var(--ds-tint-warm);
 }
-.ds-card--data > dl > div:last-child { grid-column-end: -1; }   /* the last pair fills its row, so no gap is left open */
 .ds-card--data dt {
   font-family: var(--ds-font-condensed);
   font-size: 0.625rem;
@@ -1446,7 +1428,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 /* Cards side by side. The count of columns follows the room rather than a
    breakpoint: the grid drops to one column when a card can no longer hold its
    minimum, and nothing has to be told. auto-fill, not auto-fit: an empty
-   column stays, so a lone card keeps the width of its neighbours instead of
+   column stays, so a lone card keeps the width of its neighbors instead of
    stretching across the row. */
 .ds-card-grid {
   display: grid;
@@ -1495,20 +1477,21 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-table tbody th { font-weight: 600; background: var(--ds-tint-warm); }
 .ds-table tbody tr:last-child > * { border-bottom: none; }
 .ds-table tbody tr:hover > * { background: var(--ds-surface-hover); }
-/* The row's checkbox carries the selection; the tint is never the only signal. */
-.ds-table tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+/* A row whose checkbox is checked takes the accent tint. The checkbox carries
+   the selection; the tint is never the only signal. */
+.ds-table tbody tr:has(> td > input[type="checkbox"]:checked) > * { background: var(--ds-tint-accent); }
 .ds-table tbody tr.hidden { display: none; }
 
-/* Striped rows. The hover is a wash of the text colour, because the stripe
-   already uses the plain hover colour. */
+/* Striped rows. The hover is a wash of the text color, because the stripe
+   already uses the plain hover color. */
 .ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-tint-warm); }
 .ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
-.ds-table--striped tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+.ds-table--striped tbody tr:has(> td > input[type="checkbox"]:checked) > * { background: var(--ds-tint-accent); }
 
 /* SELECTING ITEMS IN A LIST — tables.html#selecting-items-in-a-list
    A list item whose first child is a checkbox: the box in a column of its own at
    the start, lined up with the item's first line, and everything else beside it.
-   Like a table row's, the box has no visible label to lend it a target, so it is 24px. */
+   Like a table row's, the box has no visible label to lend it a target, so its column is 24px wide. */
 :where(li:has(> input[type="checkbox"]:first-child)) {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
@@ -1519,24 +1502,16 @@ button:not(.is-failed) > svg.ds-copy-failed,
 :where(li:has(> input[type="checkbox"]:first-child)) > input[type="checkbox"]:first-child {
   grid-column: 1;
   grid-row: 1 / span 12;
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  accent-color: var(--ds-link);
+  justify-self: center;
+  margin-top: 0.25rem;
 }
 /* The first thing beside the box keeps no space above it, so the two line up. */
 :where(li:has(> input[type="checkbox"]:first-child)) > input:first-child + label.is-sr-only + * { margin-top: 0; }
 
-/* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
+/* A row-selection checkbox has no label to lend it a target, so its cell is at least 24px. */
 .ds-table td:has(> input[type="checkbox"]),
 .ds-table th:has(> input[type="checkbox"]) { min-width: 24px; }
-.ds-table input[type="checkbox"] {
-  accent-color: var(--ds-link);
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  cursor: pointer;
-}
+.ds-table input[type="checkbox"] { cursor: pointer; }
 
 /* The bulk bar's count: "2 selected", quieter than the actions beside it. */
 .ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
@@ -1561,19 +1536,16 @@ button:not(.is-failed) > svg.ds-copy-failed,
   border-top: 1px solid var(--ds-border);
 }
 
-/* Sortable column: a <button class="sortable"> in the <th>, .sort-asc or
-   .sort-desc on the <th>, and a <span class="sort-arrow"> for the direction. */
-.ds-table thead th .sortable {
-  all: unset;   /* a button that looks like the header text it replaces */
-  display: inline;
-  font: inherit;
+/* Sortable column: an <a href="?sort=…"> in the <th>, aria-sort on the sorted
+   column's <th>, and a <span class="sort-arrow"> for the direction. The sort bar
+   (buttons.html) keys the same arrow on .sort-asc and .sort-desc. */
+.ds-table thead th > a {   /* a link that looks like the header text */
   color: inherit;
-  cursor: pointer;
-  user-select: none;
+  text-decoration: none;
   transition: color 0.1s;
 }
-.ds-table thead th .sortable:hover { color: var(--ds-text); }
-.ds-table thead th .sortable:focus-visible {
+.ds-table thead th > a:hover { color: var(--ds-text); }
+.ds-table thead th > a:focus-visible {
   outline: 2px solid var(--ds-focus-ring);
   outline-offset: 2px;
   border-radius: 2px;
@@ -1594,10 +1566,15 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .sort-asc .sort-arrow,
 .sort-desc .sort-arrow { color: inherit; }
-.ds-table th:is(.sort-asc, .sort-desc) .sort-arrow { color: var(--ds-text); }
-.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
-.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
+.ds-table th[aria-sort] .sort-arrow { color: var(--ds-text); }
+:is(.sort-asc, th[aria-sort="ascending"]) .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
+:is(.sort-desc, th[aria-sort="descending"]) .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
 @media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
+/* High contrast: fills all look alike, so a pressed toggle and a selected
+   segment carry an inner ring, which the system keeps. */
+@media (forced-colors: active) {
+  .ds-btn[aria-pressed="true"], .ds-seg-btn:has(input:checked) { outline: 2px solid; outline-offset: -4px; }
+}
 
 
 /* ── Button group (.ds-btn-group) ─────────────────────────────────────
@@ -1621,14 +1598,41 @@ button:not(.is-failed) > svg.ds-copy-failed,
 /* A toggle: plain when off, the accent tint when on (aria-pressed). */
 .ds-btn[aria-pressed] { background: var(--ds-surface); border-color: var(--ds-border-strong); color: var(--ds-text-muted); box-shadow: none; }
 .ds-btn[aria-pressed]:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
-.ds-btn[aria-pressed="true"] { background: var(--ds-tint-accent); border-color: var(--ds-accent-border); color: var(--ds-text); }
+.ds-btn[aria-pressed="true"],
+.ds-btn[aria-pressed="true"]:hover {
+  /* The info alert's tokens, as a selected neutral segment has: the pale fill,
+     a 2px edge and a bold label. Color is not the only cue, and the edge clears
+     3:1 against the page in both themes and on both surfaces. */
+  background: var(--ds-info-bg);
+  border-color: var(--ds-info-border);
+  box-shadow: inset 0 0 0 1px var(--ds-info-border);
+  color: var(--ds-info-fg);
+  font-weight: 700;
+}
 /* A group of toggles, such as a sort bar, joins into one compact bar. */
 .ds-btn-group:has(> .ds-btn[aria-pressed]) { gap: 0; }
 .ds-btn-group > .ds-btn[aria-pressed] { min-height: 32px; padding-block: 2px; font-size: 0.875rem; font-weight: 500; }
+.ds-btn-group > .ds-btn[aria-pressed="true"] { font-weight: 700; }   /* the bold label of a pressed toggle, in a joined bar too */
 .ds-btn-group > .ds-btn[aria-pressed="true"] { position: relative; z-index: 1; }
 .ds-btn-group:has(> .ds-btn[aria-pressed]) > :not(.ds-btn) { margin-inline-end: var(--ds-space-tight); }
 .ds-btn-group > .ds-btn[aria-pressed] + .ds-btn[aria-pressed] { margin-inline-start: -1px; border-start-start-radius: 0; border-end-start-radius: 0; }
 .ds-btn-group > .ds-btn[aria-pressed]:has(+ .ds-btn[aria-pressed]) { border-start-end-radius: 0; border-end-end-radius: 0; }
+
+/* ── Disabled — buttons.html
+   One look for every tier, whether the control has disabled or
+   aria-disabled: a flat wash and the muted label. Never opacity, which dims
+   border and label alike and can make a light fill invisible. It comes after
+   every tier and the toggles, so nothing they set on hover or press shows
+   through. */
+.ds-btn:is(:disabled, [aria-disabled="true"]),
+.ds-btn:is(:disabled, [aria-disabled="true"]):is(:hover, :active) {
+  background: color-mix(in srgb, var(--ds-text) 8%, transparent);   /* a wash, so the flat fill shows on every ground in both themes */
+  border-color: transparent;
+  color: var(--ds-text-muted);
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
 
 /* Stacked rather than side by side — same relationship, other axis. */
 .ds-btn-group--stack {
@@ -1675,7 +1679,6 @@ button:not(.is-failed) > svg.ds-copy-failed,
   line-height: 1.4;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  white-space: nowrap;
   text-decoration: none;
   background: var(--ds-tint-warm);
   border: 1px solid var(--ds-border);
@@ -1714,7 +1717,6 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
   border: 0;
   border-radius: 999px;
   color: inherit;
-  opacity: 0.65;
   font-size: 0.8125rem;
   line-height: 1;
   cursor: pointer;
@@ -1722,8 +1724,8 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
 }
 /* On a touch screen the target reaches, unseen, to --ds-target. */
 .ds-tag-remove::after { content: ""; position: absolute; inset: min(0px, (100% - var(--ds-target)) / 2); }
-.ds-tag-remove:hover { opacity: 1; background: rgba(0, 0, 0, 0.08); }
-.ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; opacity: 1; }
+.ds-tag-remove:hover { background: rgba(0, 0, 0, 0.08); }
+.ds-tag-remove:focus-visible { outline: 2px solid var(--ds-focus-ring); outline-offset: 1px; }
 
 /* A badge nested inside a tag — says where the tag came from, without
    competing with it. The only pill-inside-a-pill in the system. */
@@ -1746,7 +1748,7 @@ a.ds-tag:focus-visible, button.ds-tag:focus-visible { outline: 3px solid var(--d
    reads differently from a username, at the same contrast. */
 .ds-tag-note--auto { font-style: italic; }
 /* Inside an error tag the note has to come off the tinted ground rather than
-   the white one it assumes. Mixed from the host's own colour so the rule does
+   the white one it assumes. Mixed from the host's own color so the rule does
    not need to know which status it is sitting in. */
 .ds-tag--error .ds-tag-note {
   background: color-mix(in srgb, var(--ds-canvas) 55%, transparent);
@@ -1899,7 +1901,7 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 
 /* MATCHED WORDS  (<mark>) — typography.html
    The words that matched a search. Weight as well as the wash, so the mark is
-   never colour alone. */
+   never color alone. */
 .ds-page mark {
   background: var(--ds-accent-wash);
   color: inherit;
@@ -1937,8 +1939,8 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-when > .ds-link-list { display: inline-flex; flex-wrap: wrap; gap: var(--ds-space-3); font-size: 0.8125rem; font-weight: 600; }
 .ds-paper > p.ds-link-list { font-size: 0.875rem; }
 .ds-paper > .ds-tag-list { margin-top: var(--ds-space-1); }
-/* The identity line above a paper's title: identifier, primary category, DOI, licence.
-   Centred, and on a page it spans the viewport to the gutters, so it wraps only on narrow screens. */
+/* The identity line above a paper's title: identifier, primary category, DOI, license.
+   Centered, and on a page it spans the viewport to the gutters, so it wraps only on narrow screens. */
 .ds-paper-identity {
   display: flex;
   flex-wrap: wrap;
@@ -1979,14 +1981,13 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite .ds-paper-cite-head > .ds-form--compact .ds-input { width: auto; }
 .ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
-html:not(.js) .ds-paper-cite .ds-paper-cite-tools { display: none; }   /* outranks the display: flex above */
 /* The citation is a standard code block that wraps, with room on the right
    for its copy button. Closed, it shows its first two lines. */
 .ds-paper-cite-code { contain: inline-size; }   /* a long DOI must not widen the sidebar */
 .ds-paper-cite-code figure { margin: 0; }
 .ds-paper-cite > .ds-show-more { margin-left: 0; }
 html.js .ds-paper-cite-code figcaption { display: none; }
-.ds-paper-cite pre { margin: 0; padding: var(--ds-space-3); padding-inline-end: calc(28px + var(--ds-space-3)); font-size: 0.75rem; white-space: pre-wrap; overflow-wrap: break-word; }
+.ds-paper-cite pre { margin: 0; padding-block: var(--ds-space-3); padding-inline-start: var(--ds-space-3); font-size: 0.75rem; white-space: pre-wrap; overflow-wrap: break-word; }
 html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2em; overflow: hidden; }   /* two lines */
 .ds-paper-capabilities { list-style: none; margin: 0; padding: 0; font-size: 0.8125rem; }
 .ds-paper-capabilities > li { display: flex; align-items: flex-start; gap: var(--ds-space-2); }
@@ -2029,10 +2030,12 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 @media (max-width: 40rem) {
   .ds-toc-bar-inner:has(> .ds-paper-tools) { grid-template-columns: auto 1fr; row-gap: var(--ds-space-1); }
   .ds-toc-bar-inner > .ds-paper-tools { grid-column: 1 / -1; grid-row: 2; justify-self: start; flex-wrap: wrap; }
-  .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centres on the bar, not on the off-centre control, so it stays on screen */
+  .ds-toc-bar-inner:has(> .ds-paper-tools) > .ds-toc { position: static; }   /* the list centers on the bar, not on the off-center control, so it stays on screen */
 }
 @media print {
-  .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none; }
+  /* Paper has no controls: every button goes, and a Show more prints its whole text. */
+  :where(.ds-page) button, .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none !important; }
+  html .ds-show-more-tail, html .ds-show-more-tail[hidden] { display: inline !important; }
   .ds-paper-identity { font-size: 10pt; }
   .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
   .ds-page :is(h2, h3, h4) { break-after: avoid; }
@@ -2073,7 +2076,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   background: var(--ds-tint-accent);
   color: var(--ds-text);
 }
-/* The error colours (.ds-version--error): the withdrawal notice, named
+/* The error colors (.ds-version--error): the withdrawal notice, named
    rather than numbered, and the withdrawn or removed version when it is being
    read. On that version's Version history <li> it turns the bar red. */
 .ds-version.ds-version--error { color: var(--ds-error-fg); word-spacing: normal; }
@@ -2107,7 +2110,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
    and the controls flow after it. Not a flex fieldset, because Safari keeps a
    legend on a line of its own there. Half the row gap above and below each
    item, taken back by the fieldset, spaces wrapped lines evenly. */
-.ds-form--compact > fieldset { min-width: 0; margin: calc(var(--ds-space-2) / -2) 0; padding: 0; border: 0; }
+.ds-form--compact > fieldset { margin: calc(var(--ds-space-2) / -2) 0; }
 .ds-form--compact > fieldset > legend { float: left; margin: calc(var(--ds-space-2) / 2) var(--ds-space-3) calc(var(--ds-space-2) / 2) 0; padding: 0; font-weight: 600; line-height: var(--ds-compact-h); }
 .ds-form--compact > fieldset > :not(legend, .is-sr-only) { display: inline-flex; align-items: center; vertical-align: top; min-height: var(--ds-compact-h); margin: calc(var(--ds-space-2) / 2) 0; }
 /* 8px between controls, plus the space between them in the markup (about 4px),
@@ -2135,12 +2138,12 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
   padding-block: 0;
 }
 .ds-form--compact .ds-input:not(textarea, .ds-input-group > *):focus-visible {
-  outline: 2px solid transparent;   /* what forced-colours mode draws */
+  outline: 2px solid transparent;   /* what forced-colors mode draws */
   outline-offset: 0;
   box-shadow: inset 0 0 0 2px var(--ds-focus-ring);
 }
 .ds-form--compact .ds-input.is-invalid:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-error-border); }
-.ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-border); }
+.ds-form--compact .ds-input.is-warning:not(textarea, .ds-input-group > *) { box-shadow: inset 0 0 0 2px var(--ds-warning-fg); }
 /* Typed text under 16px makes iOS zoom the page on focus. */
 @media (pointer: coarse) { .ds-form--compact .ds-input { font-size: 1rem; } }
 @media (pointer: coarse) { .ds-form--compact > :is(.ds-check, a) { min-height: var(--ds-target); } }
@@ -2151,7 +2154,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 .ds-form--compact > .ds-input-group { flex: 1 1 calc(100% - 12rem); min-width: 0; }
 .ds-form--compact > .ds-input-group + .ds-btn { flex: none; align-self: stretch; min-height: var(--ds-target); margin-inline-start: calc(var(--ds-space-2) - var(--ds-space-4)); }
 /* Secondary options under the row: each is a 24px box (the full target on a
-   touch screen) with its content centred, so a checkbox and a link line up. */
+   touch screen) with its content centered, so a checkbox and a link line up. */
 .ds-form--compact > .ds-check { margin: 0; align-items: center; }
 .ds-form--compact > .ds-check input { margin: 0; }
 .ds-form--compact > a { display: inline-flex; align-items: center; min-height: 24px; font-size: 0.875rem; }
@@ -2166,7 +2169,7 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
    control before it, the last has none after it. */
 .ds-input-group > .ds-input:not(.ds-input ~ .ds-input) { border-start-start-radius: 6px; border-end-start-radius: 6px; }
 .ds-input-group > .ds-input:not(:has(~ .ds-input)) { border-start-end-radius: 6px; border-end-end-radius: 6px; }
-/* The focused or flagged control sits above its neighbour, so its whole edge shows. */
+/* The focused or flagged control sits above its neighbor, so its whole edge shows. */
 .ds-input-group > .ds-input:focus-visible,
 .ds-input-group > .ds-input.is-invalid { position: relative; z-index: 1; }
 @container (max-width: 26rem) {
@@ -2224,11 +2227,11 @@ select.ds-input:not([multiple]):not([size]) {
    was missing — everything used to be valid or rejected, with nothing in
    between for a problem that does not block. */
 .ds-input.is-warning {
-  border-color: var(--ds-warning-border);
+  border-color: var(--ds-warning-fg);   /* the edge clears 3:1; the yellow is the glow */
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-warning-border) 14%, transparent);
 }
 .ds-input.is-warning:focus-visible {
-  border-color: var(--ds-warning-border);
+  border-color: var(--ds-warning-fg);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-warning-border) 22%, transparent);
 }
 
@@ -2258,9 +2261,6 @@ select.ds-input:not([multiple]):not([size]) {
 .field-error   { color: var(--ds-error-border); }
 .field-warning { color: var(--ds-warning-fg); }
 .field-info    { color: var(--ds-info-fg); }
-.field-error[hidden],
-.field-warning[hidden],
-.field-info[hidden] { display: none; }
 
 /* Several problems on one field. Ordered and numbered: the count is checkable
    against the summary, and "the second one" has to be sayable while someone
@@ -2295,7 +2295,7 @@ select.ds-input:not([multiple]):not([size]) {
    is the whole <label>, because clicking anywhere in it toggles the input. So
    the floor goes on the label, where WCAG 2.5.8 actually measures it. */
 .ds-check { min-height: 24px; }
-.ds-check input { accent-color: var(--ds-link); width: 1em; height: 1em; margin: 2px 0 0; flex: none; }
+.ds-check input { margin-top: 2px; flex: none; }
 .ds-check input:disabled { cursor: not-allowed; }
 .ds-check input:disabled + span { color: var(--ds-text-disabled); }
 
@@ -2310,7 +2310,6 @@ select.ds-input:not([multiple]):not([size]) {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-
 
 
 /* ANNOTATION TYPOGRAPHY  (.ds-annotation) — typography.html
@@ -2334,10 +2333,10 @@ select.ds-input:not([multiple]):not([size]) {
    data. Its filter icon, not a chevron, says what it opens. filter-panel.js
    hangs the panel from the bottom edge of the row the button sits in and gives
    it that row's --ds-menu-bg, and dark mode from a dark row; without the
-   script the browser centres it on the page's own surface. */
+   script the browser centers it on the page's own surface. */
 .ds-filter-button { gap: 0.5em; min-width: 0; max-width: 100%; }
 .ds-filter-value { min-width: 0; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Open: the button's own pressed colours, through its tokens, so its rim stays. */
+/* Open: the button's own pressed colors, through its tokens, so its rim stays. */
 .ds-filter-button[aria-expanded="true"] {
   --ds-btn-secondary-bg: var(--ds-btn-secondary-bg-active);
   --ds-btn-secondary-bg-hover: var(--ds-btn-secondary-bg-active);
@@ -2364,7 +2363,8 @@ select.ds-input:not([multiple]):not([size]) {
    position: fixed — the consumer sets top/left and must portal it to
    <body> if the inline source has a transformed ancestor. Hidden by the
    `hidden` attribute. Escape closes it AND returns focus to the trigger.
-   Never put content here that exists nowhere else. */
+   Short content the reader opens on request; nothing needed to finish a task
+   lives only here. */
 
 .ds-popover {
   /* Width and height are the caller's, because a popover holds content nobody
@@ -2391,8 +2391,8 @@ select.ds-input:not([multiple]):not([size]) {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.ds-popover[hidden] { display: none; }
 
+.ds-popover > :last-child { margin-bottom: 0; }
 .ds-popover-title {
   font-family: var(--ds-font-condensed);
   font-weight: 600;
@@ -2422,7 +2422,7 @@ select.ds-input:not([multiple]):not([size]) {
    Scroll lock is the html:has() rule below, not JavaScript. */
 
 .ds-modal {
-  /* Reset the UA's dialog chrome; auto margins keep it centred. */
+  /* Reset the UA's dialog chrome; auto margins keep it centered. */
   padding: 0;
   border: none;
   border-radius: 8px;
@@ -2584,7 +2584,6 @@ html:has(.ds-modal[open]) {
   align-items: center;
   gap: 5px;
   min-height: 24px;
-  margin-block: -5px;
   padding: 0 var(--ds-space-1);
   font-family: var(--ds-font-sans);
   font-size: 0.6875rem;
@@ -2607,11 +2606,6 @@ html:has(.ds-modal[open]) {
   opacity: 1;
   pointer-events: auto;
 }
-/* After .is-revealed so the reduce override wins the cascade for both states */
-@media (prefers-reduced-motion: reduce) {
-  .ds-element-pill,
-  .ds-element-pill.is-revealed { transition: none; }
-}
 
 
 /* MARGINALIA  (.ds-marginalia) — layouts.html
@@ -2631,7 +2625,6 @@ html:has(.ds-modal[open]) {
 /* Folded, the mark needs the card's corner to itself: content that fills the
    card, such as a band, would otherwise sit under it. */
 .ds-card:has(> .ds-marginalia) { padding-right: calc(var(--ds-space-6) + 28px); }
-.ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * (var(--ds-space-6) + 28px)); }
 /* Beside a card grid, the grid is the block. Folded, the mark sits just above
    the grid's top-right corner, clear of the cards. */
 .ds-card-grid:has(> .ds-marginalia) { position: relative; }
@@ -2665,20 +2658,20 @@ html:has(.ds-modal[open]) {
   border-radius: 8px;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
 }
+/* On a wide page the margin is too narrow for a note, so notes stay folded there. */
 @media (min-width: 82.125rem) {
   @supports selector(::details-content) {
-    .ds-marginalia {
+    .ds-container:not(.ds-container--wide) .ds-marginalia {
       top: 0;
       right: auto;
       left: calc(100% + var(--ds-space-4));
       width: var(--ds-marginalia-width);
     }
-    .ds-marginalia > summary { display: none; }
-    .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
-    .ds-card:has(> .ds-marginalia) > .ds-acc:last-child { margin-right: calc(-1 * var(--ds-space-6)); }
-    .ds-card-grid > .ds-marginalia { top: 0; bottom: auto; }
-    .ds-marginalia::details-content { content-visibility: visible; display: block; }
-    .ds-marginalia-body {
+    .ds-container:not(.ds-container--wide) .ds-marginalia > summary { display: none; }
+    .ds-container:not(.ds-container--wide) .ds-card:has(> .ds-marginalia) { padding-right: var(--ds-space-6); }
+    .ds-container:not(.ds-container--wide) .ds-card-grid > .ds-marginalia { top: 0; bottom: auto; }
+    .ds-container:not(.ds-container--wide) .ds-marginalia::details-content { content-visibility: visible; display: block; }
+    .ds-container:not(.ds-container--wide) .ds-marginalia-body {
       position: static;
       width: auto;
       padding: 0;
@@ -2691,7 +2684,7 @@ html:has(.ds-modal[open]) {
 
 
 /* ALERT / STATUS MESSAGE  (.ds-alert) — alerts.html
-   Colour is never the only signal: each variant pairs a distinct icon
+   Color is never the only signal: each variant pairs a distinct icon
    SHAPE with a leading word (WCAG 1.4.1). role="status" for
    success/info, role="alert" for warning/error. Identical on both
    surfaces, token for token. */
@@ -2744,7 +2737,7 @@ html:has(.ds-modal[open]) {
 .ds-alert--warning { background: var(--ds-warning-bg); border-color: var(--ds-warning-border); color: var(--ds-warning-fg); }
 .ds-alert--error   { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg); }
 
-/* HOST DEFENCE — one rule, and the reason it exists
+/* HOST Defense — one rule, and the reason it exists
    The HTML paper page is arXiv's own page and a first-class consumer of this
    stylesheet, but it is served inside ar5iv's, which sets `svg { z-index: -1 }`
    globally to keep LaTeXML's generated figures under the text. Inside an
@@ -2760,13 +2753,13 @@ html:has(.ds-modal[open]) {
   z-index: 1;
 }
 
-/* NOTE  (.ds-note) — a labelled aside inside a page's flow: a rule that has
+/* NOTE  (.ds-note) — a labeled aside inside a page's flow: a rule that has
    to be met, guidance on tone, the way a component differs on the internal
    surface. Not an alert. An alert reports a state as of right now and can be
    dismissed; a note is always true and stays.
    The tab is what carries that difference, and it is why there is no left
    edge and no icon: the register is named in words before the paragraph
-   starts, so nothing has to be read out of a colour.
+   starts, so nothing has to be read out of a color.
    Each register sets three custom properties and inherits the rest. */
 .ds-note {
   --ds-note-tint: var(--ds-tint-warm);
@@ -2802,6 +2795,10 @@ html:has(.ds-modal[open]) {
 /* The label is out of flow, so the first block after it starts the box. */
 .ds-note > .ds-note-label + * { margin-top: 0; }
 .ds-note > :last-child { margin-bottom: 0; }
+/* Its margin is for running text, where the tab needs room above the box.
+   Placed directly in the page container, between sections, a note takes the
+   container's gap like a section does. */
+.ds-container > .ds-note { margin-block: 0; }
 .ds-note ul { padding-inline-start: 1.15rem; }
 /* A ruled-off warning at the foot of a note: the mistake this rule keeps
    being broken by. Set off, because it is the thing to read twice. */
@@ -2819,11 +2816,11 @@ html:has(.ds-modal[open]) {
 }
 /* Code sits on the tint, not on white, so it needs its own ground. */
 
-/* Registers. Blue states a requirement, grey gives guidance, lime marks
+/* Registers. Blue states a requirement, gray gives guidance, lime marks
    material belonging to the internal surface — the one place a public page may
    show Access Lime, because there it is the subject rather than the accent. */
 .ds-note--essential {
-  --ds-note-tint: var(--ds-info-bg);       /* status colours: a note keeps its colours on every surface */
+  --ds-note-tint: var(--ds-info-bg);       /* status colors: a note keeps its colors on every surface */
   --ds-note-line: var(--ds-info-border);
   --ds-note-mark: var(--ds-link);
 }
@@ -2837,8 +2834,10 @@ html:has(.ds-modal[open]) {
    An exclusive choice rendered as adjacent buttons, for a decision where
    every option should stay visible. Two to four options; past that it is a
    <select> or a radio group.
-   It is a <fieldset> with an .is-sr-only <legend>, because without the legend
-   the group has no accessible name. The three active states take the status
+   It is a radio group: a <fieldset> with an .is-sr-only <legend>, because
+   without the legend the group has no accessible name, and one <label> with a
+   native radio per option. The browser keeps one selected and gives the arrow
+   keys; the label draws the button. The three selected states take the status
    tokens, so they flip with everything else. */
 .ds-seg {
   display: inline-flex;
@@ -2848,7 +2847,7 @@ html:has(.ds-modal[open]) {
 }
 .ds-seg-btn {
   position: relative;
-  margin-inline-start: -1px;   /* one shared edge between neighbours */
+  margin-inline-start: -1px;   /* one shared edge between neighbors */
   padding: 0.42em 0.84em;
   border: 1px solid var(--ds-border-strong);
   background: var(--ds-surface);
@@ -2860,49 +2859,68 @@ html:has(.ds-modal[open]) {
   cursor: pointer;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
+/* The radio is out of sight but still the control: it takes focus and the arrow keys. */
+.ds-seg-btn > input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
 /* of-type, not child: the legend is the fieldset's first child. */
 .ds-seg-btn:first-of-type { margin-inline-start: 0; border-radius: 6px 0 0 6px; }
 .ds-seg-btn:last-of-type  { border-radius: 0 6px 6px 0; }
-.ds-seg-btn:hover:not(:disabled) {
+.ds-seg-btn:hover:not(:has(input:disabled)) {
   background: var(--ds-tint-warm);
   color: var(--ds-text);
   z-index: 1;
 }
-.ds-seg-btn:focus-visible {
+.ds-seg-btn:has(input:focus-visible) {
   outline: 3px solid var(--ds-focus-ring);
   outline-offset: 1px;
   z-index: 2;
 }
-/* Active: neutral (info) by default; positive and negative override it. */
-.ds-seg-btn.is-active           { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg);    z-index: 1; }
-.ds-seg-btn--positive.is-active { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); z-index: 1; }
-.ds-seg-btn--negative.is-active { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg);   z-index: 1; }
+/* Selected: an alert's tokens, the status fill, a 2px edge in the status border
+   color and a bold label in the status text color, as a pressed toggle has. Neutral (info) by default; positive and
+   negative override it. Only the tokens differ between the themes. */
+.ds-seg-btn:has(input:checked) {
+  --ds-seg-bg: var(--ds-info-bg);
+  --ds-seg-edge: var(--ds-info-border);
+  --ds-seg-fg: var(--ds-info-fg);
+  background: var(--ds-seg-bg);
+  border-color: var(--ds-seg-edge);
+  box-shadow: inset 0 0 0 1px var(--ds-seg-edge);
+  color: var(--ds-seg-fg);
+  font-weight: 700;
+  z-index: 1;
+}
+.ds-seg-btn--positive:has(input:checked) {
+  --ds-seg-bg: var(--ds-success-bg);
+  --ds-seg-edge: var(--ds-success-border);
+  --ds-seg-fg: var(--ds-success-fg);
+}
+.ds-seg-btn--negative:has(input:checked) {
+  --ds-seg-bg: var(--ds-error-bg);
+  --ds-seg-edge: var(--ds-error-border);
+  --ds-seg-fg: var(--ds-error-fg);
+}
 
 /* Dark mode. Every value here is a token's dark value; never hand-pick a
-   dark colour into a component rule. Lock a page light only when the whole
+   dark color into a component rule. Lock a page light only when the whole
    page exists to show light rendering (docs/dark-mode.html). */
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    /* Only SEMANTIC tokens flip. The primitives above name colours and
+    /* Only SEMANTIC tokens flip. The primitives above name colors and
        never change — Repository Brown is Repository Brown in both modes;
        what changes is that it becomes the canvas rather than the text.
-       Where a flipped value is one of the named brand colours, it points
+       Where a flipped value is one of the named brand colors, it points
        at the primitive so the relationship stays visible. */
     --ds-text:              var(--ds-grey-10);
     --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --ds-canvas:            var(--ds-repository-brown);
     --ds-surface-hover:     var(--ds-tint-warm);
-    --ds-surface-muted:     var(--ds-tint-warm);
     --ds-zone-secondary-bg: var(--ds-tint-warm);
     --ds-danger-wash-hover:     #2a0808;
     --ds-danger-wash-active:    #380d0d;
-    --ds-danger-disabled-fg:    #864040;
     --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
     --ds-danger-fg-hover:       #ef9a9a;
     --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
     --ds-border:            #383531;
-    --ds-border-muted:      var(--ds-border);
     --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
     --ds-text-disabled:     #5a554f;
     --ds-chrome:            #262119;                     /* lifted off the canvas so the
@@ -2924,7 +2942,6 @@ html:has(.ds-modal[open]) {
     --ds-btn-secondary-rim-a:        #6b655c;
     --ds-btn-secondary-rim-b:        var(--ds-grey-80);
     --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
-    /* restated so a data-theme island re-resolves them */
     --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
     --ds-btn-secondary-rim-active:   var(--ds-border-strong);
     --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
@@ -2945,6 +2962,7 @@ html:has(.ds-modal[open]) {
     --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
     --ds-link-hover:        #90caf9;
     --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+    --ds-focus-ring:        var(--ds-link);
     --ds-success-bg:      #1e2b0d;
     --ds-success-border:  #8fbd3a;
     --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
@@ -2990,176 +3008,134 @@ html:has(.ds-modal[open]) {
   :root:not([data-theme="light"]) .ds-theme-dark-only { display: revert; }
 }
 
-/* ── Explicit dark override (the toggle guard)
-   Mirrors the @media block above so a consumer's own toggle can set
-   [data-theme="dark"]. NEVER edit one side alone —
+/* ── The reader's choice (the toggle guard)
+   Mirrors the @media block above for a page whose <html> has
+   data-theme="dark", which theme.js sets. The theme belongs to the whole
+   page, with one case more: a popover that opens from a dark row, such as
+   the site header, takes that row's ground and so its dark mode too
+   (filter-panel.js sets it). A token that copies another must be restated
+   here, or it keeps its light value inside such a popover. Both blocks are
+   for screens only, so a page always prints light. NEVER edit one side alone —
    `python3 verification/check-drift.py` fails if they disagree. */
-[data-theme="dark"] {
-  color-scheme: dark;
-  /* Only SEMANTIC tokens flip. The primitives above name colours and
-     never change — Repository Brown is Repository Brown in both modes;
-     what changes is that it becomes the canvas rather than the text.
-     Where a flipped value is one of the named brand colours, it points
-     at the primitive so the relationship stays visible. */
-  --ds-text:              var(--ds-grey-10);
-  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --ds-canvas:            var(--ds-repository-brown);
-  --ds-surface-hover:     var(--ds-tint-warm);
-  --ds-surface-muted:     var(--ds-tint-warm);
-  --ds-zone-secondary-bg: var(--ds-tint-warm);
-  --ds-danger-wash-hover:     #2a0808;
-  --ds-danger-wash-active:    #380d0d;
-  --ds-danger-disabled-fg:    #864040;
-  --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
-  --ds-danger-fg-hover:       #ef9a9a;
-  --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
-  --ds-border:            #383531;
-  --ds-border-muted:      var(--ds-border);
-  --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
-  --ds-text-disabled:     #5a554f;
-  --ds-chrome:            #262119;                     /* lifted off the canvas so the
-                                                          bar still reads as a bar */
-  --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
-                                                          already dark */
-  --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
-  --ds-accent-wash:       #22344a;
-  --ds-tint-warm:         #282622;
-  --ds-tint-accent:       #202b38;
-  --ds-accent-surface:    #202b38;
-  --ds-accent-border:     #2a4a7a;
-  --ds-btn-primary-rim-a:          #6ba8da;
-  --ds-btn-primary-rim-b:          #2a4a6a;
-  --ds-btn-primary-rim-hover-b:    #3a6a94;
-  --ds-btn-secondary-bg:           var(--ds-tint-warm);
-  --ds-btn-secondary-bg-hover:     #322d28;
-  --ds-btn-secondary-bg-active:    var(--ds-tint-warm);
-  --ds-btn-secondary-rim-a:        #6b655c;
-  --ds-btn-secondary-rim-b:        var(--ds-grey-80);
-  --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
-  /* restated so a data-theme island re-resolves them */
-  --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
-  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
-  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
+@media screen {
+  :is(:root, [popover])[data-theme="dark"] {
+    color-scheme: dark;
+    /* Only SEMANTIC tokens flip. The primitives above name colors and
+       never change — Repository Brown is Repository Brown in both modes;
+       what changes is that it becomes the canvas rather than the text.
+       Where a flipped value is one of the named brand colors, it points
+       at the primitive so the relationship stays visible. */
+    --ds-text:              var(--ds-grey-10);
+    --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --ds-canvas:            var(--ds-repository-brown);
+    --ds-surface-hover:     var(--ds-tint-warm);
+    --ds-zone-secondary-bg: var(--ds-tint-warm);
+    --ds-danger-wash-hover:     #2a0808;
+    --ds-danger-wash-active:    #380d0d;
+    --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
+    --ds-danger-fg-hover:       #ef9a9a;
+    --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
+    --ds-border:            #383531;
+    --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
+    --ds-text-disabled:     #5a554f;
+    --ds-chrome:            #262119;                     /* lifted off the canvas so the
+                                                            bar still reads as a bar */
+    --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
+                                                            already dark */
+    --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
+    --ds-accent-wash:       #22344a;
+    --ds-tint-warm:         #282622;
+    --ds-tint-accent:       #202b38;
+    --ds-accent-surface:    #202b38;
+    --ds-accent-border:     #2a4a7a;
+    --ds-btn-primary-rim-a:          #6ba8da;
+    --ds-btn-primary-rim-b:          #2a4a6a;
+    --ds-btn-primary-rim-hover-b:    #3a6a94;
+    --ds-btn-secondary-bg:           var(--ds-tint-warm);
+    --ds-btn-secondary-bg-hover:     #322d28;
+    --ds-btn-secondary-bg-active:    var(--ds-tint-warm);
+    --ds-btn-secondary-rim-a:        #6b655c;
+    --ds-btn-secondary-rim-b:        var(--ds-grey-80);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
+    --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
+    --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+    --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
 
-  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
+    --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
 
-  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
+    --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
 
-  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
-  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
-  --ds-btn-primary-glow-active:        45%;
-  --ds-btn-secondary-fg:           var(--ds-grey-25);
-  --ds-btn-secondary-fg-hover:     var(--ds-text);
-  --ds-btn-text-fg:                var(--ds-link);
-  --ds-btn-text-fg-hover:          var(--ds-link-hover);
-  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
-  --ds-btn-text-bg-active:         var(--ds-accent-wash);
-  --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
-  --ds-link-hover:        #90caf9;
-  --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
-  --ds-success-bg:      #1e2b0d;
-  --ds-success-border:  #8fbd3a;
-  --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
-  --ds-info-bg:         #132433;
-  --ds-info-border:     #64b5f6;
-  --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
-  --ds-warning-bg:      #2e2410;
-  --ds-warning-border:  #e8b800;
-  --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
-  --ds-error-bg:        #2d1414;
-  --ds-error-border:    #e57373;
-  --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
-  --ds-note-mark-fg:       var(--ds-repository-brown);
-  --ds-note-mark-internal: var(--ds-access-lime);
+    --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
+    --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
+    --ds-btn-primary-glow-active:        45%;
+    --ds-btn-secondary-fg:           var(--ds-grey-25);
+    --ds-btn-secondary-fg-hover:     var(--ds-text);
+    --ds-btn-text-fg:                var(--ds-link);
+    --ds-btn-text-fg-hover:          var(--ds-link-hover);
+    --ds-btn-text-bg-hover:          var(--ds-accent-surface);
+    --ds-btn-text-bg-active:         var(--ds-accent-wash);
+    --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
+    --ds-link-hover:        #90caf9;
+    --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+    --ds-focus-ring:        var(--ds-link);
+    --ds-success-bg:      #1e2b0d;
+    --ds-success-border:  #8fbd3a;
+    --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+    --ds-info-bg:         #132433;
+    --ds-info-border:     #64b5f6;
+    --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+    --ds-warning-bg:      #2e2410;
+    --ds-warning-border:  #e8b800;
+    --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+    --ds-error-bg:        #2d1414;
+    --ds-error-border:    #e57373;
+    --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+    --ds-note-mark-fg:       var(--ds-repository-brown);
+    --ds-note-mark-internal: var(--ds-access-lime);
+  }
+
+  /* Internal tools, dark. Lime holds its light value; the wash goes to a
+     dark olive, and text that sat on the wash turns lime to stay legible. */
+  :is(:root, [popover])[data-theme="dark"].ds-internal,
+  :is(:root, [popover])[data-theme="dark"] .ds-internal {
+    --ds-accent-border:              var(--ds-access-lime-border);
+    --ds-accent-wash:                #222217;
+    --ds-accent-wash-hover:          #272918;
+    --ds-accent-wash-active:         #2c3018;
+    --ds-tint-accent:                #292b18;
+    --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
+    --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
+    --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
+    --ds-btn-secondary-bg:           var(--ds-accent-wash);
+    --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
+    --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
+    --ds-btn-secondary-rim-a:        var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-b:        var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
+    --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-active:   var(--ds-access-lime-border);
+    --ds-btn-secondary-fg:           var(--ds-accent);
+    --ds-btn-secondary-fg-hover:     var(--ds-accent);
+    --ds-btn-text-bg-hover:          var(--ds-accent-wash);
+    --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+  }
+
+  :is(:root, [popover])[data-theme="dark"] .ds-theme-light-only { display: none; }
+  :is(:root, [popover])[data-theme="dark"] .ds-theme-dark-only { display: revert; }
 }
-
-[data-theme="light"] {
-  color-scheme: light;
-  --ds-text:  var(--ds-repository-brown);
-  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --ds-canvas:         #ffffff;
-  --ds-surface-hover:  var(--ds-tint-warm);
-  --ds-surface-muted:         var(--ds-tint-warm);
-  --ds-zone-secondary-bg: var(--ds-tint-warm);
-  --ds-danger-wash-hover:     #fdf0f0;
-  --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-disabled-fg:    #c47878;
-  --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
-  --ds-danger-fg-hover:       var(--ds-danger-hover);
-  --ds-surface:           #ffffff;
-  --ds-border:      var(--ds-grey-25);
-  --ds-text-muted:      var(--ds-library-grey);
-  --ds-text-disabled:          var(--ds-grey-55);
-  --ds-accent-strong:     var(--ds-archival-blue);
-  --ds-accent-wash:         var(--ds-blue-50);
-  --ds-tint-warm:           var(--ds-grey-10);
-  --ds-tint-accent:         var(--ds-blue-20);
-  --ds-accent-surface:        var(--ds-blue-20);
-  --ds-accent-border:       var(--ds-blue-70);
-  --ds-btn-primary-rim-a:          #b0d5ed;
-  --ds-btn-primary-rim-b:          #6ba8da;
-  --ds-btn-primary-rim-hover-b:    #4a86b8;
-  --ds-btn-secondary-bg:           #ffffff;
-  --ds-btn-secondary-bg-hover:     #ffffff;
-  --ds-btn-secondary-bg-active:    #ffffff;
-  --ds-btn-secondary-rim-a:        var(--ds-grey-25);
-  --ds-btn-secondary-rim-b:        #b3ada4;
-  --ds-btn-secondary-rim-hover-a:  #c8c4be;
-  /* restated so a data-theme island re-resolves them */
-  --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
-  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
-  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.06);
-
-  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.08);
-
-  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
-
-  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
-  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.12);
-  --ds-btn-primary-glow-active:        35%;   /* the glow's strength while pressed */
-  --ds-btn-secondary-fg:           var(--ds-text-muted);
-  --ds-btn-secondary-fg-hover:     var(--ds-text);
-  --ds-btn-text-fg:                var(--ds-link);
-  --ds-btn-text-fg-hover:          var(--ds-link-hover);
-  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
-  --ds-btn-text-bg-active:         var(--ds-accent-wash);
-  --ds-border-muted:       var(--ds-border);
-  --ds-chrome:        var(--ds-repository-brown);
-  --ds-scrim:         rgba(28, 26, 23, 0.55);
-  --ds-link:         var(--ds-link-blue);
-  --ds-link-hover:        var(--ds-link-blue-hover);
-  --ds-link-visited:      var(--ds-visited-purple);
-  --ds-note-mark-fg:       #ffffff;
-  --ds-note-mark-internal: var(--ds-access-lime-deep);
-  --ds-success-bg:        #e8f5d8;
-  --ds-success-border:    #6b8e1e;
-  --ds-success-fg:        #4a5a0a;
-  --ds-info-bg:           #e7f1fd;
-  --ds-info-border:       #5a82c8;
-  --ds-info-fg:           #1a3a78;
-  --ds-warning-bg:        #fff8e1;
-  --ds-warning-border:    #e8b800;
-  --ds-warning-fg:        #7a5c00;
-  --ds-error-bg:          #fdeaea;
-  --ds-error-border:      #c62828;
-  --ds-error-fg:          #8b0000;
-}
-
 
 /* INTERNAL TOOLS CONTEXT  (.ds-internal) — buttons.html
    Put it on a parent: <html> for an internal page, a wrapper for an
    internal region of a mixed page. It re-points the accent to Access Lime
    and every component inside follows, and sets the compact density.
-   Colour and density only — a component that needs a different shape on
-   this surface is a different component. Sits after
-   the [data-theme="light"] block so it wins when both are on <html>. */
+   Color and density only — a component that needs a different shape on
+   this surface is a different component. */
 .ds-internal {
   --ds-accent:                     var(--ds-access-lime);
   --ds-accent-hover:               var(--ds-access-lime-hover);
   --ds-accent-active:              var(--ds-access-lime-active);
   --ds-accent-border:              var(--ds-access-lime-border);
   --ds-accent-border-active:       var(--ds-access-lime-deep);
-  --ds-subnav-current:             var(--ds-access-lime-deep);
   --ds-accent-wash:                var(--ds-access-lime-wash);
   --ds-accent-wash-hover:          var(--ds-access-lime-wash-2);
   --ds-accent-wash-active:         var(--ds-access-lime-wash-3);
@@ -3190,41 +3166,14 @@ html:has(.ds-modal[open]) {
 }
 .ds-internal a.ds-tag:hover,
 .ds-internal button.ds-tag:hover {
-  background: var(--ds-surface-active);
+  background: var(--ds-border);   /* the tag fills to its own edge color */
   color: var(--ds-link-hover);
 }
 
-/* Internal tools, dark. Lime holds its light value; the wash goes to a
-   dark olive, and text that sat on the wash turns lime to stay legible. */
-[data-theme="dark"].ds-internal,
-[data-theme="dark"] .ds-internal {
-  --ds-accent-border:              var(--ds-access-lime-border);
-  --ds-accent-wash:                #222217;
-  --ds-accent-wash-hover:          #272918;
-  --ds-accent-wash-active:         #2c3018;
-  --ds-tint-accent:                #292b18;
-  --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
-  --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
-  --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
-  --ds-btn-secondary-bg:           var(--ds-accent-wash);
-  --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
-  --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
-  --ds-btn-secondary-rim-a:        var(--ds-access-lime-deep);
-  --ds-btn-secondary-rim-b:        var(--ds-access-lime-deep);
-  --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
-  --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
-  --ds-btn-secondary-rim-active:   var(--ds-access-lime-border);
-  --ds-btn-secondary-fg:           var(--ds-accent);
-  --ds-btn-secondary-fg-hover:     var(--ds-accent);
-  --ds-btn-text-bg-hover:          var(--ds-accent-wash);
-  --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
-}
 
 /* Shown in one theme only: an image drawn for a light ground and its version
    for a dark one, such as the logo on .ds-site-header--light. */
 .ds-theme-dark-only { display: none; }
-[data-theme="dark"] .ds-theme-light-only { display: none; }
-[data-theme="dark"] .ds-theme-dark-only { display: revert; }
 
 /* OS accessibility signals. forced-colors: the OS replaces our palette
    and the hues collapse, but icon shape + leading word still carry meaning
@@ -3233,15 +3182,12 @@ html:has(.ds-modal[open]) {
 @media (forced-colors: active) {
   .ds-alert a { color: LinkText; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .ds-close { transition: none; }
-}
 
 /* ═══════════════════════════════════════════════════════════════════════
    ACCORDION  (.ds-acc / .ds-acc-stack / .ds-acc-body)
    ───────────────────────────────────────────────────────────────────────
    Native <details>/<summary>. No JavaScript, keyboard and screen-reader
-   behaviour for free, and find-in-page can open a closed panel to show a
+   behavior for free, and find-in-page can open a closed panel to show a
    match inside it — which no hand-built accordion does.
 
    Ruled: a line above and below, no box.
@@ -3303,18 +3249,12 @@ html:has(.ds-modal[open]) {
   border-radius: 3px;
 }
 .ds-acc-body { padding: 4px 0 16px; font-size: 0.85rem; color: var(--ds-text); }
-/* Ending a card, the accordion is the card's foot: it runs to the card's
-   edges and the card's own border closes it. */
-.ds-card > .ds-acc:last-child {
-  margin: var(--ds-space-4) calc(-1 * var(--ds-space-6)) calc(-1 * var(--ds-space-4));
-  border-bottom: 0;
-}
-.ds-card > .ds-acc:last-child > summary,
-.ds-card > .ds-acc:last-child > .ds-acc-body { padding-inline: var(--ds-space-6); }
+/* Ending a card, the accordion sits inside the card's padding, and the card's
+   own edge closes it. */
+.ds-card > .ds-acc:last-child { margin-bottom: 0; border-bottom: 0; }
 .ds-acc-body dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--ds-space-tight) var(--ds-space-block); margin: 0; }
 .ds-acc-body dt { white-space: nowrap; padding-top: 2px; margin: 0; font-size: 0.8125rem; color: var(--ds-text-muted); }
 .ds-acc-body dd { margin: 0; grid-column: 2; min-width: 0; }   /* keeps a second dd out of the term column */
-.ds-acc-body a { color: var(--ds-link); }
 .ds-acc-body code { overflow-wrap: anywhere; }
 /* Narrow: one column, and a term may wrap. */
 @media (max-width: 40rem) {
@@ -3396,7 +3336,7 @@ html:has(.ds-modal[open]) {
 }
 .ds-toc-bar-inner {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;   /* start slot · contents · end slot: the control stays centred whatever sits beside it */
+  grid-template-columns: 1fr auto 1fr;   /* start slot · contents · end slot: the control stays centered whatever sits beside it */
   align-items: center;
   gap: var(--ds-space-3);
 }
@@ -3411,10 +3351,8 @@ html:has(.ds-modal[open]) {
    back across the line, and the bar flickers between its two heights. */
 .ds-toc-bar.is-stuck > .ds-toc-sentinel { top: -11px; }
 
-/* A bar directly after a tinted band sits on that band's bottom edge, and the
-   content after the bar starts close under it. */
+/* A bar directly after a tinted band sits on that band's bottom edge. */
 .ds-container > .ds-zone-secondary + .ds-toc-bar { margin-top: calc(-1 * var(--ds-space-section)); }
-.ds-container > .ds-toc-bar + * { margin-top: calc(var(--ds-space-8) - var(--ds-space-section)); }
 
 .ds-toc-bar.is-stuck {
   z-index: 100;
@@ -3501,9 +3439,6 @@ html:has(.ds-toc-bar--scrolls) { scroll-padding-top: var(--ds-space-3); }
 .ds-toc-menu ol ol a { padding-inline-start: calc(18px + 0.9rem + 6px); font-size: 0.8125rem; }
 .ds-toc-menu ol ol .ds-toc-num { min-width: 1.65rem; }
 
-@media (prefers-reduced-motion: reduce) {
-  .ds-toc-bar, .ds-toc-trigger, .ds-toc-trigger .ds-toc-chevron { transition: none; }
-}
 
 /* SHOW MORE  (.ds-show-more) — progressive-disclosure.html
    Reveals the TAIL of something already begun, where an accordion would
@@ -3511,7 +3446,7 @@ html:has(.ds-toc-bar--scrolls) { scroll-padding-top: var(--ds-space-3); }
    aria-expanded and aria-controls, and the region uses the `hidden`
    ATTRIBUTE, not a class — a class leaves the hidden names tabbable and
    findable while off screen.
-   Link-coloured by default, in running text; --among-links turns it grey
+   Link-colored by default, in running text; --among-links turns it gray
    italic, so at the end of a run of links it does not read as one more.
    Target size takes WCAG's inline exception — growing it to 24px would
    break the line it sits in. */
@@ -3589,7 +3524,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
 }
 /* Through the footer, so the host's own footer link rules (the arXiv.css copies in browse,
    search, stats and status: `footer a, footer a:visited` black or white, `footer a:hover`
-   dotted or on grey) cannot recolour, underline or shade these links; arxiv-base resets them
+   dotted or on gray) cannot recolour, underline or shade these links; arxiv-base resets them
    the same way. */
 .ds-site-footer a,
 .ds-site-footer a:visited,
@@ -3599,7 +3534,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
 .ds-site-footer-ack a { font-size: 0.8125rem; }
 .ds-site-footer .ds-site-footer-ack a {
   color: var(--ds-link);
-  text-decoration: underline;   /* the only cue: the bold words inside take the text colour */
+  text-decoration: underline;   /* the only cue: the bold words inside take the text color */
 }
 .ds-site-footer-ack strong { color: var(--ds-text); font-weight: 600; }
 .ds-site-footer-links {
@@ -3627,7 +3562,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   border-radius: 2px;
 }
 /* Drawn with a background, not the "·" glyph, so contrast checkers treat
-   it as non-text. font-size:0 suppresses the glyph. align-self centres it,
+   it as non-text. font-size:0 suppresses the glyph. align-self centers it,
    because the row is a flex container and vertical-align does not apply. */
 .ds-site-footer-sep {
   display: inline-block;
@@ -3750,7 +3685,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
 
 /* ── 1. Announcement band ── */
 .ds-announcement {
-  /* Colour comes through these three, so a register is three lines. */
+  /* Color comes through these three, so a register is three lines. */
   --ds-announcement-bg:   var(--ds-accent-wash);
   --ds-announcement-fg:   var(--ds-text);
   --ds-announcement-link: var(--ds-link);
@@ -3759,7 +3694,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   align-items: center;
   justify-content: center;
   gap: var(--ds-gap-glyph);
-  padding: 6px 36px; /* clear of the close button, and even, so a row stays centred */
+  padding: 6px 36px; /* clear of the close button, and even, so a row stays centered */
   text-align: center;
   background: var(--ds-announcement-bg);
   color: var(--ds-announcement-fg);
@@ -3812,7 +3747,6 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--ds-text-muted);
 }
 
 /* ── 2. Black header bar ── */
@@ -3856,7 +3790,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   color: var(--ds-hdr-fg-strong);
 }
 .ds-site-header-logo img { height: 39px; width: auto; }
-/* The centred space (.ds-site-header-center): one tool or filter for every page under the
+/* The centered space (.ds-site-header-center): one tool or filter for every page under the
    header. The logo and the space each take an auto margin, so the free room splits evenly
    on either side of it. A filter button in it is .on-dark; open, it keeps its pressed look. */
 .ds-site-header-center { display: flex; align-items: center; min-width: 0; margin-right: auto; }
@@ -3934,7 +3868,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
 }
 .ds-site-header-search-link .ds-nav-icon,
 .ds-site-header-nav .ds-nav-icon { width: 16px; height: 16px; opacity: 0.65; flex-shrink: 0; }
-/* The same thing as .ds-divider--vertical, on the header's own colour
+/* The same thing as .ds-divider--vertical, on the header's own color
    token rather than --ds-border. Left separate rather than merged: the
    two mockups declare this class locally, so consolidating it is part of
    the mockup cleanup (backlog #20), not a change to make here. */
@@ -3948,7 +3882,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
    weight. It carries "Log in" when signed out and "Account" when signed in —
    the slot is about rank in the bar, not about which of those words is in it.
    Scoped through .ds-site-header-nav so it out-specifies the nav's own link
-   colour rather than shouting !important at it. */
+   color rather than shouting !important at it. */
 .ds-site-header-nav .ds-site-header-login,
 .ds-site-header-account .ds-site-header-login,
 .ds-site-header-nav .ds-site-header-login:visited,
@@ -4102,7 +4036,7 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
 }
-/* The centred space folds last: its label goes, then a filter's value, leaving the icon.
+/* The centered space folds last: its label goes, then a filter's value, leaving the icon.
    Both stay in the button's name. */
 .ds-site-header.is-center-compact .ds-site-header-center-label,
 .ds-site-header.is-center-folded .ds-site-header-center .ds-filter-value {
@@ -4333,11 +4267,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   outline-offset: -3px;
   border-radius: 2px;
 }
-.ds-subnav a[aria-current="page"] {
-  color: var(--ds-text);
-  text-shadow: 0 0 0.6px currentColor, 0 0 0.6px currentColor;   /* bold without widening, so nothing beside it moves */
-  border-bottom-color: var(--ds-subnav-current, var(--ds-accent-strong));
-}
+.ds-subnav a[aria-current="page"] { color: var(--ds-text); }
 @media (max-width: 599px) {
   .ds-subnav { --ds-row-pad: 12px; column-gap: var(--ds-space-4); }
 }
@@ -4427,7 +4357,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 :is(.ds-subnav-section, .ds-subnav-views)[open] > summary::after { transform: rotate(180deg); }
 @media (forced-colors: active) {
-  :is(.ds-subnav-section, .ds-subnav-views) > summary::after { forced-color-adjust: none; background: CanvasText; }
+  :is(.ds-subnav-section, .ds-subnav-views) > summary::after { background: CanvasText; }
 }
 /* The sheet: square corners, rows with hairlines, hanging from its control. */
 .ds-menu {
@@ -4558,10 +4488,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   outline: 3px solid var(--ds-focus-ring);
   outline-offset: 2px;
 }
-.ds-tabs-panel[hidden] { display: none; }
 @media print {
   .ds-tabs-list { display: none; }
-  .ds-tabs-panel[hidden], .ds-tabs-panel > [hidden] { display: block; }
+  .ds-tabs-panel[hidden], .ds-tabs-panel > [hidden] { display: block !important; }   /* every panel prints */
 }
 
 /* ── Header search overlay (.ds-search-overlay) ─────────────────────────
@@ -4577,7 +4506,6 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   justify-content: center;
   background: var(--ds-scrim);
 }
-.ds-search-overlay[hidden] { display: none; }
 .ds-search-overlay-panel {
   margin-top: 52px; /* the header bar's height; header.js hangs it from the bar's bottom edge */
   width: 100%;
@@ -4605,7 +4533,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 
 /* PERMALINK  (.ds-permalink) — links.html
-   A button in a section heading that copies the link to that section.
+   A link to the section, in its heading; copy.js makes a press copy the link.
    Hidden by opacity only, so it holds its space and stays in the tab order. */
 .ds-permalink {
   display: inline-flex;
@@ -4623,6 +4551,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: 999px;
+  text-decoration: none;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.12s;
@@ -4636,7 +4565,6 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 .ds-permalink:hover { color: var(--ds-link); }
 .ds-permalink:focus-visible { outline: 3px solid var(--ds-focus-ring); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { .ds-permalink { transition: none; } }
 
 /* PRINTED LINKS — links.html
    On paper an external link shows its address after its text. */
@@ -4714,31 +4642,4 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    bar tokens are undefined, so it falls back to the page's own. */
 .ds-theme-toggle:not(.ds-site-header *) {
   color: var(--ds-hdr-fg, var(--ds-text-muted));
-}
-
-/* PRINT IS ALWAYS LIGHT
-   Dark mode answers "what is comfortable on this screen", and paper is not a
-   screen. Without this, a reader whose OS is set to dark gets a page of dark
-   ink — or, on the printers that drop backgrounds, light grey text on white.
-   The tokens are re-pointed rather than the components overridden, so every
-   component prints correctly without knowing that it is printing. */
-@media print {
-  /* The selector list has to match the dark rules it is undoing, or it loses
-     on specificity rather than on order: the @media dark block keys on
-     :root:not([data-theme="light"]), which is 0-2-0. */
-  :root,
-  :root:not([data-theme="light"]),
-  html:not([data-theme="light"]),
-  [data-theme="dark"] {
-    color-scheme: light;
-    --ds-text:          #000000;
-    --ds-text-muted:    #333333;
-    --ds-canvas:        #ffffff;
-    --ds-surface:       #ffffff;
-    --ds-tint-warm:     #ffffff;
-    --ds-border:        #cccccc;
-    --ds-link:          #000000;
-    --ds-link-visited:  #000000;
-  }
-  body { background: #ffffff; color: #000000; }
 }

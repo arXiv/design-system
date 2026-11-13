@@ -1,7 +1,7 @@
 ---
 page: cards.html
 title: "Cards"
-summary: "When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are shared. The markup is the same on both surfaces; the internal colours come from `.ds-internal` on a parent element and nothing else changes."
+summary: "When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are shared. The markup is the same on both surfaces; the internal colors come from `.ds-internal` on a parent element and nothing else changes."
 stylesheet: design-system.css
 components:
   - id: basic-cards
@@ -9,7 +9,7 @@ components:
     summary: "A flexible and unopinionated white surface with a hairline border and 8px radius."
     classes:
       - name: ".ds-card"
-        does: "The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own colour. Set between paragraphs, the card keeps a paragraph’s space below it."
+        does: "The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own color. Set between paragraphs, the card keeps a paragraph’s space below it."
       - name: ".ds-internal"
         does: "On a parent, usually `<html>` or `<body>`. Re-points the accent to Access Lime for everything inside. Nothing on the card itself changes. The basic card has no accent of its own, so it looks the same on both surfaces; what changes is everything inside it that reaches for the accent, such as the button."
   - id: data-cards
@@ -21,7 +21,7 @@ components:
       - name: "dl > div"
         does: "One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions."
       - name: "dt, dd"
-        does: "The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours."
+        does: "The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colors."
       - name: ".ds-internal"
         does: "The top edge takes Access Lime. The markup is the public one."
     notes:
@@ -74,7 +74,7 @@ components:
       - name: "The heading's <a>"
         does: "The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it."
       - name: ".ds-tag--warning"
-        does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md)."
+        does: "A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbors. See [Tags](tags.md)."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
     rules:
@@ -94,7 +94,7 @@ rules:
 
 # Cards
 
-When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are shared. The markup is the same on both surfaces; the internal colours come from `.ds-internal` on a parent element and nothing else changes.
+When you need to draw a box around related content, reach for a card. Public pages and internal tools each have their own color variations but the use cases are shared. The markup is the same on both surfaces; the internal colors come from `.ds-internal` on a parent element and nothing else changes.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
@@ -112,7 +112,7 @@ A flexible and unopinionated white surface with a hairline border and 8px radius
 </div>
 ```
 
-- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own colour. Set between paragraphs, the card keeps a paragraph’s space below it.
+- `.ds-card` — The box: white surface, hairline `--ds-border`, 8px radius, padding from the scale. Its first and last children have no outer margin, because the padding is the space at the edges. It sets `position: relative`, so a margin note or an anchored pill measures from it. Its own paragraphs, the `<p>` elements directly inside it, are already in `--ds-text-muted`; a component inside keeps its own color. Set between paragraphs, the card keeps a paragraph’s space below it.
 
 **Internal**
 
@@ -147,7 +147,7 @@ Intended for organizing metadata and other reference information: the facts abou
 
 - `.ds-card.ds-card--data` — On a `<section>` with an `aria-label`, which makes it a named region. A tinted ground (`--ds-tint-warm`) and a 4px top edge in the accent, so it reads as reference rather than content. No padding of its own: the pairs have it.
 - `dl > div` — One pair per `<div>`, `<dt>` label then `<dd>` value. Pairs sit side by side when the card is wide enough for two and stack in one column when it is not; a hairline separates them in both directions.
-- `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colours.
+- `dt, dd` — The label is small, condensed and uppercased by CSS: type it in sentence case. The value is in IBM Plex Mono and wraps anywhere, so a long address or identifier stays inside the card. A value that goes somewhere is an `<a href>` and takes the ordinary link colors.
 
 **Internal**
 
@@ -266,7 +266,7 @@ A card that is one link, for a page whose job is to send the reader somewhere el
 
 - `.ds-card--link` — The heading's link covers the whole card, so the card is one target and one tab stop. Hover and keyboard focus mark the whole card.
 - `The heading's <a>` — The only link in the card. A second link or a button inside it cannot be reached by pointer, because the heading's link lies over it.
-- `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbours. See [Tags](tags.md).
+- `.ds-tag--warning` — A card that needs attention says so on the card itself. A tag placed first in the card sits in its top corner, beside the heading, so the rest of the card lines up with its neighbors. See [Tags](tags.md).
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.4.7](https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html) Focus Visible (Level AA) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
 

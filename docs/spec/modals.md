@@ -25,7 +25,7 @@ components:
       - name: ".ds-modal-body"
         does: "Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off."
       - name: "tabindex=\"0\", role=\"region\", aria-labelledby (added by script)"
-        does: "Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page."
+        does: "Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The script below does it."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.2](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) No Keyboard Trap (Level A), [WCAG 2.2 SC 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) Focus Order (Level A), and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.10](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) Reflow (Level AA) and [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A)"
@@ -53,7 +53,7 @@ rules:
   - "**Let the browser move focus.** `showModal()` moves focus into the dialog, and `close()` returns it to the control that opened it. Do not set focus by hand on open or on close, and always close with `close()`: a dialog hidden by removing its `open` attribute or by CSS never gives focus back."
   - "**Keep Escape.** The browser closes the dialog on Escape and fires a `cancel` event first. Only intercept that event to warn about unsaved changes, and then still offer a way to close."
   - "**Keep a visible close control, and name it.** Every modal needs a visible close. Escape is not enough: it is invisible, and it is not available to someone using a pointer alone or a touch screen. The `.ds-close` holds a `<span class=\"is-sr-only\">` that says what it closes, such as “Close figure viewer”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes."
-  - "**Confirm the action, do not just ask.** The primary button says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press."
+  - "**Confirm the action, do not just ask.** The button that confirms says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press."
 ---
 
 # Modal dialogs
@@ -88,7 +88,7 @@ Test keyboard-tabbing past the last control and scrolling the page behind the mo
   </div>
   <div class="ds-modal-footer">
     <button class="ds-btn ds-btn-text ds-modal-footer-start" type="button" data-close>Cancel</button>
-    <button class="ds-btn ds-btn-primary" type="button" data-close>Withdraw</button>
+    <button class="ds-btn ds-btn-destructive" type="button" data-close>Withdraw</button>
   </div>
 </dialog>
 ```
@@ -133,8 +133,42 @@ document.getElementById('demo-confirm').close();
 </dialog>
 ```
 
+```html
+// The whole of it: showModal() to open, close() to close. Focus trap, focus
+// restore, Escape and stacking are the element's own doing, and the
+// scroll lock is in the stylesheet.
+document.querySelectorAll('[data-open]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.getElementById(btn.dataset.open).showModal();
+  });
+});
+
+// A body that scrolls but holds nothing focusable cannot be scrolled from
+// the keyboard in every browser. While it overflows, it becomes a tab stop
+// named by the dialog's title; when it fits, the tab stop goes away.
+document.querySelectorAll('.ds-modal-body').forEach(function (body) {
+  var dialog = body.closest('.ds-modal');
+  function sync() {
+    if (body.scrollHeight > body.clientHeight) {
+      body.setAttribute('tabindex', '0');
+      body.setAttribute('role', 'region');
+      body.setAttribute('aria-labelledby', dialog.getAttribute('aria-labelledby'));
+    } else {
+      body.removeAttribute('tabindex');
+      body.removeAttribute('role');
+      body.removeAttribute('aria-labelledby');
+    }
+  }
+  new ResizeObserver(sync).observe(body);
+  new MutationObserver(sync).observe(body, { childList: true, subtree: true, characterData: true });
+});
+document.querySelectorAll('.ds-modal [data-close]').forEach(function (btn) {
+  btn.addEventListener('click', function () { btn.closest('.ds-modal').close(); });
+});
+```
+
 - `.ds-modal-body` — Takes whatever height the header and footer leave and scrolls inside it. Nothing to add: the same markup as a short dialog, with more in the body. It scrolls whenever its content does not fit, at any screen size, including content a script adds after the dialog opens. On a screen too short to hold the header, the footer and some of the body, the whole dialog scrolls instead, so the actions are never cut off.
-- `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The reference script is at the end of this page.
+- `tabindex="0", role="region", aria-labelledby (added by script)` — Not in the markup: the page script adds them while the body overflows and removes them when it fits. A scrolling area with no links or buttons in it cannot be reached from the keyboard in every browser, so a keyboard user could not scroll it. The tab stop fixes that, and the region takes the dialog's title as its name so a screen reader says what it is. Adding it only while the body overflows means a short dialog has no empty tab stop, and a body that grows later, because a script added content or the window got smaller, gets one without anyone changing the markup. The script below does it.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.2](https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html) No Keyboard Trap (Level A), [WCAG 2.2 SC 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html) Focus Order (Level A), and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
@@ -179,7 +213,7 @@ Rarely. A modal interrupts the user experience, takes focus, makes the rest of t
 | Displaying a full-size version of a figure. It would disrupt reading if placed directly on the page at that size. | The user needs a quick lookup related to specific content on the page. The right component is a [popover](progressive-disclosure.md). |
 | The user would lose context if the content were placed directly on the page. For example, a *short* optional form. | The form is long enough to scroll, or the reader may need to consult the page behind it for context. The right choice is to build it out as a full page form. |
 | The reader asks to look through a long list or explanation, such as every category a report covers, that would push the main content down if it were on the page. | The reader wants to keep the page in view while reading it. The right component is a [popover](progressive-disclosure.md#popover). |
-| — | Announcing something. arXiv does not interrupt readers to share news. The right components is the [announcement band](messages.md#announcement-band) which can be dismissed or ignored by users and does not interrupt them. |
+| — | Announcing something. arXiv does not interrupt readers to share news. The right component is the [announcement band](messages.md#announcement-band) which can be dismissed or ignored by users and does not interrupt them. |
 
 ### The five requirements of a modal
 
@@ -206,4 +240,4 @@ The reason this component is a `<dialog>` rather than a `<div role="dialog">` ar
 - **Let the browser move focus.** `showModal()` moves focus into the dialog, and `close()` returns it to the control that opened it. Do not set focus by hand on open or on close, and always close with `close()`: a dialog hidden by removing its `open` attribute or by CSS never gives focus back.
 - **Keep Escape.** The browser closes the dialog on Escape and fires a `cancel` event first. Only intercept that event to warn about unsaved changes, and then still offer a way to close.
 - **Keep a visible close control, and name it.** Every modal needs a visible close. Escape is not enough: it is invisible, and it is not available to someone using a pointer alone or a touch screen. The `.ds-close` holds a `<span class="is-sr-only">` that says what it closes, such as “Close figure viewer”. Do not use `title` or `aria-label` for this, because page translation tools skip attributes.
-- **Confirm the action, do not just ask.** The primary button says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press.
+- **Confirm the action, do not just ask.** The button that confirms says what it does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows what they are about to press.

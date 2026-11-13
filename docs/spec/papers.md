@@ -34,7 +34,7 @@ components:
       - name: "<a class=\"ds-tag\">"
         does: "Each category is a link to its listing of recent papers, with `.ds-tag--keep-case` so the code keeps its case. See [Tags](tags.md)."
       - name: ".ds-tag--info"
-        does: "On the primary category only. The others are the plain grey tag."
+        does: "On the primary category only. The others are the plain gray tag."
       - name: ".ds-tooltip"
         does: "The full name of the category, on hover and on focus, named by the link's `aria-describedby`. The primary one adds “(primary)”. Load `tooltip.js` once on the page. See [Tooltip](forms.md#tooltip)."
     notes:
@@ -46,7 +46,7 @@ components:
       - name: "<main>"
         does: "The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper."
       - name: ".ds-paper-identity"
-        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
+        does: "The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centered, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers."
       - name: "<section>"
         does: "The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own."
       - name: "<h1>"
@@ -104,7 +104,7 @@ components:
       - name: "[aria-describedby]"
         does: "On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A)."
       - name: ".ds-paper-cite"
-        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden."
+        does: "The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names. The select's wrapper and the button are written `hidden`, and `cite.js` shows them."
       - name: "[data-format]"
         does: "On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown."
       - name: "<script src=\"cite.js\" defer>"
@@ -120,7 +120,7 @@ components:
       - name: ".ds-toc-bar"
         does: "The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page."
       - name: ".ds-paper-bar-logo"
-        does: "The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
+        does: "The one-color Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill=\"currentColor\"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”."
       - name: ".ds-toc-menu"
         does: "The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type."
       - name: ".ds-paper-tools"
@@ -287,7 +287,7 @@ A paper's subject categories show as tags, primary first. Each code links to its
 ```
 
 - `<a class="ds-tag">` — Each category is a link to its listing of recent papers, with `.ds-tag--keep-case` so the code keeps its case. See [Tags](tags.md).
-- `.ds-tag--info` — On the primary category only. The others are the plain grey tag.
+- `.ds-tag--info` — On the primary category only. The others are the plain gray tag.
 - `.ds-tooltip` — The full name of the category, on hover and on focus, named by the link's `aria-describedby`. The primary one adds “(primary)”. Load `tooltip.js` once on the page. See [Tooltip](forms.md#tooltip).
 
 > Meets accessibility guideline [WCAG 2.2 SC 1.4.13](https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html) Content on Hover or Focus (Level AA)
@@ -340,7 +340,7 @@ On a paper's own page the order is the identity line, the title, the dates and v
 ```
 
 - `<main>` — The page's one `<main>`, and its `.ds-container`. Its children are the identity line, one section, the row that holds the abstract, and then the paper.
-- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centred, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
+- `.ds-paper-identity` — The identity line above the title: the identifier with its version, the primary category code with its full name, the arXiv DOI, and the license as a link. It is centered, and as a child of `.ds-container` it is a row of the full width, to the gutters, so it wraps only on narrow screens. It belongs to the title: the container's space between sections does not come after it. The identifier is read out digit by digit from an `.is-sr-only` span; the visible one is hidden from screen readers.
 - `<section>` — The title, the dates, the warning and the authors: one section, like any other child of the container, with no class. The space between its parts is each part's own.
 - `<h1>` — The paper title. The demo here uses an `<h2>` at the size of an `<h1>`, because it sits inside this page.
 - `.ds-date-row` — The dates and the version links, as in [Indicate which version is being read](versions.md#version-row). Each version link goes to that version's abstract page, never its HTML: an HTML version may not exist for every version.
@@ -435,7 +435,7 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
   <section aria-labelledby="cite-h" class="ds-paper-cite">
     <div class="ds-paper-cite-head">
       <h2 class="ds-panel-label" id="cite-h">Cite</h2>
-      <div class="ds-form--compact ds-paper-cite-tools">
+      <div class="ds-form--compact ds-paper-cite-tools" hidden>
         <label class="is-sr-only" for="cite-format">Citation format</label>
         <select class="ds-input" id="cite-format">
           <option value="bibtex" selected>BibTeX</option>
@@ -518,7 +518,7 @@ Beside the abstract, the sidebar holds downloadable files, a citation tool, and 
 - `.ds-panel-label` — On an `<h2>`: the label of each block, one level below the paper title, so the outline skips no level. The demo uses `<h3>` because it sits inside this page.
 - `.ds-paper-files` — The downloads. PDF is the primary button and fills the sidebar's width; TeX Source, Other formats (when a paper has them) and Ancillary files are text links under it. Each shows its size; TeX Source also shows its file type. Up to two ancillary files are listed by name; with three or more, one line gives the total size and Download all, at the end of the line; the hidden text on the link gives the count.
 - `[aria-describedby]` — On each download, pointing to the paper title, so a screen reader names the paper with the link. The visible words stay the link's name, which meets [WCAG 2.2 SC 2.5.3](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html) Label in Name (Level A).
-- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names, and the select and the button are hidden.
+- `.ds-paper-cite` — The citation. `.ds-paper-cite-head` holds the Cite label and, on the same line, a compact select (`.ds-form--compact`) to choose the format. Each format is a standard code block, so `copy.js` gives it the copy button and its “Copied to clipboard” announcement, and the citation wraps rather than scrolling. `.ds-paper-cite-code` shows the first two lines until the `.ds-show-more` below it opens the rest. Every format is in the page, one `<figure>` each; without JavaScript all four are shown in full with their names. The select's wrapper and the button are written `hidden`, and `cite.js` shows them.
 - `[data-format]` — On each `<figure>`: the value of that format's `<option>` in the select. Only the figure the select names is shown.
 - `<script src="cite.js" defer>` — Once per page, with `copy.js`. It shows the format chosen in the select, so the copy button copies the format shown, and makes the `.ds-show-more` open the full citation: the button's own text is its label while the citation is closed, and “Show less” while it is open.
 - `.ds-paper-capabilities` — The accessibility panel: one line per capability the paper has, each a `shield-check` icon from `docs/icons/` and words. Only what is present is listed, and there is no score.
@@ -565,7 +565,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 ```
 
 - `.ds-toc-bar` — The bar, as on [Navigation](navigation.md#toc-bar). On a paper it is `.ds-full`, the full width of the page.
-- `.ds-paper-bar-logo` — The one-colour Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
+- `.ds-paper-bar-logo` — The one-color Library Grey logo, inlined from `docs/assets/images/logos/logo_arxiv-library-grey.svg` with `fill="currentColor"`, so it follows the theme. It links to the arXiv home page, and its name is “archive home”.
 - `.ds-toc-menu` — The paper's own headings, numbers in `.ds-toc-num`, written into the HTML from LaTeXML's contents list. Subsections are an `<ol>` inside their section's `<li>`, indented to the section's title in smaller type.
 - `.ds-paper-tools` — PDF and Source, each an icon and its name, in a `<nav>` named “Other formats”. The TeX glyph says TeX, so the visible name is “Source”; an `.is-sr-only` “TeX” makes the spoken name “TeX Source”. The icons are `file-text` and `tex` from `docs/icons/`.
 
@@ -574,7 +574,7 @@ On a paper, the TOC bar also has the arXiv logo on the left and links to the pap
 Each section heading in a paper has a Permalink control that copies the link to that section, including the version.
 
 ```html
-<h3 id="S2"><span class="ltx_tag">2 </span>Setup<button type="button" class="ds-permalink" data-copy-link="#S2" data-copied="Link to section 2, Setup copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></button></h3>
+<h3 id="S2"><span class="ltx_tag">2 </span>Setup<a class="ds-permalink" href="#S2" data-copy-link="#S2" data-copied="Link to section 2, Setup copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to section 2, Setup</span></a></h3>
 <p>We consider quadratic gravity in four dimensions and work in the Einstein frame throughout.</p>
 ```
 
@@ -594,8 +594,8 @@ A display equation, a figure and a bibliography entry each have a small row of a
   <!-- LaTeXML's MathML, unchanged -->
   <div class="ds-element-pill" role="toolbar" aria-label="Equation 2.14">
     <button type="button" aria-pressed="false"><svg aria-hidden="true">…</svg>View TeX<span class="is-sr-only"> of equation 2.14</span></button>
-    <button type="button" data-copy-from="S2.E14" data-copied="Equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
-    <button type="button" data-copy-link="#S2.E14" data-copied="Link to equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to equation 2.14</span></button>
+    <button type="button" hidden data-copy-from="S2.E14" data-copied="Equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Copy<span class="is-sr-only"> equation 2.14</span></button>
+    <a href="#S2.E14" data-copy-link="#S2.E14" data-copied="Link to equation 2.14 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to equation 2.14</span></a>
   </div>
 </div>
 <figure class="ds-paper-element" id="S2.F1">
@@ -607,13 +607,13 @@ A display equation, a figure and a bibliography entry each have a small row of a
   <figcaption>Figure 1: The scalar power spectrum in the Newtonian gauge (solid) and the comoving gauge (dashed).</figcaption>
   <div class="ds-element-pill" role="toolbar" aria-label="Figure 1">
     <button type="button" class="is-cta"><svg aria-hidden="true">…</svg>Expand<span class="is-sr-only"> figure 1</span></button>
-    <button type="button" data-copy-link="#S2.F1" data-copied="Link to figure 1 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to figure 1</span></button>
+    <a href="#S2.F1" data-copy-link="#S2.F1" data-copied="Link to figure 1 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to figure 1</span></a>
   </div>
 </figure>
 <div class="ds-paper-element" id="bib.bib30">
   <p>[30] A. Ashtekar and M. Bojowald. Quantum geometry and the Schwarzschild singularity. <em>Class. Quantum Grav.</em> 23 (2006) 391.</p>
   <div class="ds-element-pill" role="toolbar" aria-label="Reference 30">
-    <button type="button" data-copy-link="#bib.bib30" data-copied="Link to reference 30 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to reference 30</span></button>
+    <a href="#bib.bib30" data-copy-link="#bib.bib30" data-copied="Link to reference 30 copied"><svg aria-hidden="true">…</svg><svg class="ds-copy-done" aria-hidden="true">…</svg>Permalink<span class="is-sr-only"> to reference 30</span></a>
   </div>
 </div>
 ```

@@ -73,14 +73,20 @@ def check_wordmark_not_typed():
 
 
 # ── Self-hosted everything ──
-# No fonts, icons, scripts or stylesheets from another origin. Data URIs and
+# No fonts, icons, scripts or stylesheets from a third party. Data URIs and
 # protocol-relative paths to our own assets are not what this is about; an
-# absolute http(s) URL in a resource slot is.
+# absolute http(s) URL in a resource slot is, unless it is arXiv's own static
+# assets (arxiv.org), which is where DESIGN-POLICIES says they are served from.
 EXTERNAL = re.compile(
-    r"""(?:<link\b[^>]*href|<script\b[^>]*src|@import\s+url\(|src:\s*url\()"""
-    r"""\s*["'(]?\s*(https?://[^"')\s]+)""",
+    r"""(?:<script\b[^>]*?\bsrc\s*=|@import\s+(?:url\()?|src:\s*url\()"""
+    r"""\s*["'(]?\s*(?!https?://(?:[\w-]+\.)?arxiv\.org/)(https?://[^"')\s>]+)""",
     re.I,
 )
+# A <link> loads something only with these rels; a canonical or alternate link
+# to another origin loads nothing.
+LINK = re.compile(r"<link\b[^>]*>", re.I)
+LOADS = re.compile(r"""\brel\s*=\s*["']?[^"'>]*\b(?:stylesheet|preload|modulepreload|icon)\b""", re.I)
+LINK_HREF = re.compile(r"""\bhref\s*=\s*["']?(?!https?://(?:[\w-]+\.)?arxiv\.org/)(https?://[^"'\s>]+)""", re.I)
 
 
 def check_self_hosted():
@@ -90,6 +96,11 @@ def check_self_hosted():
         for m in EXTERNAL.finditer(text):
             line = text[: m.start()].count("\n") + 1
             fail(rule, f"{path.relative_to(REPO)}:{line}", f"loads {m.group(1)}")
+        for m in LINK.finditer(text):
+            href = LINK_HREF.search(m.group(0))
+            if href and LOADS.search(m.group(0)):
+                line = text[: m.start()].count("\n") + 1
+                fail(rule, f"{path.relative_to(REPO)}:{line}", f"loads {href.group(1)}")
         n += 1
     if rule not in FAILS:
         ok(rule, f"{n} pages")
@@ -148,10 +159,10 @@ def check_tokens_defined():
 # DESIGN-POLICIES: "Do not introduce one-off hex values." A colour written
 # straight into a rule, instead of into a token, is one. White and black are
 # allowed, at any opacity, and so are the component-internal constants listed
-# in docs/color-mapping.md. The list is read from there so the exceptions are
-# written down once.
+# on docs/colors.html, in the Tier 2 rule. The list is read from there so the
+# exceptions are written down once.
 COLOUR = re.compile(r"#[0-9a-fA-F]{3,8}\b|\b(?:rgba?|hsla?)\([^)]*\)")
-CONSTANTS_DOC = REPO / "docs" / "color-mapping.md"
+CONSTANTS_DOC = REPO / "docs" / "colors.html"
 
 
 def rgb(colour):
@@ -168,13 +179,13 @@ def rgb(colour):
 
 def check_colours_from_tokens():
     rule = "colours come from tokens (white, black and listed constants allowed)"
-    line = next((l for l in CONSTANTS_DOC.read_text().splitlines()
-                 if "**Component-internal constants**" in l), None)
-    if line is None:
+    m = re.search(r"Tier 2 — component-internal constants</strong>(.*?)<strong>Tier 3",
+                  CONSTANTS_DOC.read_text(), flags=re.S)
+    if m is None:
         return fail(rule, str(CONSTANTS_DOC.relative_to(REPO)),
-                    "no **Component-internal constants** line to read the exceptions from")
+                    "no Tier 2 rule to read the exceptions from")
     allowed = {(255, 255, 255), (0, 0, 0)}
-    allowed |= {rgb(c) for c in COLOUR.findall(" ".join(re.findall(r"`([^`]+)`", line)))}
+    allowed |= {rgb(c) for c in COLOUR.findall(" ".join(re.findall(r"<code>([^<]+)</code>", m.group(1))))}
     n = 0
     for f in CSS_FILES:
         # Blank comments rather than drop them, so line numbers stay true.
@@ -189,13 +200,13 @@ def check_colours_from_tokens():
                     at = text[: d.start(2) + c.start()].count("\n") + 1
                     fail(rule, f"{f.relative_to(REPO)}:{at}",
                          f"{d.group(1)}: {c.group(0)} — use a token, or list it as a "
-                         "component-internal constant in docs/color-mapping.md")
+                         "component-internal constant on docs/colors.html")
     if rule not in FAILS:
         ok(rule, f"{n} raw colours, all allowed")
 
 
 # ── One name per surface ──
-# The two surfaces are "the public site" and "internal tools" (DESIGN-POLICIES).
+# The two surfaces are "public pages" and "internal tools" (DESIGN-POLICIES).
 # "Staff" is for people, not for the surface, its stylesheet or its pages —
 # a second name for one thing reads as a third thing.
 SURFACE_SYNONYM = re.compile(
@@ -347,7 +358,7 @@ def check_theme_control():
         ok(rule, f"{n} pages")
 
 
-# ── A contents bar needs its script ──
+# ── A TOC bar needs its script ──
 # The bar is markup, but its behaviour (menu closes on a choice, the current
 # section is named, the bar compacts once it sticks) is toc.js. A page that
 # has the one without the other looks right until it is scrolled.
@@ -355,7 +366,7 @@ TOC_SCRIPT = re.compile(r"<script[^>]*src=\"[^\"]*toc\.js\"")
 
 
 def check_toc_script():
-    rule = "every page with a contents bar loads toc.js"
+    rule = "every page with a TOC bar loads toc.js"
     n = 0
     for path in sorted((REPO / "docs").rglob("*.html")):
         text = path.read_text(encoding="utf-8", errors="replace")
@@ -421,8 +432,15 @@ def check_no_changelog_prose():
         for m in HISTORY.finditer(re.sub(r"<[^>]+>", " ", body)):
             fail(rule, str(path.relative_to(REPO)),
                  f'"{m.group(0)}" — the system is new; say what it is, not what it was')
+    # The rule documents in docs/ too: the policies and the style guide. (AGENTS.md
+    # quotes the phrases in the rule that bans them.)
+    for path in sorted((REPO / "docs").glob("*.md")):
+        n += 1
+        for m in HISTORY.finditer(path.read_text(encoding="utf-8", errors="replace")):
+            fail(rule, str(path.relative_to(REPO)),
+                 f'"{m.group(0)}" — the system is new; say what it is, not what it was')
     if rule not in FAILS:
-        ok(rule, f"{n} pages")
+        ok(rule, f"{n} pages and rule documents")
 
 
 # ── Every class a builder can write is findable in the docs ──
@@ -455,6 +473,31 @@ def check_classes_documented():
         ok(rule, f"{len(classes)} classes, {len(SCRIPT_OWNED)} script-owned")
 
 
+# ── Every class the docs name exists ──
+# The other direction: a class a page or a rule document tells builders to
+# write must be in a stylesheet or a shared script. A documented class that
+# exists nowhere is written by a builder and does nothing.
+def check_documented_classes_exist():
+    rule = "every .ds- or .is- class the docs name exists"
+    known = set()
+    for f in list((REPO / "docs").glob("*.css")) + list((REPO / "templates").rglob("*.css")):
+        known |= set(re.findall(r"\.((?:ds|is)-[\w-]+)", f.read_text(encoding="utf-8", errors="replace")))
+    for f in list((REPO / "docs").glob("*.js")) + list((REPO / "templates").rglob("*.js")):
+        known |= set(re.findall(r"\b((?:ds|is)-[\w-]+)", f.read_text(encoding="utf-8", errors="replace")))
+    docs = [p for p in (REPO / "docs").rglob("*.html") if p.name != "doc.html"]
+    docs += [REPO / "AGENTS.md"] + list((REPO / "docs").glob("*.md"))
+    n = 0
+    for path in docs:
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for m in re.finditer(r"(?<![\w-])\.((?:ds|is)-[a-z0-9-]*[a-z0-9])", text):
+            n += 1
+            if m.group(1) not in known:
+                line = text[: m.start()].count("\n") + 1
+                fail(rule, f"{path.relative_to(REPO)}:{line}", f".{m.group(1)} is in no stylesheet or script")
+    if rule not in FAILS:
+        ok(rule, f"{n} mentions")
+
+
 # ── Section anchors are generated and current ──
 # Delegates to gen-anchors.py so the rule lives in one place: the script that
 # writes the ids is the script that knows what they should be.
@@ -480,7 +523,8 @@ def check_section_anchors():
 def check_generated_current():
     import subprocess
     for rule, script in (("the digests match their pages", "gen-digest.py"),
-                         ("the icons page matches the icons", "gen-icons.py")):
+                         ("the icons page matches the icons", "gen-icons.py"),
+                         ("the light and dark values in the docs match the stylesheets", "gen-theme-values.py")):
         r = subprocess.run([sys.executable, str(REPO / "verification" / script), "--check"],
                            capture_output=True, text=True)
         if r.returncode != 0:
@@ -499,7 +543,7 @@ def check_generated_current():
 NAV_MENUS = re.compile(
     r'<header class="ds-site-header ds-site-header--light">.*?'
     r'<nav class="ds-site-header-nav" aria-label="Design system">'
-    r'((?:\s*<details class="ds-site-header-dropdown">.*?</details>)+)',
+    r'((?:\s*<details name="docs-menus" class="ds-site-header-dropdown">.*?</details>)+)',
     re.S,
 )
 OFF_NAV = {"doc.html", "outreach.html"}   # the doc viewer; the outreach rules page
@@ -560,6 +604,41 @@ def check_plain_words():
         ok(rule, f"{n} files")
 
 
+# ── American spelling ──
+# STYLE.md, American spelling. Brand names keep theirs (Library Grey, so a
+# capital G is allowed), and so does an author's text, such as the sample
+# abstract on papers.html, which is copied as written.
+BRITISH = re.compile(
+    r"(?<![-\w./#])(colou?rs?\b(?<!colors\b)(?<!color\b)|colour\w*|centre\w*|centred|behaviour\w*|licence\w*"
+    r"|labell(?:ed|ing)|neighbour\w*|recognis\w*|organis\w*|optimis\w*|analys(?:e|ed|ing)\b"
+    r"|artefacts?|catalogue|programme|towards|grey\w*)(?![\w])")
+AUTHOR_TEXT = ("We investigate the scalar sector",)
+
+
+def check_american_spelling():
+    rule = "American spelling (STYLE.md)"
+    files = sorted((REPO / "docs").rglob("*.html")) + sorted((REPO / "docs").glob("*.md")) + [REPO / "AGENTS.md", REPO / "README.md"]
+    n = 0
+    for path in files:
+        if "spec" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if path.suffix == ".html":
+            text = re.sub(r"<(pre|script|style|code)\b.*?</\1>", " ", text, flags=re.S)
+            text = re.sub(r"<p>(?:(?!</p>).)*?(?:" + "|".join(map(re.escape, AUTHOR_TEXT)) + r").*?</p>", " ", text, flags=re.S)
+            text = re.sub(r"<[^>]+>", " ", text)
+        else:
+            text = re.sub(r"```.*?```", " ", text, flags=re.S)
+            text = re.sub(r"`[^`]*`|\]\([^)]*\)", " ", text)
+        n += 1
+        for m in BRITISH.finditer(text):
+            start = max(0, m.start() - 40)
+            context = " ".join(text[start:m.end() + 30].split())
+            fail(rule, str(path.relative_to(REPO)), f"“{m.group(0)}” in: …{context}…")
+    if rule not in FAILS:
+        ok(rule, f"{n} files")
+
+
 def main():
     check_wordmark_not_typed()
     check_self_hosted()
@@ -575,7 +654,9 @@ def main():
     check_permalink_script()
     check_no_changelog_prose()
     check_plain_words()
+    check_american_spelling()
     check_classes_documented()
+    check_documented_classes_exist()
     check_section_anchors()
     check_generated_current()
     print()

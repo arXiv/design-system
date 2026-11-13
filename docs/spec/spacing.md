@@ -56,7 +56,7 @@ rules:
   - "One exception: the space between a glyph and its label *inside* a single control is part of the control rather than layout. Use `--ds-gap-glyph` (`0.5em`), which scales with that control's own type."
   - "Buttons placed as bare siblings are spaced by the HTML whitespace between the tags, which are narrower than any deliberate value. It will look like a bug because it is one. For the button use case you would use `.ds-btn-group` or the `--stack` variant. For other elements, visit their pattern pages to find the right container and code example."
   - "There is one name per scale step and every codebase uses it exactly as written. No per-repository prefixes or mapping tables. Anything kept in another repo is invisible here."
-  - "**Do not shrink controls.** Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbours."
+  - "**Do not shrink controls.** Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbors."
   - "**Spacing survives zoom.** The scale is in `rem`, so every gap grows with the reader's text size (WCAG 1.4.4). At 400% page zoom the page is only 320 pixels wide. Let the tokens do their work and never set a gap or a width that forces the page to scroll sideways."
   - "**Spacing is not structure.** Proximity tells a sighted reader what belongs together, but a screen reader does not see it. Give groups a heading, a `<fieldset>` or a landmark, so the grouping is in the markup as well as visual."
 ---
@@ -121,18 +121,11 @@ The gap *between* sections should be clearly larger than the gap *within* a sect
 Three tokens set the shape of every page: the width of the content column, the gutter that keeps it off the viewport edge, and the space the container puts between one region and the next. The container that reads them is documented on [Layouts](layouts.md#the-page-container).
 
 ```html
-<div class="ds-container">
+<main class="ds-container">
   <header class="ds-page-header">…</header>
   <section>…</section>   <!-- --ds-space-section above it, from the container -->
   <section>…</section>
-</div>
-```
-
-```html
-/* A page that needs a different width changes the one token;
-   it never adds a second width beside it. Here: a dense internal
-   tool with tables that cannot compress. */
-:root { --ds-width-page: 1080px; }
+</main>
 ```
 
 - `--ds-width-page` — 850px. The width of the content column, and the one width on a page: prose, tables, demo blocks, code and callouts all share it. An element never declares its own.
@@ -183,6 +176,6 @@ There is one name per scale step and every codebase uses it exactly as written. 
 
 ### Accessibility essentials
 
-- **Do not shrink controls.** Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbours.
+- **Do not shrink controls.** Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbors.
 - **Spacing survives zoom.** The scale is in `rem`, so every gap grows with the reader's text size (WCAG 1.4.4). At 400% page zoom the page is only 320 pixels wide. Let the tokens do their work and never set a gap or a width that forces the page to scroll sideways.
 - **Spacing is not structure.** Proximity tells a sighted reader what belongs together, but a screen reader does not see it. Give groups a heading, a `<fieldset>` or a landmark, so the grouping is in the markup as well as visual.

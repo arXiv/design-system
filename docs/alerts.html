@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -112,10 +110,13 @@
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
             <li><a href="#the-four-states">The four alert states</a></li>
+            <li><a href="#modifiers">Modifiers</a></li>
             <li><a href="#single-line">Single line</a></li>
             <li><a href="#dismissible">Dismissible</a></li>
+            <li><a href="#rules">Rules</a></li>
             <li><a href="#placement">Placement</a></li>
             <li><a href="#writing-the-message">Writing the message</a></li>
+            <li><a href="#spec">Spec</a></li>
             <li><a href="#status-tokens">Status tokens</a></li>
           </ol>
         </nav>
@@ -190,8 +191,8 @@
             <dt>.ds-alert--success, --warning, --error</dt>
             <dd>The state: <code>.ds-alert--success</code>,
             <code>.ds-alert--warning</code>, or <code>.ds-alert--error</code>. Sets the background,
-            border, and text colour from the status tokens. There is no info class: info is the
-            container's own colours. The same classes and the same colours on both surfaces.</dd>
+            border, and text color from the status tokens. There is no info class: info is the
+            container's own colors. The same classes and the same colors on both surfaces.</dd>
             <dt>.ds-alert-icon</dt>
             <dd>The icon, an inline SVG with <code>aria-hidden="true"</code>. Each state has its own
             shape: a check, an “i”, a triangle, an octagon with a “!”; an “x” would read as a close control. Copy the icon element whole, attributes
@@ -200,13 +201,13 @@
             hairline outline.</dd>
             <dt>.ds-alert-content</dt>
             <dd>Holds the text. One or more <code>&lt;p&gt;</code> elements; a link inside it takes
-            the alert’s own colour.</dd>
+            the alert’s own color.</dd>
             <dt>.ds-alert-title</dt>
             <dd>The leading line, in bold. It names the situation, and it is what conveys the
-            meaning for a reader who cannot see the icon or the colour. Optional on a one-line
+            meaning for a reader who cannot see the icon or the color. Optional on a one-line
             alert. On a notice that changes how the whole page is read, such as a
             <a href="papers.html#withdrawn-papers">withdrawn paper's</a>, it is a heading one level
-            below the page heading, and keeps the alert's size and colour.</dd>
+            below the page heading, and keeps the alert's size and color.</dd>
           </dl>
         </div>
       </details>
@@ -231,7 +232,7 @@
       and the theme control change nothing a reader can see: see
       <a href="action-feedback.html">Show that something was copied</a>.</li>
       <li><strong>Say the state in words.</strong> The icon is <code>aria-hidden="true"</code>
-      and the colour is invisible to a screen reader, so the title or the first words of the
+      and the color is invisible to a screen reader, so the title or the first words of the
       message must convey the meaning: “Could not load the PDF”, not “Oops”.</li>
       <li><strong>Copy the icon whole.</strong> Each state has its own icon shape, and the shape is
       part of the meaning. Copy the <code>&lt;svg&gt;</code> element with every attribute it has:
@@ -248,7 +249,7 @@
   </div>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Modifiers</h2>
+  <h2 id="modifiers">Modifiers</h2>
 
   <section>
     <h3 id="single-line">Single line</h3>
@@ -314,8 +315,8 @@
             <dt>.ds-close</dt>
             <dd>The dismiss control, documented on <a href="buttons.html#the-close-control">Buttons</a>.
             Put it last inside <code>.ds-alert</code>; the alert pushes it to the end of the row and it
-            takes the alert’s colour. Removing the alert from the page is the host’s job: the
-            stylesheet gives the control no behaviour.</dd>
+            takes the alert’s color. Removing the alert from the page is the host’s job: the
+            stylesheet gives the control no behavior.</dd>
             <dt>.is-sr-only</dt>
             <dd>Required inside the control. The icon is <code>aria-hidden</code>, so without this span
             the button announces as “button” and nothing more.</dd>
@@ -326,7 +327,7 @@
   </section>
 
 
-  <h2>Rules and Specifications</h2>
+  <h2 id="rules">Rules</h2>
   <!-- ───────── Placement ───────── -->
   <section>
     <h3 id="placement">Placement</h3>
@@ -356,6 +357,8 @@
     </ul>
   </section>
 
+
+  <h2 id="spec">Spec</h2>
   <!-- ───────── Live token values ───────── -->
   <section>
     <h3 id="status-tokens">Status tokens</h3>
@@ -369,7 +372,7 @@
   </section>
   </div>
 
-</div>
+</main>
 
 <script>
   (function () {

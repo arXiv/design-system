@@ -8,7 +8,7 @@
    same menu. Search fields stay in the bar while they fit, then go behind a
    Search button, so the narrowest bar is the logo, Search and the menu. On a
    bar without an account area the tools collapse behind a second button. A
-   centred tool or filter folds last: its label goes, then its value, leaving
+   centered tool or filter folds last: its label goes, then its value, leaving
    the icon that opens it. The script adds the buttons itself, and it answers to the width of the bar, not of the window, so a bar in a narrow
    column collapses too. Without the script the bar wraps onto more rows and
    nothing is hidden.
@@ -33,7 +33,7 @@
 
   function setUp(header) {
     // A copy of production's markup on a docs page (.demo-static) is shown as
-    // it is, without this script's behaviour.
+    // it is, without this script's behavior.
     if (header.closest('.demo-static')) return;
     var nav = header.querySelector(':scope > .ds-site-header-nav');
     var tools = header.querySelector(':scope > .ds-site-header-tools');
@@ -87,7 +87,7 @@
     // Each level folds one more thing away: the greeting first, because the
     // reader already knows their own name, then the navigation (with the tools
     // and the account area, on a bar with one menu), then the search fields,
-    // then the tools. The centred space changes every page, so it folds last:
+    // then the tools. The centered space changes every page, so it folds last:
     // its label, then its value. Its button stays, and its name stays whole.
     var greeting = header.querySelector('.ds-site-header-greeting');
     var steps = [];
@@ -194,7 +194,7 @@
       d.addEventListener('toggle', function () {
         if (!d.open) return;
         var gap = header.getBoundingClientRect().bottom - d.getBoundingClientRect().bottom;
-        d.style.setProperty('--ds-menu-gap', Math.round(gap) + 'px');
+        d.style.setProperty('--ds-menu-gap', gap + 'px');   // unrounded, so the menu meets the bar exactly
       });
     });
   }

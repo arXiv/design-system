@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,12 +88,12 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
     <h1>Dark mode</h1>
-    <p>In the design system, every colour comes from a token and the tokens flip in each mode. A page
+    <p>In the design system, every color comes from a token and the tokens flip in each mode. A page
     or component built from the color tokens follows the mode without any additional work and no hand-picking of values.</p>
   </header>
   </div>
@@ -114,10 +112,13 @@
           <ol>
             <li><a href="#the-theme-control">The theme control</a></li>
             <li><a href="#a-component-that-follows-the-tokens">Example: a card component in light and dark modes</a></li>
+            <li><a href="#modifiers">Modifiers</a></li>
             <li><a href="#a-page-locked-to-light">Locking to light</a></li>
             <li><a href="#internal-tools">Internal tools need no modifier</a></li>
+            <li><a href="#rules">Rules</a></li>
             <li><a href="#checklist-adding-or-changing-a-component">Adding or changing a component</a></li>
-            <li><a href="#scoping-a-mode">Scoping a mode</a></li>
+            <li><a href="#forcing-a-mode">Forcing a mode</a></li>
+            <li><a href="#spec">Spec</a></li>
             <li><a href="#the-mechanism">The mechanism</a></li>
             <li><a href="#color-tokens">Color tokens</a></li>
           </ol>
@@ -204,7 +205,7 @@
   <!-- ───────── A component example ───────── -->
   <section>
     <h2 id="a-component-that-follows-the-tokens">Example: a card component in light and dark modes</h2>
-    <p class="ds-section-desc">The same card in light and dark modes, on a public page vs. an internal page. Nothing in its markup changes except the <code>data-theme</code> attribute and, for internal tools, <code>.ds-internal</code> is added to the parent element.</p>
+    <p class="ds-section-desc">The same card on a public page and in an internal tool. Nothing in its markup changes except <code>.ds-internal</code> on the parent, for internal tools. To see it in the other mode, change the theme with the control in the header: the whole page changes, and the cards with it.</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
@@ -212,8 +213,8 @@
       </details>
       <div class="form-states form-states--pairs">
         <div class="form-state">
-          <span class="state-label">Public, light</span>
-          <div class="ds-card" data-theme="light" style="color: var(--ds-text)">
+          <span class="state-label">Public</span>
+          <div class="ds-card">
             <p>Body text on a raised surface, with <a href="#">an inline link</a>.</p>
             <div class="ds-alert ds-alert--success" role="status">
               <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -226,8 +227,8 @@
           </div>
         </div>
         <div class="form-state">
-          <span class="state-label">Public, dark</span>
-          <div class="ds-card" data-theme="dark" style="color: var(--ds-text)">
+          <span class="state-label">Internal tools</span>
+          <div class="ds-card ds-internal">
             <p>Body text on a raised surface, with <a href="#">an inline link</a>.</p>
             <div class="ds-alert ds-alert--success" role="status">
               <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -238,37 +239,7 @@
               <button class="ds-btn" type="button">Secondary</button>
             </div>
           </div>
-        </div>
-        <div class="form-state">
-          <span class="state-label">Internal tools, light</span>
-          <div class="ds-card ds-internal" data-theme="light" style="color: var(--ds-text)">
-            <p>Body text on a raised surface, with <a href="#">an inline link</a>.</p>
-            <div class="ds-alert ds-alert--success" role="status">
-              <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-              <div class="ds-alert-content"><p>Preferences saved.</p></div>
-            </div>
-            <div class="ds-btn-group">
-              <button class="ds-btn ds-btn-primary" type="button">Primary</button>
-              <button class="ds-btn" type="button">Secondary</button>
-            </div>
-          </div>
-        </div>
-        <div class="form-state">
-          <span class="state-label">Internal tools, dark</span>
-          <div class="ds-card ds-internal" data-theme="dark" style="color: var(--ds-text)">
-            <p>Body text on a raised surface, with <a href="#">an inline link</a>.</p>
-            <div class="ds-alert ds-alert--success" role="status">
-              <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-              <div class="ds-alert-content"><p>Preferences saved.</p></div>
-            </div>
-            <div class="ds-btn-group">
-              <button class="ds-btn ds-btn-primary" type="button">Primary</button>
-              <button class="ds-btn" type="button">Secondary</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
+        </div><details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
 <pre><code>&lt;!-- The component: nothing in it knows which mode it is in --&gt;
 &lt;div class="ds-card"&gt;
@@ -280,21 +251,11 @@
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;!-- The same component, forced dark on any page --&gt;
-&lt;div class="ds-card" data-theme="dark" style="color: var(--ds-text)"&gt;…&lt;/div&gt;
-
-&lt;!-- Internal tools: the accent comes from the class, the mode from the attribute --&gt;
-&lt;div class="ds-card ds-internal" data-theme="dark" style="color: var(--ds-text)"&gt;…&lt;/div&gt;</code></pre>
+&lt;!-- Internal tools: the accent comes from the class on a parent, the mode from the page --&gt;
+&lt;html lang="en" class="ds-internal"&gt;</code></pre>
           <dl>
-            <dt>data-theme="dark", data-theme="light"</dt>
-            <dd>On any element, not only the root. The tokens are declared on any element with the attribute
-            and custom properties inherit, so the <em>nearest</em> ancestor with <code>data-theme</code> wins, and
-            nesting works in both directions: a dark sample inside a light panel inside a page following the OS
-            renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that
-            already reads tokens follows; the container has to take its own ground and text from tokens too, which
-            here is <code>.ds-card</code> for the ground and <code>color: var(--ds-text)</code> for the text.</dd>
             <dt>.ds-internal</dt>
-            <dd>Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute:
+            <dd>Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the theme:
             lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns
             lime to stay legible. An internal page puts it on <code>&lt;html&gt;</code>.</dd>
           </dl>
@@ -307,17 +268,17 @@
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
       <li><strong>Respect the setting the reader already made.</strong> A page follows the operating system's
-      colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button
+      color scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button
       and the page follows the OS: the control is an addition, never the only route to a readable page.</li>
       <li><strong>The icon is the only visible part, so the name gives the state.</strong> The button's
       accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press
       announces its result in the live region, as in <a href="action-feedback.html">Show that something was copied</a>. A sighted reader learns the three icons from the cards above; a
       screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”.</li>
-      <li><strong>Never a dark value by hand.</strong> Take every colour from a token and it flips with the rest of
+      <li><strong>Never a dark value by hand.</strong> Take every color from a token and it flips with the rest of
       the page. A hex written into a page or a component cannot flip, and it will not announce itself.</li>
       <li><strong>Check contrast in both modes.</strong> Verify computed styles and measure contrast in every state
       a reader can reach: OS dark, OS light, and the attribute forced either way. Do not trust the cascade and do
-      not judge by eye. Anything that uses colour to convey meaning keeps its second cue (icon, word, position) in
+      not judge by eye. Anything that uses color to convey meaning keeps its second cue (icon, word, position) in
       dark mode too — the WCAG 1.4.1 requirement applies in both modes.</li>
       <li><strong>Let form controls follow.</strong> The stylesheet sets <code>color-scheme</code> beside the
       tokens, so native form controls, scrollbars and the default canvas take the same mode as the page. Do not
@@ -327,44 +288,17 @@
   </div>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Modifiers</h2>
+  <h2 id="modifiers">Modifiers</h2>
    <!-- ───────── Lock to light ───────── -->
   <section>
     <h3 id="a-page-locked-to-light">Locking to light</h3>
-    <p class="ds-section-desc">Any page or element can lock to light mode only by adding <code>data-theme="light"</code>. We use this feature when demonstrating light mode, but it can also be useful if the content being worked with has no dark mode. For example, if porting in complex visualizations from an external engine that does not support dark mode.</p>
-    <div class="ds-card">
-      <details class="ds-marginalia">
-        <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Test it with the theme control in the header: the page changes but this panel does not.</p>
-      </details>
-      <div class="ds-card" data-theme="light" style="color: var(--ds-text)">
-        <p>This panel stays light whatever the page does. Its <code>&lt;code&gt;</code>, its
-        <a href="#">links</a> and its controls all read the light tokens declared on the panel.</p>
-        <div class="ds-btn-group">
-          <button class="ds-btn" type="button">Secondary</button>
-          <button class="ds-btn ds-btn-text" type="button">Text-only</button>
-        </div>
-      </div>
-      <details class="ds-acc"><summary>Relevant code</summary>
-        <div class="ds-acc-body">
-<pre><code>&lt;!-- The whole page: only when the page exists to show light rendering --&gt;
-&lt;html lang="en" data-theme="light"&gt;
-
-&lt;!-- One demo, while the page follows the reader --&gt;
-&lt;div class="ds-card" data-theme="light" style="color: var(--ds-text)"&gt;…&lt;/div&gt;</code></pre>
-          <dl>
-            <dt>data-theme="light" on &lt;html&gt;</dt>
-            <dd>Locks the page to light and opts it out of the <code>@media</code> block. Check that nothing
-            rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute
-            at load. <code>theme.js</code> does exactly that, so a page that includes the theme control cannot also
-            be locked.</dd>
-            <dt>data-theme="light" on a container</dt>
-            <dd>One demo shows light while the page follows the reader. The same scoping as the dark island
-            above, in the other direction.</dd>
-          </dl>
-        </div>
-      </details>
-    </div>
+    <p class="ds-section-desc">A page locks to light mode by adding <code>data-theme="light"</code> to its <code>&lt;html&gt;</code>. Use it only when the page&#39;s content has no dark mode, such as complex visualizations from an external engine that cannot follow the theme. The theme belongs to the whole page: a part of a page cannot lock.</p>
+<pre><code>&lt;html lang="en" data-theme="light"&gt;</code></pre>
+    <dl>
+      <dt>data-theme="light" on &lt;html&gt;</dt>
+      <dd>Locks the page to light and opts it out of the <code>@media</code> block. <code>theme.js</code> leaves an
+      attribute written in the markup alone, and shows no theme control on that page.</dd>
+    </dl>
   </section>
 
   <!-- ───────── Internal tools ───────── -->
@@ -373,7 +307,7 @@
     <p class="ds-section-desc">Internal tools load the same tier 1 stylesheet as public pages. Their speciall accent color comes from adding <code>.ds-internal</code> on <code>&lt;html&gt;</code>, so everything above applies to them unchanged. The internal pages tier 2 stylesheet, <code>internal-tools.css</code>, re-points only the tokens whose dark value differs on that surface. No manual adjustments are needed.</p>
   </section>
 
-  <h2>Rules</h2>
+  <h2 id="rules">Rules</h2>
 
   <!-- ───────── Adding or changing a component ───────── -->
   <section>
@@ -381,11 +315,11 @@
     <p class="ds-section-desc">In order. Each step links to the reasoning below. If you follow only this list and read
     nothing else, dark mode will work.</p>
     <ol class="notes">
-      <li><strong>Take every colour from a token.</strong> Never write a dark hex into a page or a component.
+      <li><strong>Take every color from a token.</strong> Never write a dark hex into a page or a component.
       Components that consume tokens flip for free. <a href="#the-mechanism">How it works</a></li>
 
-      <li><strong>Decide whether the colour is content or identity.</strong> Content flips. Identity is pinned to a
-      literal with a comment saying why — a masthead, a brand fill, a colour specimen whose subject is the value
+      <li><strong>Decide whether the color is content or identity.</strong> Content flips. Identity is pinned to a
+      literal with a comment saying why — a masthead, a brand fill, a color specimen whose subject is the value
       itself.</li>
 
       <li><strong>Fill raised things with <code>--ds-surface</code>.</strong> Not
@@ -396,16 +330,18 @@
       text on them must not flip either — <code>--ds-text-on-accent</code> on lime and on Open Blue alike.
       Reaching for the plain token puts near-white text on a light fill, about 1.3:1.</li>
 
-      <li><strong>Set the page's own background and text from tokens.</strong> An inherited colour from a platform
+      <li><strong>Set the page's own background and text from tokens.</strong> An inherited color from a platform
       preset or a third-party stylesheet cannot flip, and it will not announce itself.</li>
 
       <li><strong>Do not use <code>color-scheme</code> to force a mode.</strong> It governs browser-rendered widgets
       only — scrollbars, form controls — and does nothing to any stylesheet's <code>prefers-color-scheme</code> rules.
-      Use <code>data-theme</code>. <a href="#scoping-a-mode">Scoping a mode</a></li>
+      Use <code>data-theme</code> on <code>&lt;html&gt;</code>. <a href="#a-page-locked-to-light">Locking to light</a></li>
 
-      <li><strong>Scope a demo that must show one mode.</strong> Put <code>data-theme</code> on the demo's own
-      container, not on the page. Pages should follow the reader.
-      <a href="#scoping-a-mode">Scoping a mode</a></li>
+      <li><strong>The theme belongs to the whole page.</strong> Set <code>data-theme</code> on <code>&lt;html&gt;</code>
+      only: no part of a page is lighter or darker than the rest. To show both modes, use the theme control
+      in the header. One case follows from another rule: a popover takes the ground of the row that opened it,
+      so a popover from the dark site header opens in dark mode. <code>filter-panel.js</code> sets that; a page
+      never does.</li>
 
       <li><strong>If anything can set <code>data-theme</code>, mirror the dark block under the attribute</strong> as
       well as the media query — including inherited code you did not write.
@@ -421,21 +357,22 @@
 
   <!-- ───────── Scoping ───────── -->
   <section>
-    <h3 id="scoping-a-mode">Scoping a mode</h3>
+    <h3 id="forcing-a-mode">Forcing a mode</h3>
     <ul class="notes">
       <li>Component CSS consumes tokens. Do not write hex values directly.</li>
-      <li><code>color-scheme</code> does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's <code>prefers-color-scheme</code> rules. If absolutely needed, use <code>data-theme</code> to lock a mode.</li>
+      <li><code>color-scheme</code> does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's <code>prefers-color-scheme</code> rules. If absolutely needed, use <code>data-theme</code> on <code>&lt;html&gt;</code> to lock a mode.</li>
     </ul>
   </section>
 
-  <h2>Spec</h2>
+  <h2 id="spec">Spec</h2>
 
   <!-- ───────── Mechanism ───────── -->
   <section>
     <h3 id="the-mechanism">The mechanism</h3>
     <p class="ds-section-desc">Dark values are declared twice in each stylesheet: once in a
-    <code>@media (prefers-color-scheme: dark)</code> block that follows the OS, and once under
-    <code>[data-theme="dark"]</code> so the attribute can force a mode. A page takes one of three states:</p>
+    <code>@media screen and (prefers-color-scheme: dark)</code> block that follows the OS, and once under
+    <code>:root[data-theme="dark"]</code> so the attribute can force a mode. Both are for screens only, so a
+    page always prints light. A page takes one of three states:</p>
 <pre><code>&lt;html data-theme="dark"&gt;    &lt;!-- dark, whatever the OS says --&gt;
 &lt;html data-theme="light"&gt;   &lt;!-- light, whatever the OS says --&gt;
 &lt;html&gt;                      &lt;!-- follows the OS --&gt;</code></pre>
@@ -446,61 +383,52 @@
   <!-- ───────── Color tokens ───────── -->
   <section>
     <h3 id="color-tokens">Color tokens</h3>
-    <p class="ds-section-desc">The table below is rendered at runtime from <code>design-system.css</code> through a light island and a dark island, so the values will not drift from the stylesheet. Do not edit manually.</p>
+    <p class="ds-section-desc">The table below is written from <code>design-system.css</code> by <code>verification/gen-theme-values.py</code>, and a check fails when it no longer matches the stylesheet. Do not edit it by hand.</p>
     <div class="ds-table-scroll" role="region" aria-label="Tokens in light and dark" tabindex="0">
       <table class="ds-table token-table">
         <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Between modes</th></tr></thead>
-        <tbody id="token-rows"><!-- populated at runtime to avoid drift --></tbody>
+        <tbody id="theme-token-rows">
+          <tr><th scope="row"><code>--ds-text</code></th><td><span class="swatch" style="background:#1c1a17"></span><code>#1c1a17</code></td><td><span class="swatch" style="background:#f0f0ee"></span><code>#f0f0ee</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-text-muted</code></th><td><span class="swatch" style="background:#6b6459"></span><code>#6b6459</code></td><td><span class="swatch" style="background:#aeaaa4"></span><code>#aeaaa4</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-text-disabled</code></th><td><span class="swatch" style="background:#aeaaa4"></span><code>#aeaaa4</code></td><td><span class="swatch" style="background:#5a554f"></span><code>#5a554f</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-text-on-accent</code></th><td><span class="swatch" style="background:#1c1a17"></span><code>#1c1a17</code></td><td><span class="swatch" style="background:#1c1a17"></span><code>#1c1a17</code></td><td>holds</td></tr>
+          <tr><th scope="row"><code>--ds-canvas</code></th><td><span class="swatch" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="swatch" style="background:#1c1a17"></span><code>#1c1a17</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-surface</code></th><td><span class="swatch" style="background:#ffffff"></span><code>#ffffff</code></td><td><span class="swatch" style="background:#1c1a17"></span><code>#1c1a17</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-surface-hover</code></th><td><span class="swatch" style="background:#f0f0ee"></span><code>#f0f0ee</code></td><td><span class="swatch" style="background:#282622"></span><code>#282622</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-tint-warm</code></th><td><span class="swatch" style="background:#f0f0ee"></span><code>#f0f0ee</code></td><td><span class="swatch" style="background:#282622"></span><code>#282622</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-zone-secondary-bg</code></th><td><span class="swatch" style="background:#f0f0ee"></span><code>#f0f0ee</code></td><td><span class="swatch" style="background:#282622"></span><code>#282622</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-chrome</code></th><td><span class="swatch" style="background:#1c1a17"></span><code>#1c1a17</code></td><td><span class="swatch" style="background:#262119"></span><code>#262119</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-border</code></th><td><span class="swatch" style="background:#dad8d6"></span><code>#dad8d6</code></td><td><span class="swatch" style="background:#383531"></span><code>#383531</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-border-strong</code></th><td><span class="swatch" style="background:#89837a"></span><code>#89837a</code></td><td><span class="swatch" style="background:#89837a"></span><code>#89837a</code></td><td>holds</td></tr>
+          <tr><th scope="row"><code>--ds-accent</code></th><td><span class="swatch" style="background:#a5d6fe"></span><code>#a5d6fe</code></td><td><span class="swatch" style="background:#a5d6fe"></span><code>#a5d6fe</code></td><td>holds</td></tr>
+          <tr><th scope="row"><code>--ds-accent-strong</code></th><td><span class="swatch" style="background:#1f5e96"></span><code>#1f5e96</code></td><td><span class="swatch" style="background:#6ba8da"></span><code>#6ba8da</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-accent-wash</code></th><td><span class="swatch" style="background:#d2eafe"></span><code>#d2eafe</code></td><td><span class="swatch" style="background:#22344a"></span><code>#22344a</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-accent-surface</code></th><td><span class="swatch" style="background:#edf7ff"></span><code>#edf7ff</code></td><td><span class="swatch" style="background:#202b38"></span><code>#202b38</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-accent-border</code></th><td><span class="swatch" style="background:#c0e2fe"></span><code>#c0e2fe</code></td><td><span class="swatch" style="background:#2a4a7a"></span><code>#2a4a7a</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-link</code></th><td><span class="swatch" style="background:#1565c0"></span><code>#1565c0</code></td><td><span class="swatch" style="background:#64b5f6"></span><code>#64b5f6</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-link-hover</code></th><td><span class="swatch" style="background:#1050a0"></span><code>#1050a0</code></td><td><span class="swatch" style="background:#90caf9"></span><code>#90caf9</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-link-visited</code></th><td><span class="swatch" style="background:#7b2fbe"></span><code>#7b2fbe</code></td><td><span class="swatch" style="background:#c690e3"></span><code>#c690e3</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-danger-fg</code></th><td><span class="swatch" style="background:#c62828"></span><code>#c62828</code></td><td><span class="swatch" style="background:#e57373"></span><code>#e57373</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-success-bg</code></th><td><span class="swatch" style="background:#e8f5d8"></span><code>#e8f5d8</code></td><td><span class="swatch" style="background:#1e2b0d"></span><code>#1e2b0d</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-success-border</code></th><td><span class="swatch" style="background:#6b8e1e"></span><code>#6b8e1e</code></td><td><span class="swatch" style="background:#8fbd3a"></span><code>#8fbd3a</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-success-fg</code></th><td><span class="swatch" style="background:#4a5a0a"></span><code>#4a5a0a</code></td><td><span class="swatch" style="background:#c5e1a5"></span><code>#c5e1a5</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-info-bg</code></th><td><span class="swatch" style="background:#e7f1fd"></span><code>#e7f1fd</code></td><td><span class="swatch" style="background:#132433"></span><code>#132433</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-info-border</code></th><td><span class="swatch" style="background:#5a82c8"></span><code>#5a82c8</code></td><td><span class="swatch" style="background:#64b5f6"></span><code>#64b5f6</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-info-fg</code></th><td><span class="swatch" style="background:#1a3a78"></span><code>#1a3a78</code></td><td><span class="swatch" style="background:#90caf9"></span><code>#90caf9</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-warning-bg</code></th><td><span class="swatch" style="background:#fff8e1"></span><code>#fff8e1</code></td><td><span class="swatch" style="background:#2e2410"></span><code>#2e2410</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-warning-border</code></th><td><span class="swatch" style="background:#e8b800"></span><code>#e8b800</code></td><td><span class="swatch" style="background:#e8b800"></span><code>#e8b800</code></td><td>holds</td></tr>
+          <tr><th scope="row"><code>--ds-warning-fg</code></th><td><span class="swatch" style="background:#7a5c00"></span><code>#7a5c00</code></td><td><span class="swatch" style="background:#ffe082"></span><code>#ffe082</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-error-bg</code></th><td><span class="swatch" style="background:#fdeaea"></span><code>#fdeaea</code></td><td><span class="swatch" style="background:#2d1414"></span><code>#2d1414</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-error-border</code></th><td><span class="swatch" style="background:#c62828"></span><code>#c62828</code></td><td><span class="swatch" style="background:#e57373"></span><code>#e57373</code></td><td>flips</td></tr>
+          <tr><th scope="row"><code>--ds-error-fg</code></th><td><span class="swatch" style="background:#8b0000"></span><code>#8b0000</code></td><td><span class="swatch" style="background:#ef9a9a"></span><code>#ef9a9a</code></td><td>flips</td></tr>
+        </tbody>
       </table>
     </div>
   </section>
   </div>
 
-</div>
+</main>
 
-<script>
-  (function () {
-    // Both columns come from the stylesheet: one probe forced light, one forced
-    // dark, read once. The table does not change when the page's theme does.
-    var TOKENS = [
-      '--ds-text', '--ds-text-muted', '--ds-text-disabled', '--ds-text-on-accent',
-      '--ds-canvas', '--ds-surface', '--ds-surface-hover', '--ds-tint-warm', '--ds-zone-secondary-bg', '--ds-chrome',
-      '--ds-border', '--ds-border-strong',
-      '--ds-accent', '--ds-accent-strong', '--ds-accent-wash', '--ds-accent-surface', '--ds-accent-border',
-      '--ds-link', '--ds-link-hover', '--ds-link-visited', '--ds-danger-fg',
-      '--ds-success-bg', '--ds-success-border', '--ds-success-fg',
-      '--ds-info-bg', '--ds-info-border', '--ds-info-fg',
-      '--ds-warning-bg', '--ds-warning-border', '--ds-warning-fg',
-      '--ds-error-bg', '--ds-error-border', '--ds-error-fg'
-    ];
-    function probe(theme) {
-      var d = document.createElement('div');
-      d.setAttribute('data-theme', theme);
-      document.body.appendChild(d);
-      return d;
-    }
-    function toRGB(el, value) {
-      el.style.color = value;
-      var m = getComputedStyle(el).color.match(/[\d.]+/g);
-      return m ? m.slice(0, 3).map(Number) : null;
-    }
-    function hex(c) { return '#' + c.map(function (x) { return Math.round(x).toString(16).padStart(2, '0'); }).join(''); }
-    function cell(c) { return c ? '<span class="swatch" style="background:' + hex(c) + '"></span><code>' + hex(c) + '</code>' : '—'; }
-    function render() {
-      var light = probe('light'), dark = probe('dark');
-      var rows = TOKENS.map(function (name) {
-        var l = toRGB(light, getComputedStyle(light).getPropertyValue(name).trim());
-        var d = toRGB(dark, getComputedStyle(dark).getPropertyValue(name).trim());
-        var same = l && d && hex(l) === hex(d);
-        return '<tr><th scope="row"><code>' + name + '</code></th><td>' + cell(l) + '</td><td>' + cell(d) + '</td><td>' + (same ? 'holds' : 'flips') + '</td></tr>';
-      }).join('');
-      light.remove();
-      dark.remove();
-      document.getElementById('token-rows').innerHTML = rows;
-    }
-    render();
-  })();
-</script>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —

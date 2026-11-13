@@ -14,7 +14,7 @@ components:
     summary: "Every paper shows its dates under the title, and its versions once there is more than one. What is shown depends on how many versions there are, which one the reader is viewing, and whether the paper has been withdrawn or a version removed."
     classes:
       - name: ".ds-date-row"
-        does: "The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up."
+        does: "The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted color, with tabular figures so the digits line up."
       - name: "<time datetime>"
         does: "Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element."
       - name: ".is-sr-only"
@@ -22,9 +22,9 @@ components:
       - name: ".ds-version-list"
         does: "The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart."
       - name: ".ds-version"
-        does: "One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent."
+        does: "One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link color and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent."
       - name: "aria-current=\"true\""
-        does: "On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
+        does: "On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by color alone. The `.is-sr-only` span inside it says \", this version\", because the attribute alone is not announced by every screen reader."
       - name: ".is-sr-only"
         does: "Inside every prior-version link, after the visible \"v1\": \", version 1\". The visible \"v1\" on its own does not say which version the link opens. A screen reader reads the link as \"v1, version 1\"."
       - name: ".ds-alert.ds-alert--warning"
@@ -33,8 +33,10 @@ components:
         does: "On v1 here, since v1 is the version being viewed. \"(this version)\" moves to the Submitted date for the same reason."
       - name: ".ds-show-more"
         does: "The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides; `show-more.js`, once per page, does the flipping. The label includes the total: \"show all 12 versions\", and \"show fewer\" once open."
+      - name: ".ds-show-more-tail"
+        does: "On the span that holds the elided versions. The full list is in the HTML the server sends: `show-more.js` hides the tail with the `hidden` attribute, not a class, so the hidden links are out of the tab order, and shows the button. With no JavaScript the reader gets every version and no button."
       - name: "[hidden]"
-        does: "On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version."
+        does: "On the button and on the span that holds the ellipsis, in the markup: neither means anything without JavaScript. The script shows the ellipsis while the list is closed."
       - name: "aria-hidden=\"true\""
         does: "On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens."
       - name: "aria-controls=\"v7-elide-a v7-tail-a v7-elide-b v7-tail-b\""
@@ -69,7 +71,7 @@ components:
       - "The inline list keeps its first three and last three and elides the middle with an ellipsis. The elided versions are still in the DOM, but hidden with `hidden` and `aria-hidden`.; The ellipsis has `aria-hidden` and a screen-reader-only span beside it says \"versions 4 through 9 hidden,\" so the reader knows there are more versions than they can see.; The version being viewed always stays visible, wherever it falls in the list. It may interrupt the ellipsis.; A text button displays the total count and expands the full list.; The expanded list shows all versions in a list, wrapping if necessary. No javascript required."
   - id: version-history-panel
     title: "Version history panel"
-    summary: "In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labelled Latest, and the one being read is labelled Viewing."
+    summary: "In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labeled Latest, and the one being read is labeled Viewing."
     classes:
       - name: ".ds-paper-versions"
         does: "An `<ol>` inside the Version history accordion, under Paper information in the sidebar (see [Papers](papers.md#the-sidebar)). Every version, newest first. Each entry is a `.ds-date-row` with the version, its date and its labels, then the comments the author wrote for that version."
@@ -141,7 +143,7 @@ Every paper shows its dates under the title, and its versions once there is more
 </p>
 ```
 
-- `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted colour, with tabular figures so the digits line up.
+- `.ds-date-row` — The row. One `<p>` that holds the dates and, after them, the version links. Small type in the muted color, with tabular figures so the digits line up.
 - `<time datetime>` — Every date. Announced is a full instant (`2026-01-11T01:32Z`); Submitted and Revised are date-only (`2026-01-10`). In the visible text, bind the day, month, year and clock time to each other with `&nbsp;`, and bind UTC to its date the same way, outside the element.
 - `.is-sr-only` — The separator. The visible "·" is `aria-hidden`, and the sr-only comma beside it is what a screen reader gets between one date and the next.
 
@@ -163,8 +165,8 @@ Every paper shows its dates under the title, and its versions once there is more
 ```
 
 - `.ds-version-list` — The versions. A `<span>` at the end of the `.ds-date-row`, after a dot: every version, oldest first. A taller line and wider word spacing keep the version links 24px apart.
-- `.ds-version` — One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link colour and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent.
-- `aria-current="true"` — On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by colour alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
+- `.ds-version` — One version number, in the mono face. A prior version is an `<a>` with an `href`, and takes the page's link color and underline. The version being viewed is a `<strong>`, not a link, in a box: the accent tint, edged in the strong accent.
+- `aria-current="true"` — On the version being viewed, which draws the box. The current version is marked by the box, the bold and the missing underline, never by color alone. The `.is-sr-only` span inside it says ", this version", because the attribute alone is not announced by every screen reader.
 - `.is-sr-only` — Inside every prior-version link, after the visible "v1": ", version 1". The visible "v1" on its own does not say which version the link opens. A screen reader reads the link as "v1, version 1".
 
 **Viewing v1, latest is v3**
@@ -208,8 +210,8 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
-  <span id="v12-elide"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
-  <span id="v12-tail" hidden>
+  <span id="v12-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 9 hidden,</span></span>
+  <span id="v12-tail" class="ds-show-more-tail">
     <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
     <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
     <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
@@ -220,14 +222,15 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v10">v10<span class="is-sr-only">, version 10</span></a>
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <strong class="ds-version" aria-current="true">v12<span class="is-sr-only">, this version</span></strong>
-  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v12-elide v12-tail">show all 12 versions</button>
+  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v12-elide v12-tail">show all 12 versions</button>
   </span>
 </p>
 <script src="show-more.js" defer></script>
 ```
 
 - `.ds-show-more` — The control that expands the list, documented on [Progressive disclosure](progressive-disclosure.md#show-more). Requires `aria-expanded`, flipped on every press, and `aria-controls` naming every region it shows or hides; `show-more.js`, once per page, does the flipping. The label includes the total: "show all 12 versions", and "show fewer" once open.
-- `[hidden]` — On the span that holds the elided versions. The attribute, not a class: the hidden links are out of the tab order while they are off screen. The full list is in the HTML the server sends; a script adds `hidden` and the button, so with no JavaScript the reader gets every version.
+- `.ds-show-more-tail` — On the span that holds the elided versions. The full list is in the HTML the server sends: `show-more.js` hides the tail with the `hidden` attribute, not a class, so the hidden links are out of the tab order, and shows the button. With no JavaScript the reader gets every version and no button.
+- `[hidden]` — On the button and on the span that holds the ellipsis, in the markup: neither means anything without JavaScript. The script shows the ellipsis while the list is closed.
 - `aria-hidden="true"` — On the ellipsis, which is decoration. The `.is-sr-only` span beside it says which versions are hidden. Both sit in one span that the button hides when the list opens.
 
 **Viewing v7 of 12**
@@ -243,22 +246,22 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v1">v1<span class="is-sr-only">, version 1</span></a>
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
-  <span id="v7-elide-a"><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
-  <span id="v7-tail-a" hidden>
+  <span id="v7-elide-a" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 6 hidden,</span></span>
+  <span id="v7-tail-a" class="ds-show-more-tail">
     <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
     <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
     <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
   </span>
   <strong class="ds-version" aria-current="true">v7<span class="is-sr-only">, this version</span></strong>
-  <span id="v7-elide-b"><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
-  <span id="v7-tail-b" hidden>
+  <span id="v7-elide-b" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 8 through 9 hidden,</span></span>
+  <span id="v7-tail-b" class="ds-show-more-tail">
     <a class="ds-version" href="#v8">v8<span class="is-sr-only">, version 8</span></a>
     <a class="ds-version" href="#v9">v9<span class="is-sr-only">, version 9</span></a>
   </span>
   <a class="ds-version" href="#v10">v10<span class="is-sr-only">, version 10</span></a>
   <a class="ds-version" href="#v11">v11<span class="is-sr-only">, version 11</span></a>
   <a class="ds-version" href="#v12">v12<span class="is-sr-only">, version 12</span></a>
-  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
+  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="false" hidden aria-controls="v7-elide-a v7-tail-a v7-elide-b v7-tail-b">show all 12 versions</button>
   </span>
 </p>
 <div class="ds-alert ds-alert--warning">
@@ -289,7 +292,7 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v2">v2<span class="is-sr-only">, version 2</span></a>
   <a class="ds-version" href="#v3">v3<span class="is-sr-only">, version 3</span></a>
   <span id="v24-elide" hidden><span aria-hidden="true">…</span><span class="is-sr-only">versions 4 through 21 hidden,</span></span>
-  <span id="v24-tail">
+  <span id="v24-tail" class="ds-show-more-tail">
     <a class="ds-version" href="#v4">v4<span class="is-sr-only">, version 4</span></a>
     <a class="ds-version" href="#v5">v5<span class="is-sr-only">, version 5</span></a>
     <a class="ds-version" href="#v6">v6<span class="is-sr-only">, version 6</span></a>
@@ -312,7 +315,7 @@ Every paper shows its dates under the title, and its versions once there is more
   <a class="ds-version" href="#v22">v22<span class="is-sr-only">, version 22</span></a>
   <a class="ds-version" href="#v23">v23<span class="is-sr-only">, version 23</span></a>
   <strong class="ds-version" aria-current="true">v24<span class="is-sr-only">, this version</span></strong>
-  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
+  <button type="button" class="ds-show-more ds-show-more--among-links" aria-expanded="true" hidden aria-controls="v24-elide v24-tail" data-closed-label="show all 24 versions">show fewer</button>
   </span>
 </p>
 ```
@@ -420,7 +423,7 @@ Every paper shows its dates under the title, and its versions once there is more
 
 ## Version history panel
 
-In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labelled Latest, and the one being read is labelled Viewing.
+In the sidebar, Version history lists every version, newest first, with its date and the comments the author wrote for it. The newest version is labeled Latest, and the one being read is labeled Viewing.
 
 **Viewing v3 of 3 (latest)**
 

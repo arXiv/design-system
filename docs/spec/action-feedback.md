@@ -14,7 +14,7 @@ components:
     summary: "Any button that copies, here one that copies an identifier. Press Copy: the tick takes the icon's place for two seconds, a screen reader hears “Identifier copied”, and focus stays on the button, which is still called Copy. Below it, the same button after a copy that failed; pressing it tries again."
     classes:
       - name: "copy.js"
-        does: "Once per page. It copies for every button below, adds the copy button to every code block, and makes the page's status region."
+        does: "Once per page. It copies for every button below, adds the copy button to every code block, and makes the page's status region. A copy button does nothing without it, so write the button `hidden`, and `copy.js` shows it. A Permalink is a link to its `#id` instead, which works without the script."
       - name: "[data-copy]"
         does: "The text to copy. `data-copy-link=\"#S2\"` copies the page's address with that fragment instead, and `data-copy-from=\"S2.E14\"` copies that element's text, or an equation's MathML."
       - name: "[data-copied]"
@@ -58,7 +58,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 Any button that copies, here one that copies an identifier. Press Copy: the tick takes the icon's place for two seconds, a screen reader hears “Identifier copied”, and focus stays on the button, which is still called Copy. Below it, the same button after a copy that failed; pressing it tries again.
 
 ```html
-<button type="button" class="ds-btn ds-btn-compact" data-copy="arXiv:2604.22725" data-copied="Identifier copied">
+<button type="button" class="ds-btn ds-btn-compact" hidden data-copy="arXiv:2604.22725" data-copied="Identifier copied">
   <svg aria-hidden="true">…</svg>
   <svg class="ds-copy-done" aria-hidden="true">…</svg>
   Copy<span class="is-sr-only"> identifier</span>
@@ -66,7 +66,7 @@ Any button that copies, here one that copies an identifier. Press Copy: the tick
 <script src="copy.js" defer></script>
 ```
 
-- `copy.js` — Once per page. It copies for every button below, adds the copy button to every code block, and makes the page's status region.
+- `copy.js` — Once per page. It copies for every button below, adds the copy button to every code block, and makes the page's status region. A copy button does nothing without it, so write the button `hidden`, and `copy.js` shows it. A Permalink is a link to its `#id` instead, which works without the script.
 - `[data-copy]` — The text to copy. `data-copy-link="#S2"` copies the page's address with that fragment instead, and `data-copy-from="S2.E14"` copies that element's text, or an equation's MathML.
 - `[data-copied]` — What a screen reader hears after the copy. It names what was copied where a page has many such buttons. Without it, “Copied to clipboard”.
 - `.ds-copy-done` — The tick, beside the button's own icon. For two seconds after a copy the script adds `.is-done` to the button, and the tick takes the icon's place.

@@ -28,7 +28,7 @@ components:
       - name: ".ds-filter-value"
         does: "Optional, inside the button: what is applied, after the button's name. It shortens with an ellipsis when the row is narrow."
       - name: ".ds-filter-panel"
-        does: "The filter panel, a `popover` with `role=\"dialog\"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, and attaches to that row's bottom edge; `filter-panel.js` does both. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width."
+        does: "The filter panel, a `popover` with `role=\"dialog\"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, so the reader sees which area opened it, and attaches to that row's bottom edge. From the dark site header it opens dark, in dark mode, so its labels and fields read on that ground. `filter-panel.js` does all three. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width."
       - name: "<fieldset> with checkboxes"
         does: "A filter that takes several values, such as categories, is a fieldset of `.ds-check` checkboxes."
       - name: "<fieldset> with the legend Settings"
@@ -38,7 +38,7 @@ components:
       - name: "<a> Clear all"
         does: "A link to the page without filters, after the tags, while a filter is applied."
       - name: "<script src=\"filter-panel.js\" defer>"
-        does: "Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the centre of the window."
+        does: "Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the center of the window."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
 rules:
@@ -139,12 +139,12 @@ A filter that takes several choices at once is a group of checkboxes, in a filte
 
 - `.ds-filter-button` — A compact secondary button with the filter icon (`list-filter`) and no chevron. `popovertarget` names its panel. While the panel is open the button shows its pressed state.
 - `.ds-filter-value` — Optional, inside the button: what is applied, after the button's name. It shortens with an ellipsis when the row is narrow.
-- `.ds-filter-panel` — The filter panel, a `popover` with `role="dialog"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, and attaches to that row's bottom edge; `filter-panel.js` does both. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width.
+- `.ds-filter-panel` — The filter panel, a `popover` with `role="dialog"` and a name. It opens in the background of the row its button sits in, such as the card's header bar, so the reader sees which area opened it, and attaches to that row's bottom edge. From the dark site header it opens dark, in dark mode, so its labels and fields read on that ground. `filter-panel.js` does all three. It holds a [compact form](forms.md#compact-form), one short column. `--ds-panel-width` sets its width.
 - `<fieldset> with checkboxes` — A filter that takes several values, such as categories, is a fieldset of `.ds-check` checkboxes.
 - `<fieldset> with the legend Settings` — A setting, such as threshold days, changes a calculation and is not a filter. It goes after the filters, in a fieldset of its own, and is not shown as a tag.
 - `.ds-tag, .ds-tag-remove` — One tag for each applied filter, after the button. Its remove control is a link to the page without that filter. See [Tags](tags.md#complex-tags).
 - `<a> Clear all` — A link to the page without filters, after the tags, while a filter is applied.
-- `<script src="filter-panel.js" defer>` — Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the centre of the window.
+- `<script src="filter-panel.js" defer>` — Places the panel at the button's edge and keeps `aria-expanded` current. Without it the panel opens in the center of the window.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
