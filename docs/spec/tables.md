@@ -79,7 +79,7 @@ components:
       - name: "<input type=\"checkbox\">"
         does: "The first child of each item, then its `<label class=\"is-sr-only\">`, which names the item: “Select” and the paper's title. The box is 24px, in a column of its own, and lines up with the item's first line; everything after it sits beside it. No class."
       - name: ".ds-card-bar"
-        does: "The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). Each action names what it acts on."
+        does: "The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). An action on the selection says so: “Remove selected”, with the trash icon."
       - name: ".ds-btn-group.ds-btn-group--end"
         does: "The last child of an item: the controls for that item only, on the right, as a form's action bar is. Each control's name includes the item's, in an `.is-sr-only` span, because “Remove” alone does not say which."
   - id: striped-rows
@@ -283,7 +283,7 @@ Actions that apply to every selected row at once, as in moderation queues and ow
     <div class="ds-btn-group">
       <button class="ds-btn ds-btn-primary ds-btn-compact" type="button">Approve</button>
       <button class="ds-btn ds-btn-compact" type="button">Hold</button>
-      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button">Remove…</button>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"><svg aria-hidden="true">…</svg> Remove selected</button>
       <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
     </div>
     <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
@@ -309,7 +309,7 @@ Actions that apply to every selected row at once, as in moderation queues and ow
   <div class="ds-btn-group">
     <button class="ds-btn ds-btn-primary ds-btn-compact" type="button" disabled>Approve</button>
     <button class="ds-btn ds-btn-compact" type="button" disabled>Hold</button>
-    <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button" disabled>Remove…</button>
+    <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button" disabled><svg aria-hidden="true">…</svg> Remove selected</button>
     <span class="ds-bulk-count" role="status">0 selected</span>
   </div>
   <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">…</form>
@@ -328,7 +328,7 @@ The same selection when the set is a list rather than a table, such as a list of
 <div class="ds-card">
   <div class="ds-card-bar">
     <div class="ds-btn-group">
-      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button">Remove selected papers…</button>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"><svg aria-hidden="true">…</svg> Remove selected</button>
       <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
     </div>
   </div>
@@ -347,7 +347,7 @@ The same selection when the set is a list rather than a table, such as a list of
 ```
 
 - `<input type="checkbox">` — The first child of each item, then its `<label class="is-sr-only">`, which names the item: “Select” and the paper's title. The box is 24px, in a column of its own, and lines up with the item's first line; everything after it sits beside it. No class.
-- `.ds-card-bar` — The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). Each action names what it acts on.
+- `.ds-card-bar` — The header bar above the list, with the actions on the selection and the count, as in [Bulk actions](#bulk-actions). An action on the selection says so: “Remove selected”, with the trash icon.
 - `.ds-btn-group.ds-btn-group--end` — The last child of an item: the controls for that item only, on the right, as a form's action bar is. Each control's name includes the item's, in an `.is-sr-only` span, because “Remove” alone does not say which.
 
 ## Striped rows  (Modifiers)
