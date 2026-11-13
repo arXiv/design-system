@@ -716,45 +716,45 @@
           <span class="state-label">Positive</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Positive example</legend>
-            <button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--positive is-active">Author</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-positive" value="author" checked>Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-positive" value="proxy">Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-positive" value="no">No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Neutral</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Neutral example</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-            <button aria-pressed="true" type="button" class="ds-seg-btn is-active">Proxy</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-neutral" value="author">Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-neutral" value="proxy" checked>Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-neutral" value="no">No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Negative</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Negative example</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-            <button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--negative is-active">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-negative" value="author">Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-negative" value="proxy">Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-negative" value="no" checked>No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Undecided</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Undecided example</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-undecided" value="author">Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-undecided" value="proxy">Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-undecided" value="no">No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Interactive</span>
           <fieldset class="ds-seg" id="demo-seg">
             <legend class="is-sr-only">Demo decision</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Approve</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Defer</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">Reject</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-demo" value="approve">Approve</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-demo" value="defer">Defer</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-demo" value="reject">Reject</label>
           </fieldset>
         </div>
       </div>
@@ -762,9 +762,9 @@
         <div class="ds-acc-body">
 <pre><code>&lt;fieldset class="ds-seg"&gt;
   &lt;legend class="is-sr-only"&gt;Positive example&lt;/legend&gt;
-  &lt;button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--positive is-active"&gt;Author&lt;/button&gt;
-  &lt;button aria-pressed="false" type="button" class="ds-seg-btn"&gt;Proxy&lt;/button&gt;
-  &lt;button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative"&gt;No&lt;/button&gt;
+  &lt;label class="ds-seg-btn ds-seg-btn--positive"&gt;&lt;input type="radio" name="decision" value="author" checked&gt;Author&lt;/label&gt;
+  &lt;label class="ds-seg-btn"&gt;&lt;input type="radio" name="decision" value="proxy"&gt;Proxy&lt;/label&gt;
+  &lt;label class="ds-seg-btn ds-seg-btn--negative"&gt;&lt;input type="radio" name="decision" value="no"&gt;No&lt;/label&gt;
 &lt;/fieldset&gt;</code></pre>
           <dl>
             <dt>.ds-seg</dt>
@@ -774,18 +774,13 @@
             three buttons and never says what they decide. Hide it with <code>.is-sr-only</code>
             when the surrounding text already says it; hide it, do not omit it.</dd>
             <dt>.ds-seg-btn</dt>
-            <dd>One option, a <code>&lt;button type="button"&gt;</code>. Buttons and not a radio
-            group on purpose: this is for a decision that acts when clicked. A choice that is part
-            of a form that gets submitted is a radio group.</dd>
+            <dd>One option: a <code>&lt;label&gt;</code> holding a native <code>&lt;input type="radio"&gt;</code>, all with one <code>name</code>. A radio group, drawn as joined buttons: the browser keeps one option selected, the arrow keys move between them, and it works without JavaScript. The form it belongs to saves the choice; where the choice acts at once, a script listens for the change.</dd>
             <dt>.ds-seg-btn--positive, .ds-seg-btn--negative</dt>
             <dd>Accept and reject; a bare <code>.ds-seg-btn</code> is informational. They take the success, info and error tokens and mean
             the same thing those mean everywhere else; they are not free colours to pick from, and
             they flip for dark mode with the rest of the status palette.</dd>
-            <dt>.is-active</dt>
-            <dd>The selected option, with <code>aria-pressed="true"</code>; every other option
-            has <code>aria-pressed="false"</code>, so a screen reader says which one is selected.
-            Set by script when an option is clicked, and removed from the others; the stylesheet
-            gives the buttons no behaviour.</dd>
+            <dt>checked</dt>
+            <dd>On the selected option's radio. The stylesheet draws the selected option from it, so no class and no script are needed, and a screen reader says which one is selected. Undecided is no radio checked.</dd>
           </dl>
         </div>
       </details>
@@ -1054,18 +1049,6 @@
 </main>
 
 <script>
-  // Segmented control demo.
-  document.getElementById('demo-seg').addEventListener('click', function (e) {
-    var btn = e.target.closest('.ds-seg-btn');
-    if (!btn) return;
-    this.querySelectorAll('.ds-seg-btn').forEach(function (b) {
-      b.classList.remove('is-active');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('is-active');
-    btn.setAttribute('aria-pressed', 'true');
-  });
-
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {

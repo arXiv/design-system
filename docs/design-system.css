@@ -1568,6 +1568,11 @@ button:not(.is-failed) > svg.ds-copy-failed,
 :is(.sort-asc, th[aria-sort="ascending"]) .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
 :is(.sort-desc, th[aria-sort="descending"]) .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
 @media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
+/* High contrast: fills all look alike, so a pressed toggle and a selected
+   segment carry an inner ring, which the system keeps. */
+@media (forced-colors: active) {
+  .ds-btn[aria-pressed="true"], .ds-seg-btn:has(input:checked) { outline: 2px solid; outline-offset: -4px; }
+}
 
 
 /* ── Button group (.ds-btn-group) ─────────────────────────────────────
@@ -1591,7 +1596,8 @@ button:not(.is-failed) > svg.ds-copy-failed,
 /* A toggle: plain when off, the accent tint when on (aria-pressed). */
 .ds-btn[aria-pressed] { background: var(--ds-surface); border-color: var(--ds-border-strong); color: var(--ds-text-muted); box-shadow: none; }
 .ds-btn[aria-pressed]:hover { color: var(--ds-text); background: var(--ds-surface-hover); }
-.ds-btn[aria-pressed="true"] { background: var(--ds-tint-accent); border-color: var(--ds-accent-border); color: var(--ds-text); }
+.ds-btn[aria-pressed="true"],
+.ds-btn[aria-pressed="true"]:hover { background: var(--ds-text); border-color: var(--ds-text); color: var(--ds-canvas); }   /* at least 3:1 from an unpressed toggle */
 /* A group of toggles, such as a sort bar, joins into one compact bar. */
 .ds-btn-group:has(> .ds-btn[aria-pressed]) { gap: 0; }
 .ds-btn-group > .ds-btn[aria-pressed] { min-height: 32px; padding-block: 2px; font-size: 0.875rem; font-weight: 500; }
@@ -2818,8 +2824,10 @@ html:has(.ds-modal[open]) {
    An exclusive choice rendered as adjacent buttons, for a decision where
    every option should stay visible. Two to four options; past that it is a
    <select> or a radio group.
-   It is a <fieldset> with an .is-sr-only <legend>, because without the legend
-   the group has no accessible name. The three active states take the status
+   It is a radio group: a <fieldset> with an .is-sr-only <legend>, because
+   without the legend the group has no accessible name, and one <label> with a
+   native radio per option. The browser keeps one selected and gives the arrow
+   keys; the label draws the button. The three selected states take the status
    tokens, so they flip with everything else. */
 .ds-seg {
   display: inline-flex;
@@ -2841,23 +2849,26 @@ html:has(.ds-modal[open]) {
   cursor: pointer;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
+/* The radio is out of sight but still the control: it takes focus and the arrow keys. */
+.ds-seg-btn > input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
 /* of-type, not child: the legend is the fieldset's first child. */
 .ds-seg-btn:first-of-type { margin-inline-start: 0; border-radius: 6px 0 0 6px; }
 .ds-seg-btn:last-of-type  { border-radius: 0 6px 6px 0; }
-.ds-seg-btn:hover:not(:disabled) {
+.ds-seg-btn:hover:not(:has(input:disabled)) {
   background: var(--ds-tint-warm);
   color: var(--ds-text);
   z-index: 1;
 }
-.ds-seg-btn:focus-visible {
+.ds-seg-btn:has(input:focus-visible) {
   outline: 3px solid var(--ds-focus-ring);
   outline-offset: 1px;
   z-index: 2;
 }
-/* Active: neutral (info) by default; positive and negative override it. */
-.ds-seg-btn.is-active           { background: var(--ds-info-bg);    border-color: var(--ds-info-border);    color: var(--ds-info-fg);    z-index: 1; }
-.ds-seg-btn--positive.is-active { background: var(--ds-success-bg); border-color: var(--ds-success-border); color: var(--ds-success-fg); z-index: 1; }
-.ds-seg-btn--negative.is-active { background: var(--ds-error-bg);   border-color: var(--ds-error-border);   color: var(--ds-error-fg);   z-index: 1; }
+/* Selected: a fill at least 3:1 from the unselected ones, and the canvas colour
+   on it. Neutral (info) by default; positive and negative override it. */
+.ds-seg-btn:has(input:checked)           { background: var(--ds-info-fg);    border-color: var(--ds-info-fg);    color: var(--ds-canvas); z-index: 1; }
+.ds-seg-btn--positive:has(input:checked) { background: var(--ds-success-fg); border-color: var(--ds-success-fg); color: var(--ds-canvas); }
+.ds-seg-btn--negative:has(input:checked) { background: var(--ds-error-fg);   border-color: var(--ds-error-fg);   color: var(--ds-canvas); }
 
 /* Dark mode. Every value here is a token's dark value; never hand-pick a
    dark colour into a component rule. Lock a page light only when the whole
