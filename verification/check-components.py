@@ -36,11 +36,18 @@ def main():
     if "@media (prefers-color-scheme" in out:
         fails.append("INV1: @media (prefers-color-scheme ...) leaked into the component CSS")
 
-    for start, end, prelude in build_components_css.top_level_blocks(out):
-        block = out[start:end]
-        if "color-scheme" in block and not (
-            "[data-theme" in prelude or (prelude.startswith("@media") and "print" in prelude)
-        ):
+    def scheme_rules(css, in_print=False):
+        """(prelude, in_print) for every rule that sets color-scheme, at any depth."""
+        for start, end, prelude in build_components_css.top_level_blocks(css):
+            block = css[start:end]
+            if "color-scheme" not in block:
+                continue
+            if prelude.startswith(build_components_css.GROUPS):
+                yield from scheme_rules(block[block.index("{") + 1:-1], in_print or "print" in prelude)
+            else:
+                yield prelude, in_print
+    for prelude, in_print in scheme_rules(out):
+        if not ("[data-theme" in prelude or in_print):
             fails.append(f"INV2: color-scheme outside [data-theme]/@media print -> {prelude[:60]}")
     for prelude in preludes(out):
         for selector in build_components_css.split_selectors(prelude):

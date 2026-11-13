@@ -2034,6 +2034,9 @@ html.js .ds-paper-cite-code:not(.is-open) code { display: block; max-height: 3.2
 }
 @media print {
   .ds-toc-bar, .ds-permalink, .ds-element-pill, .ds-copy-failed-message { display: none; }
+  /* A Show more prints its whole text, and not its button. */
+  html .ds-show-more { display: none; }
+  html .ds-show-more-tail, html .ds-show-more-tail[hidden] { display: inline !important; }
   .ds-paper-identity { font-size: 10pt; }
   .ds-paper-element, .ds-page :is(figure, table) { break-inside: avoid; }
   .ds-page :is(h2, h3, h4) { break-after: avoid; }
@@ -2308,7 +2311,6 @@ select.ds-input:not([multiple]):not([size]) {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-
 
 
 /* ANNOTATION TYPOGRAPHY  (.ds-annotation) — typography.html
@@ -2906,7 +2908,7 @@ html:has(.ds-modal[open]) {
 /* Dark mode. Every value here is a token's dark value; never hand-pick a
    dark colour into a component rule. Lock a page light only when the whole
    page exists to show light rendering (docs/dark-mode.html). */
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     /* Only SEMANTIC tokens flip. The primitives above name colours and
@@ -2948,7 +2950,6 @@ html:has(.ds-modal[open]) {
     --ds-btn-secondary-rim-a:        #6b655c;
     --ds-btn-secondary-rim-b:        var(--ds-grey-80);
     --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
-    /* restated so a data-theme island re-resolves them */
     --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
     --ds-btn-secondary-rim-active:   var(--ds-border-strong);
     --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
@@ -2969,6 +2970,7 @@ html:has(.ds-modal[open]) {
     --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
     --ds-link-hover:        #90caf9;
     --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+    --ds-focus-ring:        var(--ds-link);
     --ds-success-bg:      #1e2b0d;
     --ds-success-border:  #8fbd3a;
     --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
@@ -3014,167 +3016,130 @@ html:has(.ds-modal[open]) {
   :root:not([data-theme="light"]) .ds-theme-dark-only { display: revert; }
 }
 
-/* ── Explicit dark override (the toggle guard)
-   Mirrors the @media block above so a consumer's own toggle can set
-   [data-theme="dark"]. NEVER edit one side alone —
+/* ── The reader's choice (the toggle guard)
+   Mirrors the @media block above for a page whose <html> has
+   data-theme="dark", which theme.js sets. The theme belongs to the whole
+   page, with one case more: a popover that opens from a dark row, such as
+   the site header, takes that row's ground and so its dark mode too
+   (filter-panel.js sets it). A token that copies another must be restated
+   here, or it keeps its light value inside such a popover. Both blocks are
+   for screens only, so a page always prints light. NEVER edit one side alone —
    `python3 verification/check-drift.py` fails if they disagree. */
-[data-theme="dark"] {
-  color-scheme: dark;
-  /* Only SEMANTIC tokens flip. The primitives above name colours and
-     never change — Repository Brown is Repository Brown in both modes;
-     what changes is that it becomes the canvas rather than the text.
-     Where a flipped value is one of the named brand colours, it points
-     at the primitive so the relationship stays visible. */
-  --ds-text:              var(--ds-grey-10);
-  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --ds-canvas:            var(--ds-repository-brown);
-  --ds-surface-hover:     var(--ds-tint-warm);
-  --ds-surface-muted:     var(--ds-tint-warm);
-  --ds-zone-secondary-bg: var(--ds-tint-warm);
-  --ds-danger-wash-hover:     #2a0808;
-  --ds-danger-wash-active:    #380d0d;
-  --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
-  --ds-danger-fg-hover:       #ef9a9a;
-  --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
-  --ds-border:            #383531;
-  --ds-border-muted:      var(--ds-border);
-  --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
-  --ds-text-disabled:     #5a554f;
-  --ds-chrome:            #262119;                     /* lifted off the canvas so the
-                                                          bar still reads as a bar */
-  --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
-                                                          already dark */
-  --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
-  --ds-accent-wash:       #22344a;
-  --ds-tint-warm:         #282622;
-  --ds-tint-accent:       #202b38;
-  --ds-accent-surface:    #202b38;
-  --ds-accent-border:     #2a4a7a;
-  --ds-btn-primary-rim-a:          #6ba8da;
-  --ds-btn-primary-rim-b:          #2a4a6a;
-  --ds-btn-primary-rim-hover-b:    #3a6a94;
-  --ds-btn-secondary-bg:           var(--ds-tint-warm);
-  --ds-btn-secondary-bg-hover:     #322d28;
-  --ds-btn-secondary-bg-active:    var(--ds-tint-warm);
-  --ds-btn-secondary-rim-a:        #6b655c;
-  --ds-btn-secondary-rim-b:        var(--ds-grey-80);
-  --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
-  /* restated so a data-theme island re-resolves them */
-  --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
-  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
-  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
+@media screen {
+  :is(:root, [popover])[data-theme="dark"] {
+    color-scheme: dark;
+    /* Only SEMANTIC tokens flip. The primitives above name colours and
+       never change — Repository Brown is Repository Brown in both modes;
+       what changes is that it becomes the canvas rather than the text.
+       Where a flipped value is one of the named brand colours, it points
+       at the primitive so the relationship stays visible. */
+    --ds-text:              var(--ds-grey-10);
+    --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%23f0f0ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --ds-canvas:            var(--ds-repository-brown);
+    --ds-surface-hover:     var(--ds-tint-warm);
+    --ds-surface-muted:     var(--ds-tint-warm);
+    --ds-zone-secondary-bg: var(--ds-tint-warm);
+    --ds-danger-wash-hover:     #2a0808;
+    --ds-danger-wash-active:    #380d0d;
+    --ds-danger-fg:             #e57373;   /* #c62828 is 2.64:1 on the dark card */
+    --ds-danger-fg-hover:       #ef9a9a;
+    --ds-surface:           var(--ds-repository-brown);   /* cards sit on the page, with a border */
+    --ds-border:            #383531;
+    --ds-border-muted:      var(--ds-border);
+    --ds-text-muted:        var(--ds-grey-55);     /* 7.6:1 on the dark canvas */
+    --ds-text-disabled:     #5a554f;
+    --ds-chrome:            #262119;                     /* lifted off the canvas so the
+                                                            bar still reads as a bar */
+    --ds-scrim:             rgba(10, 9, 8, 0.72);        /* denser: the page beneath is
+                                                            already dark */
+    --ds-accent-strong:     #6ba8da;                     /* headings, 6.8:1 */
+    --ds-accent-wash:       #22344a;
+    --ds-tint-warm:         #282622;
+    --ds-tint-accent:       #202b38;
+    --ds-accent-surface:    #202b38;
+    --ds-accent-border:     #2a4a7a;
+    --ds-btn-primary-rim-a:          #6ba8da;
+    --ds-btn-primary-rim-b:          #2a4a6a;
+    --ds-btn-primary-rim-hover-b:    #3a6a94;
+    --ds-btn-secondary-bg:           var(--ds-tint-warm);
+    --ds-btn-secondary-bg-hover:     #322d28;
+    --ds-btn-secondary-bg-active:    var(--ds-tint-warm);
+    --ds-btn-secondary-rim-a:        #6b655c;
+    --ds-btn-secondary-rim-b:        var(--ds-grey-80);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-grey-80);
+    --ds-btn-secondary-rim-hover-b:  var(--ds-grey-55);
+    --ds-btn-secondary-rim-active:   var(--ds-border-strong);
+    --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.25);
 
-  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
+    --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.5);
 
-  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
+    --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.15);
 
-  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
-  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
-  --ds-btn-primary-glow-active:        45%;
-  --ds-btn-secondary-fg:           var(--ds-grey-25);
-  --ds-btn-secondary-fg-hover:     var(--ds-text);
-  --ds-btn-text-fg:                var(--ds-link);
-  --ds-btn-text-fg-hover:          var(--ds-link-hover);
-  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
-  --ds-btn-text-bg-active:         var(--ds-accent-wash);
-  --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
-  --ds-link-hover:        #90caf9;
-  --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
-  --ds-success-bg:      #1e2b0d;
-  --ds-success-border:  #8fbd3a;
-  --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
-  --ds-info-bg:         #132433;
-  --ds-info-border:     #64b5f6;
-  --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
-  --ds-warning-bg:      #2e2410;
-  --ds-warning-border:  #e8b800;
-  --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
-  --ds-error-bg:        #2d1414;
-  --ds-error-border:    #e57373;
-  --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
-  --ds-note-mark-fg:       var(--ds-repository-brown);
-  --ds-note-mark-internal: var(--ds-access-lime);
+    --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.35);
+    --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.6);
+    --ds-btn-primary-glow-active:        45%;
+    --ds-btn-secondary-fg:           var(--ds-grey-25);
+    --ds-btn-secondary-fg-hover:     var(--ds-text);
+    --ds-btn-text-fg:                var(--ds-link);
+    --ds-btn-text-fg-hover:          var(--ds-link-hover);
+    --ds-btn-text-bg-hover:          var(--ds-accent-surface);
+    --ds-btn-text-bg-active:         var(--ds-accent-wash);
+    --ds-link:              var(--ds-link-blue-dark);    /* 7.84:1 on the canvas */
+    --ds-link-hover:        #90caf9;
+    --ds-link-visited:      #c690e3;                     /* 7.03:1 on the canvas */
+    --ds-focus-ring:        var(--ds-link);
+    --ds-success-bg:      #1e2b0d;
+    --ds-success-border:  #8fbd3a;
+    --ds-success-fg:      #c5e1a5;  /* 10.4:1 ✓ AAA */
+    --ds-info-bg:         #132433;
+    --ds-info-border:     #64b5f6;
+    --ds-info-fg:         #90caf9;  /* 9.0:1 ✓ AAA */
+    --ds-warning-bg:      #2e2410;
+    --ds-warning-border:  #e8b800;
+    --ds-warning-fg:      #ffe082;  /* 11.8:1 ✓ AAA */
+    --ds-error-bg:        #2d1414;
+    --ds-error-border:    #e57373;
+    --ds-error-fg:        #ef9a9a;  /* 8.0:1 ✓ AAA */
+    --ds-note-mark-fg:       var(--ds-repository-brown);
+    --ds-note-mark-internal: var(--ds-access-lime);
+  }
+
+  /* Internal tools, dark. Lime holds its light value; the wash goes to a
+     dark olive, and text that sat on the wash turns lime to stay legible. */
+  :is(:root, [popover])[data-theme="dark"].ds-internal,
+  :is(:root, [popover])[data-theme="dark"] .ds-internal {
+    --ds-accent-border:              var(--ds-access-lime-border);
+    --ds-accent-wash:                #222217;
+    --ds-accent-wash-hover:          #272918;
+    --ds-accent-wash-active:         #2c3018;
+    --ds-tint-accent:                #292b18;
+    --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
+    --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
+    --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
+    --ds-btn-secondary-bg:           var(--ds-accent-wash);
+    --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
+    --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
+    --ds-btn-secondary-rim-a:        var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-b:        var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
+    --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
+    --ds-btn-secondary-rim-active:   var(--ds-access-lime-border);
+    --ds-btn-secondary-fg:           var(--ds-accent);
+    --ds-btn-secondary-fg-hover:     var(--ds-accent);
+    --ds-btn-text-bg-hover:          var(--ds-accent-wash);
+    --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
+  }
+
+  :is(:root, [popover])[data-theme="dark"] .ds-theme-light-only { display: none; }
+  :is(:root, [popover])[data-theme="dark"] .ds-theme-dark-only { display: revert; }
 }
-
-[data-theme="light"] {
-  color-scheme: light;
-  --ds-text:  var(--ds-repository-brown);
-  --ds-select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25l5-4.5' fill='none' stroke='%231c1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --ds-canvas:         #ffffff;
-  --ds-surface-hover:  var(--ds-tint-warm);
-  --ds-surface-muted:         var(--ds-tint-warm);
-  --ds-zone-secondary-bg: var(--ds-tint-warm);
-  --ds-danger-wash-hover:     #fdf0f0;
-  --ds-danger-wash-active:    #f5d0d0;
-  --ds-danger-fg:             var(--ds-danger);   /* red as text or a glyph, not a fill */
-  --ds-danger-fg-hover:       var(--ds-danger-hover);
-  --ds-surface:           #ffffff;
-  --ds-border:      var(--ds-grey-25);
-  --ds-text-muted:      var(--ds-library-grey);
-  --ds-text-disabled:          var(--ds-grey-55);
-  --ds-accent-strong:     var(--ds-archival-blue);
-  --ds-accent-wash:         var(--ds-blue-50);
-  --ds-tint-warm:           var(--ds-grey-10);
-  --ds-tint-accent:         var(--ds-blue-20);
-  --ds-accent-surface:        var(--ds-blue-20);
-  --ds-accent-border:       var(--ds-blue-70);
-  --ds-btn-primary-rim-a:          #b0d5ed;
-  --ds-btn-primary-rim-b:          #6ba8da;
-  --ds-btn-primary-rim-hover-b:    #4a86b8;
-  --ds-btn-secondary-bg:           #ffffff;
-  --ds-btn-secondary-bg-hover:     #ffffff;
-  --ds-btn-secondary-bg-active:    #ffffff;
-  --ds-btn-secondary-rim-a:        var(--ds-grey-25);
-  --ds-btn-secondary-rim-b:        #b3ada4;
-  --ds-btn-secondary-rim-hover-a:  #c8c4be;
-  /* restated so a data-theme island re-resolves them */
-  --ds-btn-secondary-rim-hover-b:  var(--ds-border-strong);
-  --ds-btn-secondary-rim-active:   var(--ds-border-strong);
-  --ds-btn-secondary-shadow-in:        rgba(0, 0, 0, 0.06);
-
-  --ds-btn-secondary-shadow-drop:      rgba(0, 0, 0, 0.08);
-
-  --ds-btn-secondary-shadow-in-hover:  rgba(0, 0, 0, 0.03);
-
-  --ds-btn-secondary-shadow-in-active: rgba(0, 0, 0, 0.13);
-  --ds-btn-primary-shadow-drop:        rgba(0, 0, 0, 0.12);
-  --ds-btn-primary-glow-active:        35%;   /* the glow's strength while pressed */
-  --ds-btn-secondary-fg:           var(--ds-text-muted);
-  --ds-btn-secondary-fg-hover:     var(--ds-text);
-  --ds-btn-text-fg:                var(--ds-link);
-  --ds-btn-text-fg-hover:          var(--ds-link-hover);
-  --ds-btn-text-bg-hover:          var(--ds-accent-surface);
-  --ds-btn-text-bg-active:         var(--ds-accent-wash);
-  --ds-border-muted:       var(--ds-border);
-  --ds-chrome:        var(--ds-repository-brown);
-  --ds-scrim:         rgba(28, 26, 23, 0.55);
-  --ds-link:         var(--ds-link-blue);
-  --ds-link-hover:        var(--ds-link-blue-hover);
-  --ds-link-visited:      var(--ds-visited-purple);
-  --ds-note-mark-fg:       #ffffff;
-  --ds-note-mark-internal: var(--ds-access-lime-deep);
-  --ds-success-bg:        #e8f5d8;
-  --ds-success-border:    #6b8e1e;
-  --ds-success-fg:        #4a5a0a;
-  --ds-info-bg:           #e7f1fd;
-  --ds-info-border:       #5a82c8;
-  --ds-info-fg:           #1a3a78;
-  --ds-warning-bg:        #fff8e1;
-  --ds-warning-border:    #e8b800;
-  --ds-warning-fg:        #7a5c00;
-  --ds-error-bg:          #fdeaea;
-  --ds-error-border:      #c62828;
-  --ds-error-fg:          #8b0000;
-}
-
 
 /* INTERNAL TOOLS CONTEXT  (.ds-internal) — buttons.html
    Put it on a parent: <html> for an internal page, a wrapper for an
    internal region of a mixed page. It re-points the accent to Access Lime
    and every component inside follows, and sets the compact density.
    Colour and density only — a component that needs a different shape on
-   this surface is a different component. Sits after
-   the [data-theme="light"] block so it wins when both are on <html>. */
+   this surface is a different component. */
 .ds-internal {
   --ds-accent:                     var(--ds-access-lime);
   --ds-accent-hover:               var(--ds-access-lime-hover);
@@ -3216,37 +3181,10 @@ html:has(.ds-modal[open]) {
   color: var(--ds-link-hover);
 }
 
-/* Internal tools, dark. Lime holds its light value; the wash goes to a
-   dark olive, and text that sat on the wash turns lime to stay legible. */
-[data-theme="dark"].ds-internal,
-[data-theme="dark"] .ds-internal {
-  --ds-accent-border:              var(--ds-access-lime-border);
-  --ds-accent-wash:                #222217;
-  --ds-accent-wash-hover:          #272918;
-  --ds-accent-wash-active:         #2c3018;
-  --ds-tint-accent:                #292b18;
-  --ds-btn-primary-rim-a:          var(--ds-access-lime-border);
-  --ds-btn-primary-rim-b:          var(--ds-access-lime-deep);
-  --ds-btn-primary-rim-hover-b:    var(--ds-access-lime-deep);
-  --ds-btn-secondary-bg:           var(--ds-accent-wash);
-  --ds-btn-secondary-bg-hover:     var(--ds-accent-wash-hover);
-  --ds-btn-secondary-bg-active:    var(--ds-accent-wash-active);
-  --ds-btn-secondary-rim-a:        var(--ds-access-lime-deep);
-  --ds-btn-secondary-rim-b:        var(--ds-access-lime-deep);
-  --ds-btn-secondary-rim-hover-a:  var(--ds-access-lime-border);
-  --ds-btn-secondary-rim-hover-b:  var(--ds-access-lime-deep);
-  --ds-btn-secondary-rim-active:   var(--ds-access-lime-border);
-  --ds-btn-secondary-fg:           var(--ds-accent);
-  --ds-btn-secondary-fg-hover:     var(--ds-accent);
-  --ds-btn-text-bg-hover:          var(--ds-accent-wash);
-  --ds-btn-text-bg-active:         var(--ds-accent-wash-hover);
-}
 
 /* Shown in one theme only: an image drawn for a light ground and its version
    for a dark one, such as the logo on .ds-site-header--light. */
 .ds-theme-dark-only { display: none; }
-[data-theme="dark"] .ds-theme-light-only { display: none; }
-[data-theme="dark"] .ds-theme-dark-only { display: revert; }
 
 /* OS accessibility signals. forced-colors: the OS replaces our palette
    and the hues collapse, but icon shape + leading word still carry meaning
@@ -4741,14 +4679,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
    The tokens are re-pointed rather than the components overridden, so every
    component prints correctly without knowing that it is printing. */
 @media print {
-  /* The selector list has to match the dark rules it is undoing, or it loses
-     on specificity rather than on order: the @media dark block keys on
-     :root:not([data-theme="light"]), which is 0-2-0. */
-  :root,
-  :root:not([data-theme="light"]),
-  html:not([data-theme="light"]),
-  [data-theme="dark"] {
-    color-scheme: light;
+  :root {
     --ds-text:          #000000;
     --ds-text-muted:    #333333;
     --ds-canvas:        #ffffff;

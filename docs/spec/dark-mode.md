@@ -18,25 +18,16 @@ components:
       - "The three cards show the icon for each state; the bar below them is the control itself, in the header, and one control cycles through the three. It is live, and so is the one at the top of this page."
   - id: a-component-that-follows-the-tokens
     title: "Example: a card component in light and dark modes"
-    summary: "The same card in light and dark modes, on a public page vs. an internal page. Nothing in its markup changes except the `data-theme` attribute and, for internal tools, `.ds-internal` is added to the parent element."
+    summary: "The same card on a public page and in an internal tool. Nothing in its markup changes except `.ds-internal` on the parent, for internal tools. To see it in the other mode, change the theme with the control in the header: the whole page changes, and the cards with it."
     classes:
-      - name: "data-theme=\"dark\", data-theme=\"light\""
-        does: "On any element, not only the root. The tokens are declared on any element with the attribute and custom properties inherit, so the *nearest* ancestor with `data-theme` wins, and nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that already reads tokens follows; the container has to take its own ground and text from tokens too, which here is `.ds-card` for the ground and `color: var(--ds-text)` for the text."
       - name: ".ds-internal"
-        does: "Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`."
+        does: "Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the theme: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`."
     notes:
       - "Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too."
   - id: a-page-locked-to-light
     title: "Locking to light"
     group: "Modifiers"
-    summary: "Any page or element can lock to light mode only by adding `data-theme=\"light\"`. We use this feature when demonstrating light mode, but it can also be useful if the content being worked with has no dark mode. For example, if porting in complex visualizations from an external engine that does not support dark mode."
-    classes:
-      - name: "data-theme=\"light\" on <html>"
-        does: "Locks the page to light and opts it out of the `@media` block. Check that nothing rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute at load. `theme.js` does exactly that, so a page that includes the theme control cannot also be locked."
-      - name: "data-theme=\"light\" on a container"
-        does: "One demo shows light while the page follows the reader. The same scoping as the dark island above, in the other direction."
-    notes:
-      - "Test it with the theme control in the header: the page changes but this panel does not."
+    summary: "A page locks to light mode by adding `data-theme=\"light\"` to its `<html>`. Use it only when the page's content has no dark mode, such as complex visualizations from an external engine that cannot follow the theme. The theme belongs to the whole page: a part of a page cannot lock."
   - id: internal-tools
     title: "Internal tools need no modifier"
     group: "Modifiers"
@@ -48,12 +39,12 @@ rules:
   - "**Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the page ground is white in light and Repository Brown in dark, so anything filled with it disappears."
   - "**Check any text sitting on an accent fill.** Accents hold their light values in dark, so the text on them must not flip either — `--ds-text-on-accent` on lime and on Open Blue alike. Reaching for the plain token puts near-white text on a light fill, about 1.3:1."
   - "**Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself."
-  - "**Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`. [Scoping a mode](#scoping-a-mode)"
-  - "**Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)"
+  - "**Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme` on `<html>`. [Locking to light](#a-page-locked-to-light)"
+  - "**The theme belongs to the whole page.** Set `data-theme` on `<html>` only: no part of a page is lighter or darker than the rest. To show both modes, use the theme control in the header. One case follows from another rule: a popover takes the ground of the row that opened it, so a popover from the dark site header opens in dark mode. `filter-panel.js` sets that; a page never does."
   - "**If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)"
   - "**Verify computed styles in both modes, and measure contrast.** Do not trust the cascade and do not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced either way."
   - "Component CSS consumes tokens. Do not write hex values directly."
-  - "`color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode."
+  - "`color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` on `<html>` to lock a mode."
   - "**Respect the setting the reader already made.** A page follows the operating system's colour scheme unless the reader says otherwise on the page itself. Without JavaScript there is no button and the page follows the OS: the control is an addition, never the only route to a readable page."
   - "**The icon is the only visible part, so the name gives the state.** The button's accessible name says which state is on (“Theme: following the system. Activate to change.”), and a press announces its result in the live region, as in [Show that something was copied](action-feedback.md). A sighted reader learns the three icons from the cards above; a screen reader user is told, and is never guessing whether the moon means “it is dark” or “make it dark”."
   - "**Never a dark value by hand.** Take every colour from a token and it flips with the rest of the page. A hex written into a page or a component cannot flip, and it will not announce itself."
@@ -93,7 +84,7 @@ Though we honor the user's OS-level mode preference, it is still useful for user
 
 ## Example: a card component in light and dark modes
 
-The same card in light and dark modes, on a public page vs. an internal page. Nothing in its markup changes except the `data-theme` attribute and, for internal tools, `.ds-internal` is added to the parent element.
+The same card on a public page and in an internal tool. Nothing in its markup changes except `.ds-internal` on the parent, for internal tools. To see it in the other mode, change the theme with the control in the header: the whole page changes, and the cards with it.
 
 ```html
 <!-- The component: nothing in it knows which mode it is in -->
@@ -106,34 +97,21 @@ The same card in light and dark modes, on a public page vs. an internal page. No
   </div>
 </div>
 
-<!-- The same component, forced dark on any page -->
-<div class="ds-card" data-theme="dark" style="color: var(--ds-text)">…</div>
-
-<!-- Internal tools: the accent comes from the class, the mode from the attribute -->
-<div class="ds-card ds-internal" data-theme="dark" style="color: var(--ds-text)">…</div>
+<!-- Internal tools: the accent comes from the class on a parent, the mode from the page -->
+<html lang="en" class="ds-internal">
 ```
 
-- `data-theme="dark", data-theme="light"` — On any element, not only the root. The tokens are declared on any element with the attribute and custom properties inherit, so the *nearest* ancestor with `data-theme` wins, and nesting works in both directions: a dark sample inside a light panel inside a page following the OS renders correctly. The attribute re-points tokens and paints nothing itself. Anything inside that already reads tokens follows; the container has to take its own ground and text from tokens too, which here is `.ds-card` for the ground and `color: var(--ds-text)` for the text.
-- `.ds-internal` — Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the attribute: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`.
+- `.ds-internal` — Internal tools. Re-points the accent to Access Lime, from tier 1, and composes with the theme: lime holds its light value in dark, the wash goes to a dark olive, and text that sat on the wash turns lime to stay legible. An internal page puts it on `<html>`.
 
 > Accents hold in both modes: Open Blue and Access Lime stay themselves, which is why the text on them is a fixed token too.
 
 ## Locking to light  (Modifiers)
 
-Any page or element can lock to light mode only by adding `data-theme="light"`. We use this feature when demonstrating light mode, but it can also be useful if the content being worked with has no dark mode. For example, if porting in complex visualizations from an external engine that does not support dark mode.
+A page locks to light mode by adding `data-theme="light"` to its `<html>`. Use it only when the page's content has no dark mode, such as complex visualizations from an external engine that cannot follow the theme. The theme belongs to the whole page: a part of a page cannot lock.
 
 ```html
-<!-- The whole page: only when the page exists to show light rendering -->
 <html lang="en" data-theme="light">
-
-<!-- One demo, while the page follows the reader -->
-<div class="ds-card" data-theme="light" style="color: var(--ds-text)">…</div>
 ```
-
-- `data-theme="light" on <html>` — Locks the page to light and opts it out of the `@media` block. Check that nothing rewrites it: a static attribute in the markup is not a lock if a script on the page sets the attribute at load. `theme.js` does exactly that, so a page that includes the theme control cannot also be locked.
-- `data-theme="light" on a container` — One demo shows light while the page follows the reader. The same scoping as the dark island above, in the other direction.
-
-> Test it with the theme control in the header: the page changes but this panel does not.
 
 ## Internal tools need no modifier  (Modifiers)
 
@@ -150,15 +128,15 @@ In order. Each step links to the reasoning below. If you follow only this list a
 - **Fill raised things with `--ds-surface`.** Not `--ds-canvas`: the page ground is white in light and Repository Brown in dark, so anything filled with it disappears.
 - **Check any text sitting on an accent fill.** Accents hold their light values in dark, so the text on them must not flip either — `--ds-text-on-accent` on lime and on Open Blue alike. Reaching for the plain token puts near-white text on a light fill, about 1.3:1.
 - **Set the page's own background and text from tokens.** An inherited colour from a platform preset or a third-party stylesheet cannot flip, and it will not announce itself.
-- **Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme`. [Scoping a mode](#scoping-a-mode)
-- **Scope a demo that must show one mode.** Put `data-theme` on the demo's own container, not on the page. Pages should follow the reader. [Scoping a mode](#scoping-a-mode)
+- **Do not use `color-scheme` to force a mode.** It governs browser-rendered widgets only — scrollbars, form controls — and does nothing to any stylesheet's `prefers-color-scheme` rules. Use `data-theme` on `<html>`. [Locking to light](#a-page-locked-to-light)
+- **The theme belongs to the whole page.** Set `data-theme` on `<html>` only: no part of a page is lighter or darker than the rest. To show both modes, use the theme control in the header. One case follows from another rule: a popover takes the ground of the row that opened it, so a popover from the dark site header opens in dark mode. `filter-panel.js` sets that; a page never does.
 - **If anything can set `data-theme`, mirror the dark block under the attribute** as well as the media query — including inherited code you did not write. [How the attribute works](#the-mechanism)
 - **Verify computed styles in both modes, and measure contrast.** Do not trust the cascade and do not judge by eye. Check the states a reader can actually reach: OS dark, OS light, and the attribute forced either way.
 
-### Scoping a mode
+### Forcing a mode
 
 - Component CSS consumes tokens. Do not write hex values directly.
-- `color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` to lock a mode.
+- `color-scheme` does not lock a page to a mode. It governs browser-rendered widgets like scrollbars, form controls, and the default canvas. It does not touch a stylesheet's `prefers-color-scheme` rules. If absolutely needed, use `data-theme` on `<html>` to lock a mode.
 
 ### Accessibility essentials
 
@@ -172,7 +150,7 @@ In order. Each step links to the reasoning below. If you follow only this list a
 
 ### The mechanism
 
-Dark values are declared twice in each stylesheet: once in a `@media (prefers-color-scheme: dark)` block that follows the OS, and once under `[data-theme="dark"]` so the attribute can force a mode. A page takes one of three states:
+Dark values are declared twice in each stylesheet: once in a `@media screen and (prefers-color-scheme: dark)` block that follows the OS, and once under `:root[data-theme="dark"]` so the attribute can force a mode. Both are for screens only, so a page always prints light. A page takes one of three states:
 
 ```
 <html data-theme="dark">    <!-- dark, whatever the OS says -->
@@ -184,4 +162,40 @@ Only semantic tokens change between modes. Primitives such as Repository Brown k
 
 ### Color tokens
 
-The table below is rendered at runtime from `design-system.css` through a light island and a dark island, so the values will not drift from the stylesheet. Do not edit manually.
+The table below is written from `design-system.css` by `verification/gen-theme-values.py`, and a check fails when it no longer matches the stylesheet. Do not edit it by hand.
+
+| Token | Light | Dark | Between modes |
+|---|---|---|---|
+| `--ds-text` | `#1c1a17` | `#f0f0ee` | flips |
+| `--ds-text-muted` | `#6b6459` | `#aeaaa4` | flips |
+| `--ds-text-disabled` | `#aeaaa4` | `#5a554f` | flips |
+| `--ds-text-on-accent` | `#1c1a17` | `#1c1a17` | holds |
+| `--ds-canvas` | `#ffffff` | `#1c1a17` | flips |
+| `--ds-surface` | `#ffffff` | `#1c1a17` | flips |
+| `--ds-surface-hover` | `#f0f0ee` | `#282622` | flips |
+| `--ds-tint-warm` | `#f0f0ee` | `#282622` | flips |
+| `--ds-zone-secondary-bg` | `#f0f0ee` | `#282622` | flips |
+| `--ds-chrome` | `#1c1a17` | `#262119` | flips |
+| `--ds-border` | `#dad8d6` | `#383531` | flips |
+| `--ds-border-strong` | `#89837a` | `#89837a` | holds |
+| `--ds-accent` | `#a5d6fe` | `#a5d6fe` | holds |
+| `--ds-accent-strong` | `#1f5e96` | `#6ba8da` | flips |
+| `--ds-accent-wash` | `#d2eafe` | `#22344a` | flips |
+| `--ds-accent-surface` | `#edf7ff` | `#202b38` | flips |
+| `--ds-accent-border` | `#c0e2fe` | `#2a4a7a` | flips |
+| `--ds-link` | `#1565c0` | `#64b5f6` | flips |
+| `--ds-link-hover` | `#1050a0` | `#90caf9` | flips |
+| `--ds-link-visited` | `#7b2fbe` | `#c690e3` | flips |
+| `--ds-danger-fg` | `#c62828` | `#e57373` | flips |
+| `--ds-success-bg` | `#e8f5d8` | `#1e2b0d` | flips |
+| `--ds-success-border` | `#6b8e1e` | `#8fbd3a` | flips |
+| `--ds-success-fg` | `#4a5a0a` | `#c5e1a5` | flips |
+| `--ds-info-bg` | `#e7f1fd` | `#132433` | flips |
+| `--ds-info-border` | `#5a82c8` | `#64b5f6` | flips |
+| `--ds-info-fg` | `#1a3a78` | `#90caf9` | flips |
+| `--ds-warning-bg` | `#fff8e1` | `#2e2410` | flips |
+| `--ds-warning-border` | `#e8b800` | `#e8b800` | holds |
+| `--ds-warning-fg` | `#7a5c00` | `#ffe082` | flips |
+| `--ds-error-bg` | `#fdeaea` | `#2d1414` | flips |
+| `--ds-error-border` | `#c62828` | `#e57373` | flips |
+| `--ds-error-fg` | `#8b0000` | `#ef9a9a` | flips |
