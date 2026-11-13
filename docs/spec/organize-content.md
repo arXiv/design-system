@@ -37,6 +37,7 @@ components:
       - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
       - "**A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Secondary zones](layouts.md#secondary-zones)."
       - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
+      - "**Selecting items in a list: the checkbox at the start of each item, and the actions on the selection in the set's header bar.** A control for one item only goes at the end of that item, on the right. See [Selecting items in a list](tables.md#selecting-items-in-a-list)."
       - "**A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's."
   - id: long-pages
     title: "Long pages"
@@ -119,6 +120,8 @@ A control sits with what it changes. The more of the site it changes, the higher
 **Rule.** **A filter for the whole page: the page's opening band**, a `.ds-full.ds-zone-secondary` band under the page heading. See [Secondary zones](layouts.md#secondary-zones).
 
 **Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
+
+**Rule.** **Selecting items in a list: the checkbox at the start of each item, and the actions on the selection in the set's header bar.** A control for one item only goes at the end of that item, on the right. See [Selecting items in a list](tables.md#selecting-items-in-a-list).
 
 **Rule.** **A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's.
 
