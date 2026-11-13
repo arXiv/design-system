@@ -50,8 +50,8 @@ components:
     title: "Row selection"
     summary: "Rows a reader can choose, one checkbox per row, so an action can apply to several at once."
     classes:
-      - name: ".is-selected"
-        does: "On the `<tr>`. Tints the row with `--ds-accent-wash`; the tint aids scanability of the selection set. Selection state must not rely on the tint alone: the row’s checkbox shows the state (WCAG 1.4.1)."
+      - name: "A checked row"
+        does: "No class: a row whose checkbox is checked takes the accent tint from the stylesheet. The tint helps the reader scan the selection; the checkbox shows the state, so the tint is never the only signal (WCAG 1.4.1)."
       - name: "<input type=\"checkbox\">"
         does: "The first cell of every row. A direct child of the `<td>`, which gives it a 24px target and this surface’s accent. Each one has a `<label class=\"is-sr-only\">` that names its row."
   - id: bulk-actions
@@ -65,7 +65,7 @@ components:
       - name: ".ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact"
         does: "The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last."
       - name: ".ds-bulk-count"
-        does: "The selection count and the “Clear selection” link, beside the actions. Takes `role=\"status\"` so a change in the count is announced."
+        does: "The selection count and the “Clear selection” link, beside the actions. Takes `role=\"status\"` so a change in the count is announced. The server renders the count and the actions' disabled state as they are when the page loads; the application's own script keeps them current as the reader selects. The design system ships no script for it."
       - name: "<button disabled>"
         does: "The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection."
   - id: selecting-items-in-a-list
@@ -95,6 +95,7 @@ components:
 rules:
   - "A sortable header is a link that reloads the page sorted, as the sort bar is a form that does. Pressing the sorted column's header reverses the order; pressing another column's header sorts by it, in its first direction, and the previous column becomes unsorted. Only the sorted column has `aria-sort`."
   - "Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step."
+  - "A row's details are a link in the cell that identifies the row, such as its title or identifier, as in [Row selection](#row-selection). The whole row is never the link: a row holds other controls, such as its checkbox, and a reader must be able to tell which part goes where."
   - "**Mark the header cells.** Put `scope=\"col\"` on every `<th>` in the header row, so a screen reader reads the column name with each cell instead of a bare value."
   - "**Give the table a name.** A `<caption>`, or an `aria-label` on the scrolling region around the table, as the examples on this page do. Without one, a screen reader user lands in “table, 4 columns” with no idea which table it is."
   - "**Say which column is sorted.** Put `aria-sort=\"ascending\"` or `aria-sort=\"descending\"` on the sorted `<th>` and remove it from the others when the sort changes. The arrow is a glyph, and the class is invisible to a screen reader."
@@ -130,13 +131,13 @@ One table, `.ds-table`, on public pages and in internal tools. It has row divide
     <tbody>
       <tr>
         <td>2026-03-24</td>
-        <td>Asymptotic Expansions of Schrödinger Operators</td>
+        <td><a href="/abs/…">Asymptotic Expansions of Schrödinger Operators</a></td>
         <td>Esther McGill-Henry</td>
         <td><span class="ds-tag ds-tag--rectangle">New</span></td>
       </tr>
       <tr>
         <td>2025-07-09</td>
-        <td>Symmetry Breaking in Non-Abelian Gauge Theories</td>
+        <td><a href="/abs/…">Symmetry Breaking in Non-Abelian Gauge Theories</a></td>
         <td>Esther McGill-Henry</td>
         <td><span class="ds-tag ds-tag--rectangle">Rep</span></td>
       </tr>
@@ -238,7 +239,7 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
       </tr>
     </thead>
     <tbody>
-      <tr class="is-selected">
+      <tr>
         <td>
           <input type="checkbox" id="sel-1" checked>
           <label for="sel-1" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label>
@@ -247,7 +248,7 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
         <td>Asymptotic Expansions of Schrödinger Operators</td>
         <td><span class="ds-tag ds-tag--rectangle">New</span></td>
       </tr>
-      <tr class="is-selected">
+      <tr>
         <td>
           <input type="checkbox" id="sel-2" checked>
           <label for="sel-2" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label>
@@ -262,7 +263,7 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
 </div>
 ```
 
-- `.is-selected` — On the `<tr>`. Tints the row with `--ds-accent-wash`; the tint aids scanability of the selection set. Selection state must not rely on the tint alone: the row’s checkbox shows the state (WCAG 1.4.1).
+- `A checked row` — No class: a row whose checkbox is checked takes the accent tint from the stylesheet. The tint helps the reader scan the selection; the checkbox shows the state, so the tint is never the only signal (WCAG 1.4.1).
 - `<input type="checkbox">` — The first cell of every row. A direct child of the `<td>`, which gives it a 24px target and this surface’s accent. Each one has a `<label class="is-sr-only">` that names its row.
 
 ## Bulk actions
@@ -294,7 +295,7 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 - `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
 - `.ds-btn-group` — The actions and the selection count, kept together.
 - `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last.
-- `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced.
+- `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced. The server renders the count and the actions' disabled state as they are when the page loads; the application's own script keeps them current as the reader selects. The design system ships no script for it.
 
 **Nothing selected**
 
@@ -377,6 +378,10 @@ A sortable header is a link that reloads the page sorted, as the sort bar is a f
 ### Bulk-action bar layout
 
 Action buttons come first, then their descriptive text (selection count, “Clear selection”), with any filter at the far end of the row, all in the header bar of the card that holds the table. Destructive actions (Remove, Delete) come last among the actions and always require a confirmation step.
+
+### A row's details
+
+A row's details are a link in the cell that identifies the row, such as its title or identifier, as in [Row selection](#row-selection). The whole row is never the link: a row holds other controls, such as its checkbox, and a reader must be able to tell which part goes where.
 
 ### Accessibility essentials
 

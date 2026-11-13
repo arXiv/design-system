@@ -300,9 +300,41 @@ document.getElementById('demo-confirm').close();</code></pre>
             that, and the region takes the dialog's title as its name so a screen reader says what
             it is. Adding it only while the body overflows means a short dialog has no empty tab
             stop, and a body that grows later, because a script added content or the window got
-            smaller, gets one without anyone changing the markup. The reference script is at the end
-            of this page.</dd>
+            smaller, gets one without anyone changing the markup. The script below does it.</dd>
           </dl>
+          <p>The script, all of it. Copy it into the page's own script; the design system ships no
+          modal script.</p>
+<pre><code>// The whole of it: showModal() to open, close() to close. Focus trap, focus
+// restore, Escape and stacking are the element's own doing, and the
+// scroll lock is in the stylesheet.
+document.querySelectorAll('[data-open]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.getElementById(btn.dataset.open).showModal();
+  });
+});
+
+// A body that scrolls but holds nothing focusable cannot be scrolled from
+// the keyboard in every browser. While it overflows, it becomes a tab stop
+// named by the dialog's title; when it fits, the tab stop goes away.
+document.querySelectorAll('.ds-modal-body').forEach(function (body) {
+  var dialog = body.closest('.ds-modal');
+  function sync() {
+    if (body.scrollHeight &gt; body.clientHeight) {
+      body.setAttribute('tabindex', '0');
+      body.setAttribute('role', 'region');
+      body.setAttribute('aria-labelledby', dialog.getAttribute('aria-labelledby'));
+    } else {
+      body.removeAttribute('tabindex');
+      body.removeAttribute('role');
+      body.removeAttribute('aria-labelledby');
+    }
+  }
+  new ResizeObserver(sync).observe(body);
+  new MutationObserver(sync).observe(body, { childList: true, subtree: true, characterData: true });
+});
+document.querySelectorAll('.ds-modal [data-close]').forEach(function (btn) {
+  btn.addEventListener('click', function () { btn.closest('.ds-modal').close(); });
+});</code></pre>
         </div>
       </details>
     </div>

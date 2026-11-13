@@ -18,7 +18,7 @@ components:
         does: "Steps through the requests. It sits above the card, because it changes everything in it: the table and its actions change together when the reader moves on."
       - name: ".ds-card-bar"
         does: "The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.md#bulk-actions)."
-      - name: ".ds-table, .is-selected"
+      - name: ".ds-table"
         does: "The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection)."
     notes:
       - "Only use a pager when the user can focus on just one item at a time without needing context from others in the set."
@@ -111,7 +111,7 @@ This component group is for moving through items one at a time, such as a modera
 
 - `.ds-pagination` — Steps through the requests. It sits above the card, because it changes everything in it: the table and its actions change together when the reader moves on.
 - `.ds-card-bar` — The header bar of the current request: the group actions and the selection count at its start, and a filter at its end. See [Bulk actions](tables.md#bulk-actions).
-- `.ds-table, .is-selected` — The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection).
+- `.ds-table` — The papers in the current request, with a checkbox per row. See [Row selection](tables.md#row-selection).
 
 > Only use a pager when the user can focus on just one item at a time without needing context from others in the set.
 
