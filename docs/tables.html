@@ -303,21 +303,21 @@
   <!-- ───────── Sortable column headers ───────── -->
   <section>
     <h2 id="sortable-column-headers">Sortable column headers</h2>
-    <p class="ds-section-desc">A sortable column has a <code>&lt;button class="sortable"&gt;</code> inside its <code>&lt;th&gt;</code>, holding the label and a <code>&lt;span class="sort-arrow"&gt;</code> for the direction. It looks like the plain header and it can be reached and pressed from the keyboard, which a <code>&lt;th&gt;</code> on its own cannot. <code>.sort-asc</code> or <code>.sort-desc</code> and <code>aria-sort</code> go on the <code>&lt;th&gt;</code> of the sorted column.</p>
+    <p class="ds-section-desc">A sortable column&#39;s header is a link to the same page sorted by that column, holding the label and a <code>&lt;span class="sort-arrow"&gt;</code> for the direction. It looks like the plain header, it can be reached and pressed from the keyboard, and it works without JavaScript, as the <a href="buttons.html#a-group-of-toggles">sort bar</a> does. <code>aria-sort</code> goes on the <code>&lt;th&gt;</code> of the sorted column, and the arrow follows it.</p>
     <p class="ds-panel-label">Sortable headers</p>
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">Sort logic is application-specific; the CSS only handles visual states.</p>
+        <p class="ds-marginalia-body ds-annotation">The server sorts the rows. In this demo a script sorts them in place instead, because the page is static.</p>
       </details>
       <div class="ds-table-scroll" role="region" aria-label="Submissions, sortable" tabindex="0">
         <table class="ds-table" id="demo-sort-table">
           <thead>
             <tr>
-              <th scope="col" class="sort-desc" aria-sort="descending"><button type="button" class="sortable" data-sort="date">Date <span class="sort-arrow">↓</span></button></th>
+              <th scope="col" aria-sort="descending"><a href="?sort=date-asc#sortable-column-headers" data-sort="date">Date <span class="sort-arrow" aria-hidden="true">↓</span></a></th>
               <th scope="col">Title</th>
-              <th scope="col"><button type="button" class="sortable" data-sort="type">Type <span class="sort-arrow">⇅</span></button></th>
-              <th scope="col"><button type="button" class="sortable" data-sort="status">Status <span class="sort-arrow">⇅</span></button></th>
+              <th scope="col"><a href="?sort=type-asc#sortable-column-headers" data-sort="type">Type <span class="sort-arrow" aria-hidden="true">⇅</span></a></th>
+              <th scope="col"><a href="?sort=status-asc#sortable-column-headers" data-sort="status">Status <span class="sort-arrow" aria-hidden="true">⇅</span></a></th>
             </tr>
           </thead>
           <tbody>
@@ -354,12 +354,12 @@
 <pre><code>&lt;table class="ds-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th scope="col" class="sort-desc" aria-sort="descending"&gt;
-        &lt;button type="button" class="sortable"&gt;Date &lt;span class="sort-arrow"&gt;↓&lt;/span&gt;&lt;/button&gt;
+      &lt;th scope="col" aria-sort="descending"&gt;
+        &lt;a href="?sort=date-asc"&gt;Date &lt;span class="sort-arrow" aria-hidden="true"&gt;↓&lt;/span&gt;&lt;/a&gt;
       &lt;/th&gt;
       &lt;th scope="col"&gt;Title&lt;/th&gt;
-      &lt;th scope="col"&gt;&lt;button type="button" class="sortable"&gt;Type &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
-      &lt;th scope="col"&gt;&lt;button type="button" class="sortable"&gt;Status &lt;span class="sort-arrow"&gt;⇅&lt;/span&gt;&lt;/button&gt;&lt;/th&gt;
+      &lt;th scope="col"&gt;&lt;a href="?sort=type-asc"&gt;Type &lt;span class="sort-arrow" aria-hidden="true"&gt;⇅&lt;/span&gt;&lt;/a&gt;&lt;/th&gt;
+      &lt;th scope="col"&gt;&lt;a href="?sort=status-asc"&gt;Status &lt;span class="sort-arrow" aria-hidden="true"&gt;⇅&lt;/span&gt;&lt;/a&gt;&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
@@ -380,24 +380,14 @@
 &lt;/table&gt;
 &lt;div class="ds-table-footer"&gt;1–4 of 4&lt;/div&gt;</code></pre>
           <dl>
-            <dt>.sortable</dt>
-            <dd>On a <code>&lt;button type="button"&gt;</code> inside the <code>&lt;th&gt;</code>. The
-            button is styled to look like the plain header text, so nothing changes visually; what it
-            adds is a keyboard stop, so a reader who cannot use a mouse can sort. Pointer cursor, and
-            the label darkens on hover.</dd>
+            <dt>&lt;a href="?sort=…"&gt;</dt>
+            <dd>Inside the <code>&lt;th&gt;</code>: a link to this page sorted by the column. On the sorted column it sends the reverse direction; on any other, the column&#39;s first direction. Styled to look like the header text; the label darkens on hover. No class.</dd>
             <dt>.sort-arrow</dt>
-            <dd>The direction indicator, a <code>&lt;span&gt;</code> inside the header. The glyph in the markup is
+            <dd>The direction indicator, a <code>&lt;span aria-hidden="true"&gt;</code> inside the link. The glyph in the markup is
             replaced by an icon: two arrows in <code>--ds-text-muted</code> when the column is unsorted.</dd>
-            <dt>.sort-asc</dt>
-            <dd>On the <code>&lt;th&gt;</code> of the sorted column. The arrow shows ↑ in
-            <code>--ds-text</code>.</dd>
-            <dt>.sort-desc</dt>
-            <dd>On the <code>&lt;th&gt;</code> of the sorted column. The arrow shows ↓ in
-            <code>--ds-text</code>.</dd>
             <dt>aria-sort="ascending", aria-sort="descending"</dt>
-            <dd>Required on the sorted <code>&lt;th&gt;</code>, matching the class. Remove it from the column that is no
-            longer sorted. The arrow is a glyph, so this is what tells a screen reader which
-            column orders the table.</dd>
+            <dd>On the <code>&lt;th&gt;</code> of the sorted column only. It tells a screen reader which
+            column orders the table and how, and it turns the arrow up or down in <code>--ds-text</code>.</dd>
             <dt>.ds-table-footer</dt>
             <dd>The row count under the table.</dd>
           </dl>
@@ -830,9 +820,7 @@
   <!-- ───────── Sort interaction ───────── -->
   <section>
     <h3 id="sort-interaction">Sort interaction</h3>
-    <p>Pressing a sortable header, by mouse or keyboard, toggles through: descending → ascending → descending.
-    Clicking a different column resets the previous column to unsorted.
-    Sort logic is application-specific; the CSS only handles visual states.</p>
+    <p>A sortable header is a link that reloads the page sorted, as the sort bar is a form that does. Pressing the sorted column&#39;s header reverses the order; pressing another column&#39;s header sorts by it, in its first direction, and the previous column becomes unsorted. Only the sorted column has <code>aria-sort</code>.</p>
   </section>
 
   <!-- ───────── Bulk-action bar layout ───────── -->
@@ -850,28 +838,27 @@
 <script>
   // ── Demo: sortable table ────────────────────────────────────
   const table   = document.getElementById('demo-sort-table');
-  const headers = table.querySelectorAll('th .sortable');
+  const headers = table.querySelectorAll('thead th > a[data-sort]');
   const tbody   = table.querySelector('tbody');
 
   const typeOrder = { new: 0, rep: 1, cross: 2, wdr: 3 };
 
   headers.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();   // a static page: the demo sorts in place instead of reloading
       const th     = btn.closest('th');
       const key    = btn.dataset.sort;
-      const wasDesc = th.classList.contains('sort-desc');
-      const wasAsc  = th.classList.contains('sort-asc');
+      const dir    = th.getAttribute('aria-sort') === 'ascending' ? 'desc' : 'asc';
 
       headers.forEach(b => {
-        b.closest('th').classList.remove('sort-asc', 'sort-desc');
         b.closest('th').removeAttribute('aria-sort');
         b.querySelector('.sort-arrow').textContent = '⇅';
+        b.setAttribute('href', '?sort=' + b.dataset.sort + '-asc#sortable-column-headers');
       });
 
-      const dir = wasDesc || !wasAsc ? 'asc' : 'desc';
-      th.classList.add('sort-' + dir);
       th.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
       btn.querySelector('.sort-arrow').textContent = dir === 'asc' ? '↑' : '↓';
+      btn.setAttribute('href', '?sort=' + key + '-' + (dir === 'asc' ? 'desc' : 'asc') + '#sortable-column-headers');
 
       const rows = Array.from(tbody.querySelectorAll('tr'));
       rows.sort((a, b) => {

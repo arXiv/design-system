@@ -256,6 +256,11 @@
    padding. */
 [class^="ds-"], [class*=" ds-"] { box-sizing: border-box; }
 
+/* The hidden attribute hides, on every element, whatever display a component
+   sets. A script that reveals a part writes it hidden and removes the attribute.
+   until-found is left alone, so the browser can still find text in it. */
+[hidden]:not([hidden="until-found"]) { display: none !important; }
+
 /* Reserve the scrollbar's width whether or not the page scrolls. Without
    this, anything that locks scrolling — a modal — removes the scrollbar and
    the page jumps sideways underneath it. Scoped to pages that opt into the
@@ -1058,11 +1063,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .ds-tooltip-host:hover > .ds-tooltip,
 .ds-tooltip-host:focus-within > .ds-tooltip { display: block; }
-/* Escape sets [hidden], and this has to beat "still hovering" — so it needs
-   to MATCH the specificity of the rules above (:hover and :focus-within each
-   count as a class, making those 0-3-0) and come after them. Ordering and an
-   equal-weight selector, rather than !important. */
-.ds-tooltip-host > .ds-tooltip[hidden] { display: none; }
+/* Escape sets [hidden], which beats "still hovering" through the base rule for hidden. */
 
 /* LABEL WITH A TOOLTIP  (.ds-label-row) — forms.html */
 .ds-label-row {
@@ -1561,19 +1562,16 @@ button:not(.is-failed) > svg.ds-copy-failed,
   border-top: 1px solid var(--ds-border);
 }
 
-/* Sortable column: a <button class="sortable"> in the <th>, .sort-asc or
-   .sort-desc on the <th>, and a <span class="sort-arrow"> for the direction. */
-.ds-table thead th .sortable {
-  all: unset;   /* a button that looks like the header text it replaces */
-  display: inline;
-  font: inherit;
+/* Sortable column: an <a href="?sort=…"> in the <th>, aria-sort on the sorted
+   column's <th>, and a <span class="sort-arrow"> for the direction. The sort bar
+   (buttons.html) keys the same arrow on .sort-asc and .sort-desc. */
+.ds-table thead th > a {   /* a link that looks like the header text */
   color: inherit;
-  cursor: pointer;
-  user-select: none;
+  text-decoration: none;
   transition: color 0.1s;
 }
-.ds-table thead th .sortable:hover { color: var(--ds-text); }
-.ds-table thead th .sortable:focus-visible {
+.ds-table thead th > a:hover { color: var(--ds-text); }
+.ds-table thead th > a:focus-visible {
   outline: 2px solid var(--ds-focus-ring);
   outline-offset: 2px;
   border-radius: 2px;
@@ -1594,9 +1592,9 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .sort-asc .sort-arrow,
 .sort-desc .sort-arrow { color: inherit; }
-.ds-table th:is(.sort-asc, .sort-desc) .sort-arrow { color: var(--ds-text); }
-.sort-asc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
-.sort-desc .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
+.ds-table th[aria-sort] .sort-arrow { color: var(--ds-text); }
+:is(.sort-asc, th[aria-sort="ascending"]) .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12 7-7 7 7'/%3E%3Cpath d='M12 19V5'/%3E%3C/svg%3E"); }
+:is(.sort-desc, th[aria-sort="descending"]) .sort-arrow { --ds-sort-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14'/%3E%3Cpath d='m19 12-7 7-7-7'/%3E%3C/svg%3E"); }
 @media (forced-colors: active) { .sort-arrow { background: CanvasText; } }
 
 
@@ -1979,7 +1977,6 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-cite .ds-paper-cite-head > .ds-form--compact .ds-input { width: auto; }
 .ds-paper-cite > * + * { margin-top: var(--ds-space-2); }
 .ds-paper-cite-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ds-space-2); }
-html:not(.js) .ds-paper-cite .ds-paper-cite-tools { display: none; }   /* outranks the display: flex above */
 /* The citation is a standard code block that wraps, with room on the right
    for its copy button. Closed, it shows its first two lines. */
 .ds-paper-cite-code { contain: inline-size; }   /* a long DOI must not widen the sidebar */
@@ -2258,9 +2255,6 @@ select.ds-input:not([multiple]):not([size]) {
 .field-error   { color: var(--ds-error-border); }
 .field-warning { color: var(--ds-warning-fg); }
 .field-info    { color: var(--ds-info-fg); }
-.field-error[hidden],
-.field-warning[hidden],
-.field-info[hidden] { display: none; }
 
 /* Several problems on one field. Ordered and numbered: the count is checkable
    against the summary, and "the second one" has to be sayable while someone
@@ -2391,7 +2385,6 @@ select.ds-input:not([multiple]):not([size]) {
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.ds-popover[hidden] { display: none; }
 
 .ds-popover-title {
   font-family: var(--ds-font-condensed);
@@ -4558,10 +4551,9 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   outline: 3px solid var(--ds-focus-ring);
   outline-offset: 2px;
 }
-.ds-tabs-panel[hidden] { display: none; }
 @media print {
   .ds-tabs-list { display: none; }
-  .ds-tabs-panel[hidden], .ds-tabs-panel > [hidden] { display: block; }
+  .ds-tabs-panel[hidden], .ds-tabs-panel > [hidden] { display: block !important; }   /* every panel prints */
 }
 
 /* ── Header search overlay (.ds-search-overlay) ─────────────────────────
@@ -4577,7 +4569,6 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   justify-content: center;
   background: var(--ds-scrim);
 }
-.ds-search-overlay[hidden] { display: none; }
 .ds-search-overlay-panel {
   margin-top: 52px; /* the header bar's height; header.js hangs it from the bar's bottom edge */
   width: 100%;
@@ -4605,7 +4596,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
 }
 
 /* PERMALINK  (.ds-permalink) — links.html
-   A button in a section heading that copies the link to that section.
+   A link to the section, in its heading; copy.js makes a press copy the link.
    Hidden by opacity only, so it holds its space and stays in the tab order. */
 .ds-permalink {
   display: inline-flex;
@@ -4623,6 +4614,7 @@ html:has(.ds-site-header--sticky) { scroll-padding-top: 5rem; }
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
   border-radius: 999px;
+  text-decoration: none;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.12s;
