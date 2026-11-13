@@ -9,13 +9,13 @@ components:
     summary: "The type family is IBM Plex, plus STIX Two Math for notation. Each face has a job."
     classes:
       - name: "--ds-font-sans"
-        does: "The default: where no other face applies, this is the answer. Weights 400 / 500 / 600."
+        does: "The default: where no other face applies, this is the answer. Weights 400 / 500 / 600 / 700, and 400 italic for emphasis."
       - name: "--ds-font-condensed"
         does: "Labels, table headers and metadata, usually small and uppercase. Weights 500 / 600."
       - name: ".ds-panel-label"
         does: "The ready-made label in this face; see [Panel label](#panel-label) below."
       - name: "--ds-font-mono"
-        does: "Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below."
+        does: "Identifiers and code. Weights 400 / 500; 600 and 700 for a note's label and a version mark. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below."
       - name: ".ds-annotation"
         does: "The annotation voice: `--ds-font-serif`, italic, 400, 0.8125rem, `--ds-text-muted`. It is a voice, not a layout role; where it sits is the consumer's decision."
       - name: "--ds-font-serif"
@@ -95,7 +95,7 @@ components:
     summary: "The small uppercase Condensed label that names a panel, a column or a group. It is not a heading level and stays out of the document outline — if a reader needs to navigate to it, it is an `h3` or an `h4` at the sizes above."
     classes:
       - name: ".ds-panel-label"
-        does: "One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`. Use it wherever this treatment appears — panel headings, column labels, the label above a group of controls — on whichever element is semantically right. A component that owns its internal spacing takes the margin back."
+        does: "One class for the label of a panel, a column or a group of controls: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`, on whichever element is semantically right. A component that owns its internal spacing takes the margin back. A few small components, such as a data card and a popover, set the same treatment at their own smaller size."
     notes:
       - "Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading."
 rules:
@@ -105,10 +105,10 @@ rules:
   - "**Mono as display type** is an outreach liberty: the typewriter register echoes the main site's identifiers. On the public site, mono still means \"this is an identifier or code.\""
   - "Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale."
   - "**On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size."
-  - "**700 appears once, at h1.** IBM Plex ships nothing heavier, so 700 is the ceiling and it is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it."
+  - "**Among headings, 700 is the h1's alone.** IBM Plex ships nothing heavier, so 700 is the ceiling, and among headings it is spent on the one that names the page. Every heading below it is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it."
   - "**Space above is at least twice the space below.** A heading belongs to the text it introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in [Spacing](spacing.md)."
   - "**The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text."
-  - "**The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label."
+  - "**The uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label."
   - "**There is no markup for the button**, and that is the design. `copy.js` finds every `<pre>` on the page, wraps it in `.ds-code` and inserts the control, which is `.ds-code-copy`. A block added next year is covered without anyone remembering, which a per-block wrapper would not be. Every page under `docs/` already loads the script."
   - "**The button sits over the top corner of the code, on a solid ground.** The block keeps even padding, and a long line that scrolls under the button is hidden behind it rather than showing through."
   - "**It is an icon, and it still says “Copy”.** The two overlapping sheets are the glyph people already know, so the control needs no label taking up room over the code. Both SVGs are `aria-hidden` and the button has `aria-label=\"Copy code\"`, which is what a screen reader announces. A block inside a `<figure>` is named by its `<figcaption>` instead: “Copy BibTeX” for a paper's citation. The `title` is the pointer affordance only — assistive technology takes the `aria-label` and ignores it."
@@ -152,7 +152,7 @@ Mathematical notation.
 font-family: var(--ds-font-sans);
 ```
 
-- `--ds-font-sans` — The default: where no other face applies, this is the answer. Weights 400 / 500 / 600.
+- `--ds-font-sans` — The default: where no other face applies, this is the answer. Weights 400 / 500 / 600 / 700, and 400 italic for emphasis.
 
 ```html
 font-family: var(--ds-font-condensed);
@@ -165,7 +165,7 @@ font-family: var(--ds-font-condensed);
 font-family: var(--ds-font-mono);
 ```
 
-- `--ds-font-mono` — Identifiers and code. Weights 400 / 500. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
+- `--ds-font-mono` — Identifiers and code. Weights 400 / 500; 600 and 700 for a note's label and a version mark. Inline `<code>` and `<pre>` already use it; see [Code blocks](#code-blocks-and-the-copy-button) below.
 
 ```html
 <p class="ds-annotation">Figure 2: the scalaron potential.</p>
@@ -288,7 +288,7 @@ The test: if a paragraph follows it, or it covers several examples, it is a head
 <p class="ds-panel-label">Paper information</p>
 ```
 
-- `.ds-panel-label` — One class for the whole system: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`. Use it wherever this treatment appears — panel headings, column labels, the label above a group of controls — on whichever element is semantically right. A component that owns its internal spacing takes the margin back.
+- `.ds-panel-label` — One class for the label of a panel, a column or a group of controls: 0.75rem · 600 · Condensed · uppercase · 0.04em · `--ds-text-muted`, on whichever element is semantically right. A component that owns its internal spacing takes the margin back. A few small components, such as a data card and a popover, set the same treatment at their own smaller size.
 
 > Do not reach for it as a heading substitute. A label that a reader needs to navigate to is a heading.
 
@@ -300,10 +300,10 @@ One family, three contexts. Internal tools and the public site share the working
 
 | Face · weights | Internal tools | Public site | Outreach |
 |---|---|---|---|
-| IBM Plex Sans · 400 / 500 / 600 | ✓ all text | ✓ all text | ✓ all text |
-| IBM Plex Sans · 700 + 700 *italic* | ✓ h1 only | ✓ h1 only | ✓ the one heading that must not read as an article |
+| IBM Plex Sans · 400 / 500 / 600, 400 *italic* | ✓ all text | ✓ all text | ✓ all text |
+| IBM Plex Sans · 700 | ✓ h1, alert titles, a pressed toggle | ✓ h1, alert titles, a pressed toggle | ✓ the one heading that must not read as an article |
 | IBM Plex Sans Condensed · 500 / 600 | ✓ labels, table headers | ✓ labels | ✓ labels |
-| IBM Plex Mono · 400 / 500 | ✓ IDs, code | ✓ arXiv IDs, code | ✓ code, plus a display register (wordmark, standfirst) |
+| IBM Plex Mono · 400 / 500, 600 / 700 | ✓ IDs, code; 600 and 700 for note labels | ✓ arXiv IDs, code; 600 and 700 for note labels and version marks | ✓ code, plus a display register (wordmark, standfirst) |
 | IBM Plex Serif · 400 *italic* | annotation voice only (`.ds-annotation`) | annotation voice only (`.ds-annotation`) | ✓ emphasis, bylines, prev/next |
 | IBM Plex Serif · 400 / 600 upright | — | — | ✓ headlines to display size, pull quotes, drop caps |
 | STIX Two Math · 400 | — | ✓ math in HTML papers | — |
@@ -317,10 +317,10 @@ One family, three contexts. Internal tools and the public site share the working
 Space is given as spacing tokens, not pixels, because that is what `design-system.css` implements — `--ds-space-8` is 2rem, `--ds-space-6` is 1.5rem, and so on down the scale.
 
 - **On a laptop, the ratio is 1.25** — a major third — rounded to quarter-rem steps: 1, 1.25, 1.5, 2rem. A strict geometric run would put h2 at 1.5625rem; a quarter of a rem is the number a person can hold in their head and type without checking. The rounding is what makes h1 land on exactly double the body size.
-- **700 appears once, at h1.** IBM Plex ships nothing heavier, so 700 is the ceiling and it is spent on the one heading that names the page. Everything below is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it.
+- **Among headings, 700 is the h1's alone.** IBM Plex ships nothing heavier, so 700 is the ceiling, and among headings it is spent on the one that names the page. Every heading below it is 600. Always state the weight: a rule that sets only `font-size` inherits the browser default bold, which is how several pages ended up with an h3 heavier than the h2 above it.
 - **Space above is at least twice the space below.** A heading belongs to the text it introduces, not the text it follows, and the gap has to say so. The values sit on the 4px rhythm in [Spacing](spacing.md).
 - **The page heading scales with the screen, and the steps shrink with it.** A step can shrink but never disappear: each level is at least a quarter of a rem (4px) larger than the one below. Most of its size is in rem and the largest is less than 2.5 times the smallest, so browser zoom scales it fully (WCAG 1.4.4); text-only zoom scales only the rem part, so there it grows a little less than body text.
-- **The 11px uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label.
+- **The uppercase Condensed label is not a heading level.** Set in `--ds-font-condensed` and `--ds-text-muted`, it marks a panel or a column and stays out of the document outline. If a reader needs to navigate to it, it is an h3 or an h4 at the size above, not a label.
 
 ### The copy button
 
@@ -381,7 +381,7 @@ Every weight and style IBM Plex ships is self-hosted — Thin 100, ExtraLight 20
 | 400 Regular | Body copy, and anything that is read rather than scanned. |
 | 500 Medium | Navigation, table headers, the quieter emphasis. |
 | 600 SemiBold | Headings, button labels, and the label half of a label/value pair. |
-| 700 Bold | The h1, and nothing else — see the heading scale. |
+| 700 Bold | The h1, alert titles and a pressed toggle's label — see the heading scale. |
 | 100, 200, 300, 450 | Lighter weights are present, but unused and commented out. See warning below. |
 
 Thin, ExtraLight and Light are in the repository but not used. At interface sizes their strokes are too fine for many readers to resolve even when the colour passes AA — the ratio measures the hue, not whether the letterform survives. **Body and interface text use 400 or heavier.** Anything lighter belongs at display sizes, if anywhere, and is worth testing before it ships.
@@ -424,8 +424,7 @@ This repo's pattern pages serve the same files from `docs/fonts/`, declared in [
 
 - `font-display: swap` for text: the fallback shows immediately and swaps when the real font arrives. Readability beats visual stability.
 - `font-display: auto` for STIX Two Math: maths in a fallback font can be actively wrong, so it is better to wait briefly.
-- `local()` for STIX Two Math skips the ~300KB download if the reader already has it.
-- Total: about 135KB for the Plex woff2 files, plus STIX only on paper pages.
+- `local()` for STIX Two Math skips the download if the reader already has it. Only paper pages load STIX.
 
 ### Which faces each surface uses
 
@@ -452,3 +451,10 @@ The sizes the stylesheet sets, in rem, with the pixel size at the browser's defa
 | Annotation (margin footnote, alt text) | 0.8125rem · 13px, italic | 400 | Plex Serif |
 | Header links | 0.8125rem · 13px | 500 | Plex Sans |
 | Panel labels, table headers | 0.75rem · 12px, uppercase | 600 | Plex Sans Condensed |
+| Popover title, switch label | 0.6875rem · 11px, uppercase | 600 | Plex Sans Condensed |
+| Tags | 0.6875rem · 11px, uppercase | 500 | Plex Mono |
+| Data card labels | 0.625rem · 10px, uppercase | 600 | Plex Sans Condensed |
+| Modal title | 1.125rem · 18px | 600 | Plex Sans |
+| Accordion label, modal body | 0.95rem · 15.2px | 600; 400 | Plex Sans |
+| Tables | 0.9375rem · 15px | 400 | Plex Sans |
+| Accordion body, TOC bar list | 0.85rem · 13.6px | 400 | Plex Sans |

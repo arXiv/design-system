@@ -434,6 +434,14 @@ html:has(> body.ds-page) { scrollbar-gutter: stable; }
 :where(.ds-page) a               { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 :where(.ds-page) a:hover         { color: var(--ds-link-hover); text-decoration-thickness: 0.15em; }
 :where(.ds-page) a:visited       { color: var(--ds-link-visited); }
+/* An icon takes the height of its line unless something sizes it: an svg with
+   no width attribute is 1em square. Any component rule overrides this. */
+:where(.ds-page) svg:where(:not([width])) { width: 1em; height: 1em; }
+/* Form controls take the page's font, not the browser's smaller control font. */
+:where(.ds-page) :is(input, button, select, textarea) { font: inherit; }
+/* One size for every checkbox and radio. Where it has no visible label to lend
+   it a target, such as in a table row, its cell or column gives it 24px. */
+:where(.ds-page) input:is([type="checkbox"], [type="radio"]) { width: 1rem; height: 1rem; margin: 0; accent-color: var(--ds-link); }
 /* A list in which every item is a link: no underline at rest, since no ordinary text sits beside it. */
 .ds-link-list a { text-decoration: none; }
 .ds-link-list a:hover { text-decoration: underline; }
@@ -1362,19 +1370,19 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .ds-card--data > dl {
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));   /* pairs sit side by side when there is room, one column when there is not */
+  display: flex;
+  flex-wrap: wrap;   /* pairs sit side by side when there is room, and the pairs in the last row widen to fill it */
   gap: 1px;
   background: var(--ds-border);   /* shows only in the gaps: a hairline between pairs in both directions, none at the edges */
 }
 .ds-card--data > dl > div {
+  flex: 1 1 12rem;
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-1);
   padding: var(--ds-space-3) var(--ds-space-4);
   background: var(--ds-tint-warm);
 }
-.ds-card--data > dl > div:last-child { grid-column-end: -1; }   /* the last pair fills its row, so no gap is left open */
 .ds-card--data dt {
   font-family: var(--ds-font-condensed);
   font-size: 0.625rem;
@@ -1483,7 +1491,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
 /* SELECTING ITEMS IN A LIST — tables.html#selecting-items-in-a-list
    A list item whose first child is a checkbox: the box in a column of its own at
    the start, lined up with the item's first line, and everything else beside it.
-   Like a table row's, the box has no visible label to lend it a target, so it is 24px. */
+   Like a table row's, the box has no visible label to lend it a target, so its column is 24px wide. */
 :where(li:has(> input[type="checkbox"]:first-child)) {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
@@ -1494,24 +1502,16 @@ button:not(.is-failed) > svg.ds-copy-failed,
 :where(li:has(> input[type="checkbox"]:first-child)) > input[type="checkbox"]:first-child {
   grid-column: 1;
   grid-row: 1 / span 12;
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  accent-color: var(--ds-link);
+  justify-self: center;
+  margin-top: 0.25rem;
 }
 /* The first thing beside the box keeps no space above it, so the two line up. */
 :where(li:has(> input[type="checkbox"]:first-child)) > input:first-child + label.is-sr-only + * { margin-top: 0; }
 
-/* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
+/* A row-selection checkbox has no label to lend it a target, so its cell is at least 24px. */
 .ds-table td:has(> input[type="checkbox"]),
 .ds-table th:has(> input[type="checkbox"]) { min-width: 24px; }
-.ds-table input[type="checkbox"] {
-  accent-color: var(--ds-link);
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  cursor: pointer;
-}
+.ds-table input[type="checkbox"] { cursor: pointer; }
 
 /* The bulk bar's count: "2 selected", quieter than the actions beside it. */
 .ds-bulk-count { font-size: 0.75rem; color: var(--ds-text-muted); }
@@ -2293,7 +2293,7 @@ select.ds-input:not([multiple]):not([size]) {
    is the whole <label>, because clicking anywhere in it toggles the input. So
    the floor goes on the label, where WCAG 2.5.8 actually measures it. */
 .ds-check { min-height: 24px; }
-.ds-check input { accent-color: var(--ds-link); width: 1em; height: 1em; margin: 2px 0 0; flex: none; }
+.ds-check input { margin-top: 2px; flex: none; }
 .ds-check input:disabled { cursor: not-allowed; }
 .ds-check input:disabled + span { color: var(--ds-text-disabled); }
 
