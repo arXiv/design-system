@@ -78,7 +78,7 @@ components:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
   - id: accordion-inside-a-card
     title: "Accordion inside a card"
-    group: "Variants"
+    group: "Modifiers"
     summary: "A disclosure inside another one is the second level: indented one step, its label a step smaller. Two levels is the limit a reader can follow. Shown inside a card with a heading, the paper reader's sidebar, where the stack ends the card and the card's own edge closes it."
     classes:
       - name: ".ds-acc inside .ds-acc-body"
@@ -89,7 +89,7 @@ components:
         does: "The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name. It is a panel label, so it reads as a level above the accordion labels below it."
   - id: one-panel-open-at-a-time
     title: "One panel open at a time"
-    group: "Variants"
+    group: "Modifiers"
     summary: "Opening one panel closes the panel that was open. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript."
     classes:
       - name: "[name]"
@@ -263,7 +263,7 @@ Tabs switch between views of the same page. Each tab shows one panel and hides t
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.1.1](https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html) Keyboard (Level A) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
-## Accordion inside a card  (Variants)
+## Accordion inside a card  (Modifiers)
 
 A disclosure inside another one is the second level: indented one step, its label a step smaller. Two levels is the limit a reader can follow. Shown inside a card with a heading, the paper reader's sidebar, where the stack ends the card and the card's own edge closes it.
 
@@ -311,7 +311,7 @@ A disclosure inside another one is the second level: indented one step, its labe
 - `.ds-card > .ds-acc-stack:last-child` — A stack that ends a card drops the last disclosure's lower rule, because the card's edge closes it. With content below the stack, the rule stays.
 - `h3.ds-panel-label before the stack` — The heading names the group, so it is found by heading navigation and every disclosure inside it is announced under that name. It is a panel label, so it reads as a level above the accordion labels below it.
 
-## One panel open at a time  (Variants)
+## One panel open at a time  (Modifiers)
 
 Opening one panel closes the panel that was open. There is no class: give every `<details>` in the group the same `name` attribute, and the browser does the rest without JavaScript.
 
