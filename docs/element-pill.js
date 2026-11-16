@@ -8,7 +8,7 @@
 (function () {
   function actions(pill) {
     return Array.prototype.slice.call(pill.querySelectorAll(':scope > button, :scope > a[href]'))
-      .filter(function (el) { return !el.disabled; });
+      .filter(function (el) { return !el.disabled && !el.hidden; });
   }
 
   document.querySelectorAll('.ds-element-pill').forEach(function (pill) {

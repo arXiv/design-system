@@ -16,7 +16,10 @@
  * would lose that setting the first time it was touched.
  *
  * With no JavaScript there is no button and the page follows the OS, which is
- * the behaviour every page had before this existed. Nothing is lost.
+ * the behavior every page had before this existed. Nothing is lost.
+ *
+ * A page whose <html> already has data-theme in its markup is locked to that
+ * theme: this leaves the attribute alone and shows no control.
  */
 (function () {
   var KEY = 'arxiv-theme';
@@ -49,7 +52,8 @@
   }
 
   // ── Before first paint ──
-  apply(read());
+  var locked = document.documentElement.hasAttribute('data-theme');
+  if (!locked) apply(read());
   // Lets the stylesheet draw scripted states (a closed Show more tail) from the first paint.
   document.documentElement.classList.add('js');
 
@@ -66,7 +70,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     var buttons = document.querySelectorAll('.ds-theme-toggle');
-    if (!buttons.length) return;
+    if (locked || !buttons.length) return;
     var choice = read();
 
     buttons.forEach(function (btn) {
@@ -98,7 +102,7 @@
   // While the choice is "system", follow the machine if it changes underneath.
   try {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-      if (read() === 'system') apply('system');
+      if (!locked && read() === 'system') apply('system');
     });
   } catch (e) { /* older engines: the initial read still applied */ }
 })();

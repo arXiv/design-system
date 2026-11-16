@@ -32,7 +32,7 @@ An alert is an alert everywhere — never a notification, toast, banner, or mess
 
 ### Say what it is, and stop
 
-A description states what the thing is and does. Add a reason only when a builder would otherwise get it wrong, and keep it to one short sentence. Name a colour by its palette name.
+A description states what the thing is and does. Add a reason only when a builder would otherwise get it wrong, and keep it to one short sentence. Name a color by its palette name.
 
 Write: "A code block uses Plex Mono on Repository Brown, and always includes a copy button."
 
@@ -48,6 +48,10 @@ Use the plain word:
 | type, format, column | track |
 
 `check-policies.py` fails a page that uses a word from the right-hand column. "Tracking" in the sense of surveillance is allowed.
+
+### American spelling
+
+Write color, center, behavior, license, gray, labeled. Brand names keep their own spelling, such as Library Grey, and so does text copied from an author, such as an abstract. `check-policies.py` fails a page that uses the British spelling.
 
 ---
 
@@ -79,4 +83,4 @@ The no-contractions rule is arXiv's own, and it predates this document.
 
 The rest are adapted from [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/) (Issue 9, 2025), a controlled-language standard written for aerospace maintenance documentation and for readers with limited English. STE happens to ban contractions as well, which is some outside confirmation that arXiv's rule earns its keep.
 
-We took the rules that fit and left the rest. STE also caps sentence length, bans all figurative language, and restricts writers to an approved dictionary of roughly 900 words — which would remove the voice BRAND.md commits to, and would need a word list maintained by hand. The parts kept here are the ones that help non-native readers without costing anything to maintain.
+We took the rules that fit and left the rest. STE also caps sentence length, bans all figurative language, and restricts writers to an approved dictionary of roughly 900 words — which would remove the voice brand.html commits to, and would need a word list maintained by hand. The parts kept here are the ones that help non-native readers without costing anything to maintain.

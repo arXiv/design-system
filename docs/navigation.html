@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -115,6 +113,7 @@
             <li><a href="#two-levels-of-navigation">Two levels of navigation</a></li>
             <li><a href="#steps">Steps</a></li>
             <li><a href="#toc-bar">TOC bar</a></li>
+            <li><a href="#modifiers">Modifiers</a></li>
             <li><a href="#internal">Internal</a></li>
           </ol>
         </nav>
@@ -148,7 +147,7 @@
         <span class="ds-site-header-divider" aria-hidden="true"></span>
         <div class="ds-site-header-account">
           <span class="ds-site-header-greeting">Welcome <b>Ada</b></span>
-          <details class="ds-site-header-dropdown">
+          <details name="header-2-menus" class="ds-site-header-dropdown">
             <summary class="ds-site-header-login">Account</summary>
             <div class="ds-site-header-menu">
               <a href="#">Your account</a>
@@ -178,14 +177,14 @@
             <dt>.ds-subnav</dt>
             <dd>A <code>&lt;nav&gt;</code> directly after the header, with an <code>aria-label</code>
             that names the area, such as “Account sections”. Plain links; never
-            <code>role="tab"</code>, which would promise arrow-key behaviour that page links do not
+            <code>role="tab"</code>, which would promise arrow-key behavior that page links do not
             have. Hidden in print.</dd>
             <dt>aria-current="page"</dt>
             <dd>On the link for the current page. It shows as a bold tab joined to the page below,
-            with the accent along its top, so the current section never depends on colour alone, and a
+            with the accent along its top, so the current section never depends on color alone, and a
             screen reader announces it. The current tab takes the background of the zone below it: the
             page ground (white in light mode) above primary content, or the secondary zone's tint (light
-            grey in light mode) when the page opens with a <a href="layouts.html#secondary-zones">secondary
+            gray in light mode) when the page opens with a <a href="layouts.html#secondary-zones">secondary
             band</a>.</dd>
           </dl>
         </div>
@@ -200,7 +199,7 @@
     <div class="ds-card">
       <details class="ds-marginalia">
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
-        <p class="ds-marginalia-body ds-annotation">The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colours.</p>
+        <p class="ds-marginalia-body ds-annotation">The script answers to the width of the row, so the narrower examples fold inside narrower boxes. Open the menus to see their colors.</p>
       </details>
         <p class="ds-panel-label">Full width</p>
         <nav class="ds-subnav" aria-label="Moderator reports, full width">
@@ -344,7 +343,7 @@
             <dd>A link, with the check mark and <code>.is-sr-only</code> text “, completed”.</dd>
             <dt>aria-current="step"</dt>
             <dd>On the link for the current step. Its name is bold, and its circle has a heavier
-            border in the accent colour.</dd>
+            border in the accent color.</dd>
             <dt>.ds-step-label</dt>
             <dd>The step's name, with the same name in <code>data-label</code>. Every step keeps the
             width of its name in bold, so the row does not move when the current step changes.</dd>
@@ -389,7 +388,7 @@
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-container"&gt;
+<pre><code>&lt;main class="ds-container"&gt;
   &lt;div class="ds-full ds-zone-secondary"&gt;
     &lt;header class="ds-page-header"&gt;
       &lt;h1&gt;Page title&lt;/h1&gt;
@@ -416,7 +415,7 @@
   &lt;/div&gt;
 
   &lt;section&gt;…&lt;/section&gt;
-&lt;/div&gt;
+&lt;/main&gt;
 &lt;script src="toc.js" defer&gt;&lt;/script&gt;</code></pre>
           <dl>
             <dt>.ds-toc</dt>
@@ -432,15 +431,15 @@
             <dt>.ds-toc-bar</dt>
             <dd>The edge-to-edge row that holds the control. A direct child of
             <code>.ds-container</code>, with <code>.ds-full</code>. It comes directly after the page&#39;s opening
-            band, a <code>.ds-zone-secondary</code> band with the title and an introduction, and sits on that band’s bottom edge; a page with the bar always has that band (<a href="layouts.html#secondary-zones">Secondary zones</a>), except a paper, whose bar sits under the site header (<a href="papers.html#paper-toc-bar">The TOC bar on a paper</a>). By default the bar is sticky:
+            band and sits on that band’s bottom edge (<a href="layouts.html#secondary-zones">Secondary zones</a>). By default the bar is sticky:
             it keeps to the top of the viewport, where it becomes <code>.is-stuck</code> and
             tightens, and it sets <code>scroll-padding-top</code> so an anchor lands below it. On a
             viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it
-            scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one (<a href="organize-content.html#rules">Organize complex page content</a>), and whether it sticks is the developer’s call; a page keeps at most one sticky bar (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</dd>
+            scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one (<a href="organize-content.html#rules">Organize complex page content</a>), and it sticks unless it has <code>.ds-toc-bar--scrolls</code>; a page keeps at most one sticky bar (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</dd>
             <dt>.ds-toc-bar--scrolls</dt>
             <dd>The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport.</dd>
             <dt>.ds-toc-bar-inner</dt>
-            <dd>The bar’s three-slot grid, which keeps the control centred whatever sits beside
+            <dd>The bar’s three-slot grid, which keeps the control centered whatever sits beside
             it.</dd>
             <dt>[data-toc-scope]</dt>
             <dd>Optional, on <code>.ds-toc</code>: a selector for the element whose headings fill an
@@ -476,9 +475,9 @@
       <code>aria-label</code> that names the area, such as “Account sections” or “Submission
       steps”, so a screen reader can tell it from the header's navigation.</li>
       <li><strong>Mark the current page or step with <code>aria-current</code>.</strong> The tab's
-      shape and weight show it too, so the current section never depends on colour alone.</li>
+      shape and weight show it too, so the current section never depends on color alone.</li>
       <li><strong>Links, not tabs.</strong> Each view is its own page, so the row holds plain links
-      and never <code>role="tab"</code>, which would promise arrow-key behaviour that page links do
+      and never <code>role="tab"</code>, which would promise arrow-key behavior that page links do
       not have.</li>
       <li><strong>The menus close from the keyboard.</strong> The section menu and the View menu are
       <code>&lt;details&gt;</code>, so they open and close with no script; <code>subnav.js</code>
@@ -486,7 +485,7 @@
       <li><strong>The TOC bar's list is a disclosure, not an ARIA menu.</strong> <code>role="menu"</code>
       is for application menus — the kind with arrow-key roving focus and menu items that are not links. A
       list of links is a disclosure, and W3C’s own guidance is to build it this way. Using
-      <code>role="menu"</code> here would make a screen reader promise keyboard behaviour the
+      <code>role="menu"</code> here would make a screen reader promise keyboard behavior the
       component does not have.</li>
       <li><strong>Mark where the reader is in the TOC bar.</strong> <code>toc.js</code> gives the link to the
       current section <code>aria-current="location"</code>.</li>
@@ -500,7 +499,7 @@
 
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Modifiers</h2>
+  <h2 id="modifiers">Modifiers</h2>
 
   <!-- ───────── Internal ───────── -->
   <section>
@@ -612,7 +611,7 @@
   </section>
   </div>
 
-</div>
+</main>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —

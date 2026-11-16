@@ -21,8 +21,10 @@
  * Each press flips aria-expanded, swaps the label, and flips hidden on every
  * region that aria-controls names. Several ids, separated by spaces, open and
  * close together: a version list hides its ellipsis as it shows the versions
- * behind it. A region that is not a .ds-show-more-tail starts as the markup has
- * it. Every region has .is-open while the button is expanded.
+ * behind it. A region that is not a .ds-show-more-tail, such as that ellipsis,
+ * shows only while the tail is closed: write it hidden, so without JavaScript
+ * it does not show, and this shows it. Every region has .is-open while the
+ * button is expanded.
  *
  *   data-open-label="…"     the label while open; "show fewer" if absent
  *   data-closed-label="…"   the label while closed, for a button that starts
@@ -49,7 +51,7 @@
 
     // The tail is hidden here, not in the HTML, so without JavaScript it shows.
     regions.forEach(function (r) {
-      if (r.classList.contains('ds-show-more-tail')) r.hidden = !open;
+      r.hidden = r.classList.contains('ds-show-more-tail') ? !open : open;
       r.classList.toggle('is-open', open);
     });
     toggle.hidden = false;

@@ -39,7 +39,7 @@
 
 
 /* ─── Demo grounds ───────────────────────────────────────────────
-   The surfaces a component is shown on. Colour comes from tokens or from
+   The surfaces a component is shown on. Color comes from tokens or from
    an inline style on the element; these only give the ground its shape. */
 .tinted-row {
   display: flex;
@@ -63,6 +63,7 @@
   padding: 18px;
   background: var(--ds-archival-blue);   /* fixed: a field that stays dark in both themes */
   border-radius: 6px;
+  --ds-focus-ring: var(--ds-focus-ring-on-dark);   /* a dark field re-points the ring for everything on it (buttons.html) */
 }
 .close-ground { display: inline-flex; padding: 6px 8px; border-radius: 6px; }
 .chip-demo-stage {
@@ -118,7 +119,7 @@
 @media (min-width: 82.125rem) { @supports selector(::details-content) { .notes > li:has(> .ds-marginalia) { padding-right: 0; } } }
 
 
-/* ─── Icon catalogue (icons.html, generated) ───────────────────── */
+/* ─── Icon catalog (icons.html, generated) ───────────────────── */
 .icon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
@@ -158,7 +159,7 @@
 
 
 /* ─── Moved from forms.html ──────────────────────────────────────
-   Field states side by side inside a demo card: one labelled field per
+   Field states side by side inside a demo card: one labeled field per
    cell. The field takes .ds-field--full so the half-width default does not
    leave it 130px wide in a narrow cell. */
 .form-states {
@@ -175,7 +176,7 @@
 .form-states--pairs { grid-template-columns: repeat(auto-fit, minmax(max(16rem, calc(50% - var(--ds-space-block))), 1fr)); }
 
 
-/* ─── A labelled column in the variant grid ──────────────────────
+/* ─── A labeled column in the variant grid ──────────────────────
    For a component that is not a button; .ds-btn-group--stack does this
    job for buttons. */
 .state-cell { display: flex; flex-direction: column; align-items: flex-start; gap: var(--ds-space-tight); }
@@ -212,7 +213,7 @@
 .chrome-demo > .ds-acc:last-child { margin: 0; }
 
 
-/* ─── outreach.html: a grey stand-in where an image will go ─── */
+/* ─── outreach.html: a gray stand-in where an image will go ─── */
 .context-placeholder {
   display: flex;
   align-items: center;
@@ -308,8 +309,9 @@ body > .ds-site-header > .ds-site-header-logo img { height: 26px; }
 .tint-table code, .tint-table td:not(:last-child) { white-space: nowrap; }
 .tint-table td:last-child { min-width: 16rem; }
 
-/* ─── colors.html: a colour where it is used, on the light page and on the
-   dark page, with its contrast (filled in by the page's script) ─── */
+/* ─── colors.html: a color where it is used, on the light page and on the
+   dark page, with its contrast. verification/gen-theme-values.py writes the
+   colors and the ratio into the page. ─── */
 .contrast-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -319,30 +321,18 @@ body > .ds-site-header > .ds-site-header-logo img { height: 26px; }
   overflow: hidden;
 }
 .contrast-pair--single { grid-template-columns: 1fr; }
-.contrast-sample {
-  /* Re-resolved here, as :root defines it, so it takes this sample's theme. */
-  --ds-focus-ring: var(--ds-link);
-  padding: var(--ds-space-3) var(--ds-space-4);
-  background: var(--ds-canvas);
-  color: var(--ds-text);
-}
-.contrast-sample--bar { background: var(--ds-repository-brown); color: var(--ds-grey-10); }
+.contrast-sample { padding: var(--ds-space-3) var(--ds-space-4); }
 .contrast-ratio {
   display: block;
   margin-top: var(--ds-space-2);
   font-family: var(--ds-font-mono);
   font-size: 0.75rem;
-  color: var(--ds-text-muted);
 }
-.contrast-sample--bar .contrast-ratio { color: var(--ds-grey-10); }
-.contrast-link { color: var(--ds-link); text-decoration: underline; text-underline-offset: 2px; }
-.contrast-link--hover { color: var(--ds-link-hover); }
-.contrast-link--visited { color: var(--ds-link-visited); }
+.contrast-link { text-decoration: underline; text-underline-offset: 2px; }
 .contrast-ring {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 4px;
-  outline: 3px solid var(--ds-focus-ring);
+  outline: 3px solid;
   outline-offset: 2px;
 }
-.contrast-ring--on-dark { outline-color: var(--ds-focus-ring-on-dark); }

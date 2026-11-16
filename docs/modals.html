@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -112,7 +110,9 @@
         <nav class="ds-toc-menu" aria-label="Contents">
           <ol>
             <li><a href="#the-modal-dialog">The modal dialog</a></li>
+            <li><a href="#modifiers">Modifiers</a></li>
             <li><a href="#wide-for-a-viewer">Wide viewer</a></li>
+            <li><a href="#rules">Rules</a></li>
             <li><a href="#when-a-modal-is-the-right-answer">When to use a modal</a></li>
             <li><a href="#what-the-native-element-gets-right-for-you">The five requirements of a modal</a></li>
             <li><a href="#opening-and-closing">Opening and closing</a></li>
@@ -154,7 +154,7 @@
         </div>
         <div class="ds-modal-footer">
           <button class="ds-btn ds-btn-text ds-modal-footer-start" type="button" data-close>Cancel</button>
-          <button class="ds-btn ds-btn-primary" type="button" data-close>Withdraw</button>
+          <button class="ds-btn ds-btn-destructive" type="button" data-close>Withdraw</button>
         </div>
       </dialog>
 
@@ -176,7 +176,7 @@
   &lt;/div&gt;
   &lt;div class="ds-modal-footer"&gt;
     &lt;button class="ds-btn ds-btn-text ds-modal-footer-start" type="button" data-close&gt;Cancel&lt;/button&gt;
-    &lt;button class="ds-btn ds-btn-primary" type="button" data-close&gt;Withdraw&lt;/button&gt;
+    &lt;button class="ds-btn ds-btn-destructive" type="button" data-close&gt;Withdraw&lt;/button&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
 <pre><code>// Open and close. Focus trap, focus restore, Escape and stacking are
@@ -247,7 +247,7 @@ document.getElementById('demo-confirm').close();</code></pre>
           <p>Keep scrolling: the header above and the footer below have not moved.</p>
           <p>Consent is recorded against your account, not against a browser, so it follows you
           between devices and is not lost when you clear cookies.</p>
-          <p>Data is retained for as long as the research programme runs, and deleted within thirty
+          <p>Data is retained for as long as the research program runs, and deleted within thirty
           days of it ending.</p>
           <p>Researchers receive the data under an agreement that forbids re-identification and
           forbids passing it on.</p>
@@ -300,9 +300,41 @@ document.getElementById('demo-confirm').close();</code></pre>
             that, and the region takes the dialog's title as its name so a screen reader says what
             it is. Adding it only while the body overflows means a short dialog has no empty tab
             stop, and a body that grows later, because a script added content or the window got
-            smaller, gets one without anyone changing the markup. The reference script is at the end
-            of this page.</dd>
+            smaller, gets one without anyone changing the markup. The script below does it.</dd>
           </dl>
+          <p>The script, all of it. Copy it into the page's own script; the design system ships no
+          modal script.</p>
+<pre><code>// The whole of it: showModal() to open, close() to close. Focus trap, focus
+// restore, Escape and stacking are the element's own doing, and the
+// scroll lock is in the stylesheet.
+document.querySelectorAll('[data-open]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.getElementById(btn.dataset.open).showModal();
+  });
+});
+
+// A body that scrolls but holds nothing focusable cannot be scrolled from
+// the keyboard in every browser. While it overflows, it becomes a tab stop
+// named by the dialog's title; when it fits, the tab stop goes away.
+document.querySelectorAll('.ds-modal-body').forEach(function (body) {
+  var dialog = body.closest('.ds-modal');
+  function sync() {
+    if (body.scrollHeight &gt; body.clientHeight) {
+      body.setAttribute('tabindex', '0');
+      body.setAttribute('role', 'region');
+      body.setAttribute('aria-labelledby', dialog.getAttribute('aria-labelledby'));
+    } else {
+      body.removeAttribute('tabindex');
+      body.removeAttribute('role');
+      body.removeAttribute('aria-labelledby');
+    }
+  }
+  new ResizeObserver(sync).observe(body);
+  new MutationObserver(sync).observe(body, { childList: true, subtree: true, characterData: true });
+});
+document.querySelectorAll('.ds-modal [data-close]').forEach(function (btn) {
+  btn.addEventListener('click', function () { btn.closest('.ds-modal').close(); });
+});</code></pre>
         </div>
       </details>
     </div>
@@ -335,14 +367,14 @@ document.getElementById('demo-confirm').close();</code></pre>
       <code>&lt;span class="is-sr-only"&gt;</code> that says what it closes, such as “Close figure
       viewer”. Do not use <code>title</code> or <code>aria-label</code> for this, because page
       translation tools skip attributes.</li>
-      <li><strong>Confirm the action, do not just ask.</strong> The primary button says what it
+      <li><strong>Confirm the action, do not just ask.</strong> The button that confirms says what it
       does — “Withdraw”, not “OK” — so a reader who has stopped reading the sentence still knows
       what they are about to press.</li>
     </ul>
   </div>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Modifiers</h2>
+  <h2 id="modifiers">Modifiers</h2>
 
   <!-- ───────── Wide ───────── -->
   <section>
@@ -403,7 +435,7 @@ document.getElementById('demo-confirm').close();</code></pre>
   </section>
 
 
-  <h2>Rules</h2>
+  <h2 id="rules">Rules</h2>
 
   <!-- ───────── When ───────── -->
   <section>
@@ -434,7 +466,7 @@ document.getElementById('demo-confirm').close();</code></pre>
           </tr>
           <tr>
             <td>—</td>
-            <td>Announcing something. arXiv does not interrupt readers to share news. The right components is the
+            <td>Announcing something. arXiv does not interrupt readers to share news. The right component is the
             <a href="messages.html#announcement-band">announcement band</a> which can be dismissed or ignored by users and does not interrupt them.</td>
           </tr>
         </tbody>
@@ -492,7 +524,7 @@ document.getElementById('demo-confirm').close();</code></pre>
   </section>
   </div>
 
-</div>
+</main>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —

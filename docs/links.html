@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -115,9 +113,11 @@
             <li><a href="#links-and-text-only-buttons">Links and text-only buttons</a></li>
             <li><a href="#linking-to-a-section">Linking to a section</a></li>
             <li><a href="#long-lists-of-links">Long lists of links</a></li>
+            <li><a href="#rules">Rules</a></li>
             <li><a href="#disabled-state">Disabled state</a></li>
             <li><a href="#lists-of-links">Lists of links</a></li>
             <li><a href="#visited-memory">Visited memory</a></li>
+            <li><a href="#spec">Spec</a></li>
             <li><a href="#tokens">Tokens</a></li>
           </ol>
         </nav>
@@ -131,8 +131,8 @@
   <section>
     <h2 id="the-inline-link">The inline link</h2>
     <p class="ds-section-desc">One link, four states. At rest it is Link Blue with a 1px underline set 2px
-    below the text. On hover the colour deepens and the underline thickens. Once followed it turns
-    Visited Purple. When reached by keyboard it shows a 3px Link Blue ring. The four colours are in the
+    below the text. On hover the color deepens and the underline thickens. Once followed it turns
+    Visited Purple. When reached by keyboard it shows a 3px Link Blue ring. The four colors are in the
     <a href="#tokens">tokens table</a>, read live from the stylesheet.</p>
 
     <div class="ds-card">
@@ -147,20 +147,17 @@
           <dl>
             <dt>&lt;a href&gt; inside .ds-page</dt>
             <dd>Every anchor with an <code>href</code> inside a <code>.ds-page</code> takes the link
-            treatment: the colour, the underline, and the hover, visited and focus states. There is no
+            treatment: the color, the underline, and the hover, visited and focus states. There is no
             class to add, and the dark values arrive through the same token flip as everything else.</dd>
           </dl>
         </div>
       </details>
     </div>
-    <div class="ds-alert ds-alert--error">
-      <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
-      <div class="ds-alert-content">
-        <p class="ds-alert-title">Inline body links must be underlined</p>
-        <p>Color contrast against body text is only 3.0:1 in light mode and 1.9:1 in dark mode — too marginal to rely on alone.
+    <div class="ds-note ds-note--essential">
+      <h3 class="ds-note-label">Inline body links must be underlined</h3>
+      <p>Color contrast against body text is only 3.0:1 in light mode and 1.9:1 in dark mode — too marginal to rely on alone.
         Underlines are mandatory for inline links per DESIGN-POLICIES.md and WCAG 1.4.1 (use of color).
         Standalone navigation links (header, footer, button-like surfaces) may omit the underline.</p>
-      </div>
     </div>
   </section>
 
@@ -193,7 +190,7 @@
           <dl>
             <dt>&lt;a href&gt;</dt>
             <dd>Goes to another page or another place on this one. Underlined, and takes the visited
-            colour once followed.</dd>
+            color once followed.</dd>
             <dt>.ds-btn.ds-btn-text</dt>
             <dd>Acts on this page. Plain Link Blue text with no underline and no visited state; the
             surrounding text sets its size. When it opens or closes something, add
@@ -217,7 +214,7 @@
         <summary><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><span class="is-sr-only">Note</span></summary>
         <p class="ds-marginalia-body ds-annotation">Meets accessibility guidelines <a href="https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html">WCAG 2.2 SC 2.5.3</a> Label in Name (Level A) and <a href="https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html">WCAG 2.2 SC 4.1.3</a> Status Messages (Level AA)</p>
       </details>
-      <h3>A section heading <button type="button" class="ds-permalink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to A section heading</span></button></h3>
+      <h3>A section heading <a class="ds-permalink" href="#linking-to-a-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Permalink<span class="is-sr-only"> to A section heading</span></a></h3>
       <p>The control as it appears on hover or focus. Here it is kept visible and copies nothing; the ones beside the headings on this page are live.</p>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
@@ -233,7 +230,7 @@
 
 &lt;!-- What renders --&gt;
 &lt;h2 id="dividers"&gt;Dividers
-  &lt;button type="button" class="ds-permalink"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to Dividers&lt;/span&gt;&lt;/button&gt;
+  &lt;a class="ds-permalink" href="#dividers"&gt;&lt;svg aria-hidden="true"&gt;…&lt;/svg&gt;Permalink&lt;span class="is-sr-only"&gt; to Dividers&lt;/span&gt;&lt;/a&gt;
 &lt;/h2&gt;</code></pre>
           <dl>
             <dt>&lt;section&gt; &gt; h2, h3</dt>
@@ -244,11 +241,11 @@
             <dd>Written into the HTML, by hand or by whatever builds the page. These docs use
             <code>verification/gen-anchors.py</code>, which makes it from the heading text.</dd>
             <dt>.ds-permalink</dt>
-            <dd>The control, a <code>&lt;button&gt;</code> with the link icon and the word “Permalink”,
-            that <code>anchors.js</code> adds to every section heading with an <code>id</code>. It shows
+            <dd>The control, a link to the section, <code>&lt;a href="#…"&gt;</code>, with the link icon and the word “Permalink”,
+            that <code>anchors.js</code> adds to every section heading with an <code>id</code>. With <code>copy.js</code> a press copies the link; without it, the link goes to the section, and the reader can copy the address from the address bar. It shows
             while the heading is hovered, while it has focus, and after a tap on a screen without hover.
             It stays in the tab order while it is hidden. After a copy, the link icon is a green tick
-            (<code>.ds-permalink-done</code>, added by the script) for 2 seconds, in the same space, so
+            (<code>.ds-copy-done</code>) for 2 seconds, in the same space, so
             the word does not move.</dd>
             <dt>.is-sr-only</dt>
             <dd>Completes the accessible name with the section: “Permalink to Dividers”. The name starts
@@ -335,7 +332,7 @@
             <dt>aria-current="page"</dt>
             <dd>On the link to the page the reader is on, in any <code>.ds-link-list</code>. It stays
             a link. The stylesheet sets it in <code>--ds-text</code> and bold, so it does not rest on
-            colour alone, and a screen reader announces it as the current page.</dd>
+            color alone, and a screen reader announces it as the current page.</dd>
             <dt>role="list"</dt>
             <dd>Keeps a list without bullets announced as a list: VoiceOver in Safari may not
             announce it otherwise.</dd>
@@ -367,9 +364,9 @@
       click handler.</li>
       <li><strong>Keep the underline in body text.</strong> Do not set
       <code>text-decoration: none</code> on an inline link. The underline is the only cue that
-      survives forced-colors mode and a reader who cannot see the colour difference. Only a
+      survives forced-colors mode and a reader who cannot see the color difference. Only a
       standalone link, such as one in navigation, may drop it.</li>
-      <li><strong>Keep the visited colour in content.</strong> Do not override <code>:visited</code>
+      <li><strong>Keep the visited color in content.</strong> Do not override <code>:visited</code>
       on links to papers, listings or references. Suppress it only where “where have I been”
       has no meaning, such as a breadcrumb or a menu.</li>
       <li><strong>Do not remove the focus ring.</strong> The stylesheet draws it on
@@ -390,7 +387,7 @@
   </div>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Rules</h2>
+  <h2 id="rules">Rules</h2>
 
   <!-- ───────── Disabled state ───────── -->
   <section>
@@ -399,8 +396,8 @@
     or pointer. <code>pointer-events: none</code> alone is not enough: it stops a mouse, but a
     keyboard can still follow the link. Add <code>role="link"</code> and
     <code>aria-disabled="true"</code>, so a screen reader still announces it as a link that is
-    unavailable, and the stylesheet colours it <code>--ds-text-disabled</code>
-    (<code>#aeaaa4</code>). The underline stays so it is still recognisable as a
+    unavailable, and the stylesheet colors it <code>--ds-text-disabled</code>
+    (<code>#aeaaa4</code>). The underline stays so it is still recognizable as a
     (currently unavailable) link. The disabled state falls below AA on contrast — WCAG exempts
     disabled controls from contrast requirements.</p>
   </section>
@@ -411,9 +408,9 @@
     <p>A list of author names, a navigation bar, a footer column: these are lists in which every item
     is a link, and none of them is underlined. The underline exists to tell a link apart from the
     text around it, and in a list of links there is no such text; underlining every item would add
-    visual noise and tell the reader nothing. WCAG asks for the underline only where colour alone
+    visual noise and tell the reader nothing. WCAG asks for the underline only where color alone
     would have to separate a link from ordinary text, which is the case for an inline link and not
-    for a list. The links keep Link Blue, the hover and focus states, and the visited colour where
+    for a list. The links keep Link Blue, the hover and focus states, and the visited color where
     it means something. Put <code>.ds-link-list</code> on the element that holds the list. A long
     list is set in columns, as <a href="#long-lists-of-links">Long lists of links</a> shows.</p>
     <div class="ds-card">
@@ -432,7 +429,7 @@
           <dl>
             <dt>.ds-link-list</dt>
             <dd>On the element that holds the list. The links drop the underline at rest and keep
-            Link Blue, the underline on hover, the focus ring and the visited colour.</dd>
+            Link Blue, the underline on hover, the focus ring and the visited color.</dd>
           </dl>
         </div>
       </details>
@@ -450,7 +447,7 @@
   </section>
 
 
-  <h2>Spec</h2>
+  <h2 id="spec">Spec</h2>
 
   <!-- ───────── Tokens, read live ───────── -->
   <section>
@@ -463,7 +460,7 @@
     <p class="ds-section-desc">Read at runtime from <code>design-system.css</code> via
     <code>getComputedStyle</code>, so the values and ratios are those of the mode that is active. Use
     the theme control in the header to see the other mode. Contrast is measured on
-    <code>--ds-surface</code>: 4.5:1 AA for the three text colours, and the 3:1 floor for the focus
+    <code>--ds-surface</code>: 4.5:1 AA for the three text colors, and the 3:1 floor for the focus
     ring, which is a non-text cue.</p>
     <div class="ds-table-scroll" role="region" aria-label="Link tokens" tabindex="0">
       <table class="ds-table token-table">
@@ -474,7 +471,7 @@
   </section>
   </div>
 
-</div>
+</main>
 
 <script>
   (function () {

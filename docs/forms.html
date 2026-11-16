@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -118,7 +116,9 @@
             <li><a href="#switch">Switch</a></li>
             <li><a href="#segmented-control">Segmented control</a></li>
             <li><a href="#tooltip">Tooltip</a></li>
+            <li><a href="#modifiers">Modifiers</a></li>
             <li><a href="#field-width">Field width</a></li>
+            <li><a href="#rules">Rules</a></li>
             <li><a href="#disposition-tiers">Disposition tiers</a></li>
             <li><a href="#layout">Layout</a></li>
           </ol>
@@ -167,6 +167,12 @@
           <textarea class="ds-input is-invalid" id="f-reason" required aria-required="true" aria-invalid="true" aria-describedby="f-reason-err"></textarea>
           <p class="field-error" id="f-reason-err">Give a reason. It appears publicly on the abstract page.</p>
         </div>
+        <fieldset class="ds-field">
+          <legend class="ds-label">License</legend>
+          <label class="ds-check"><input type="radio" name="f-license" value="cc-by" checked><span>CC BY 4.0</span></label>
+          <label class="ds-check"><input type="radio" name="f-license" value="cc-by-sa"><span>CC BY-SA 4.0</span></label>
+          <label class="ds-check"><input type="radio" name="f-license" value="arxiv"><span>arXiv non-exclusive license</span></label>
+        </fieldset>
 
         <label class="ds-check">
           <input type="checkbox" checked>
@@ -202,6 +208,12 @@
     &lt;label class="ds-label" for="f-orcid"&gt;ORCID iD&lt;span class="label-optional"&gt;(optional)&lt;/span&gt;&lt;/label&gt;
     &lt;input class="ds-input" id="f-orcid" type="text" placeholder="0000-0000-0000-0000"&gt;
   &lt;/div&gt;
+  &lt;fieldset class="ds-field"&gt;
+    &lt;legend class="ds-label"&gt;License&lt;/legend&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="radio" name="license" value="cc-by" checked&gt;&lt;span&gt;CC BY 4.0&lt;/span&gt;&lt;/label&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="radio" name="license" value="cc-by-sa"&gt;&lt;span&gt;CC BY-SA 4.0&lt;/span&gt;&lt;/label&gt;
+    &lt;label class="ds-check"&gt;&lt;input type="radio" name="license" value="arxiv"&gt;&lt;span&gt;arXiv non-exclusive license&lt;/span&gt;&lt;/label&gt;
+  &lt;/fieldset&gt;
   &lt;label class="ds-check"&gt;
     &lt;input type="checkbox" checked&gt;
     &lt;span&gt;Email me when the moderators respond&lt;/span&gt;
@@ -233,6 +245,8 @@
             <dd>Help text, after the control. Give it an <code>id</code> and name it in the
             control's <code>aria-describedby</code>. Say what good input looks like <em>before</em>
             someone gets it wrong.</dd>
+            <dt>&lt;fieldset&gt;, &lt;legend class="ds-label"&gt;</dt>
+            <dd>A group of controls that answer one question, such as a radio group: a <code>&lt;fieldset class="ds-field"&gt;</code> whose <code>&lt;legend&gt;</code> asks it, then one <code>.ds-check</code> per option, each with <code>type="radio"</code> and the same <code>name</code>. The base styles take away the browser's box. Keep the legend short: a screen reader may read it before every option.</dd>
             <dt>.ds-check</dt>
             <dd>A checkbox or radio row: a <code>&lt;label&gt;</code> holding the native control and
             a <code>&lt;span&gt;</code> with the text. The whole label is the target.</dd>
@@ -472,14 +486,15 @@
             No <code>aria-invalid</code>.</dd>
             <dt>.field-error, .field-warning, .field-info</dt>
             <dd>The message, <strong>after</strong> the control and after the hint when there is one, one class per tier. Needs an
-            <code>id</code> that the control's <code>aria-describedby</code> names. Keep it
-            <code>hidden</code> until it applies.</dd>
+            <code>id</code> that the control's <code>aria-describedby</code> names. Write the message, and add its
+            <code>id</code> to <code>aria-describedby</code>, only while it applies: a screen reader reads a
+            described message even when it is hidden.</dd>
             <dt>.field-messages</dt>
             <dd>An <code>&lt;ol&gt;</code> when one field has several problems. Each
             <code>&lt;li&gt;</code> takes its own tier class, and the list takes the <code>id</code>
             the control points at. The control takes the class of the worst tier in the list.</dd>
             <dt>[disabled]</dt>
-            <dd>On the control. The label and hint stay; the control greys out and leaves the tab
+            <dd>On the control. The label and hint stay; the control grays out and leaves the tab
             order. For a control that could explain why it is unavailable, prefer
             <code>aria-disabled="true"</code>, which looks the same; on a field, pair it with
             <code>readonly</code>, because <code>aria-disabled</code> alone does not stop typing. See
@@ -666,7 +681,7 @@
             has no accessible name.</dd>
             <dt>role="switch"</dt>
             <dd>On the checkbox input. With it a screen reader says “on” and “off”; without it,
-            “checkbox, checked”. The input stays a real checkbox, so the keyboard behaviour, the
+            “checkbox, checked”. The input stays a real checkbox, so the keyboard behavior, the
             state and the form value are native and it works with no JavaScript.</dd>
             <dt>.ds-switch-track, .ds-switch-thumb</dt>
             <dd>The drawn background and the thumb that moves across it. Both required, nested as shown,
@@ -675,9 +690,9 @@
             The Strong Border edge and the Repository Brown thumb stay the same in both states and
             both themes.</dd>
             <dt>.ds-switch-label</dt>
-            <dd>The visible text. Its colour follows the state; nothing else about it changes.</dd>
+            <dd>The visible text. Its color follows the state; nothing else about it changes.</dd>
             <dt>[disabled]</dt>
-            <dd>On the input. The background and the label grey out together.</dd>
+            <dd>On the input. The background and the label gray out together.</dd>
           </dl>
         </div>
       </details>
@@ -701,45 +716,45 @@
           <span class="state-label">Positive</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Positive example</legend>
-            <button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--positive is-active">Author</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-positive" value="author" checked>Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-positive" value="proxy">Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-positive" value="no">No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Neutral</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Neutral example</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-            <button aria-pressed="true" type="button" class="ds-seg-btn is-active">Proxy</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-neutral" value="author">Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-neutral" value="proxy" checked>Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-neutral" value="no">No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Negative</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Negative example</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-            <button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--negative is-active">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-negative" value="author">Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-negative" value="proxy">Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-negative" value="no" checked>No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Undecided</span>
           <fieldset class="ds-seg">
             <legend class="is-sr-only">Undecided example</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Author</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Proxy</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">No</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-undecided" value="author">Author</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-undecided" value="proxy">Proxy</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-undecided" value="no">No</label>
           </fieldset>
         </div>
         <div class="ds-btn-group ds-btn-group--stack">
           <span class="state-label">Interactive</span>
           <fieldset class="ds-seg" id="demo-seg">
             <legend class="is-sr-only">Demo decision</legend>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--positive">Approve</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn">Defer</button>
-            <button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative">Reject</button>
+            <label class="ds-seg-btn ds-seg-btn--positive"><input type="radio" name="seg-demo" value="approve">Approve</label>
+            <label class="ds-seg-btn"><input type="radio" name="seg-demo" value="defer">Defer</label>
+            <label class="ds-seg-btn ds-seg-btn--negative"><input type="radio" name="seg-demo" value="reject">Reject</label>
           </fieldset>
         </div>
       </div>
@@ -747,9 +762,9 @@
         <div class="ds-acc-body">
 <pre><code>&lt;fieldset class="ds-seg"&gt;
   &lt;legend class="is-sr-only"&gt;Positive example&lt;/legend&gt;
-  &lt;button aria-pressed="true" type="button" class="ds-seg-btn ds-seg-btn--positive is-active"&gt;Author&lt;/button&gt;
-  &lt;button aria-pressed="false" type="button" class="ds-seg-btn"&gt;Proxy&lt;/button&gt;
-  &lt;button aria-pressed="false" type="button" class="ds-seg-btn ds-seg-btn--negative"&gt;No&lt;/button&gt;
+  &lt;label class="ds-seg-btn ds-seg-btn--positive"&gt;&lt;input type="radio" name="decision" value="author" checked&gt;Author&lt;/label&gt;
+  &lt;label class="ds-seg-btn"&gt;&lt;input type="radio" name="decision" value="proxy"&gt;Proxy&lt;/label&gt;
+  &lt;label class="ds-seg-btn ds-seg-btn--negative"&gt;&lt;input type="radio" name="decision" value="no"&gt;No&lt;/label&gt;
 &lt;/fieldset&gt;</code></pre>
           <dl>
             <dt>.ds-seg</dt>
@@ -759,18 +774,13 @@
             three buttons and never says what they decide. Hide it with <code>.is-sr-only</code>
             when the surrounding text already says it; hide it, do not omit it.</dd>
             <dt>.ds-seg-btn</dt>
-            <dd>One option, a <code>&lt;button type="button"&gt;</code>. Buttons and not a radio
-            group on purpose: this is for a decision that acts when clicked. A choice that is part
-            of a form that gets submitted is a radio group.</dd>
+            <dd>One option: a <code>&lt;label&gt;</code> holding a native <code>&lt;input type="radio"&gt;</code>, all with one <code>name</code>. A radio group, drawn as joined buttons: the browser keeps one option selected, the arrow keys move between them, and it works without JavaScript. The form it belongs to saves the choice; where the choice acts at once, a script listens for the change.</dd>
             <dt>.ds-seg-btn--positive, .ds-seg-btn--negative</dt>
             <dd>Accept and reject; a bare <code>.ds-seg-btn</code> is informational. They take the success, info and error tokens and mean
-            the same thing those mean everywhere else; they are not free colours to pick from, and
+            the same thing those mean everywhere else; they are not free colors to pick from, and
             they flip for dark mode with the rest of the status palette.</dd>
-            <dt>.is-active</dt>
-            <dd>The selected option, with <code>aria-pressed="true"</code>; every other option
-            has <code>aria-pressed="false"</code>, so a screen reader says which one is selected.
-            Set by script when an option is clicked, and removed from the others; the stylesheet
-            gives the buttons no behaviour.</dd>
+            <dt>checked</dt>
+            <dd>On the selected option's radio. The stylesheet draws the selected option from it, so no class and no script are needed, and a screen reader says which one is selected. Undecided is no radio checked.</dd>
           </dl>
         </div>
       </details>
@@ -923,11 +933,12 @@
       <li><strong>Connect every hint and message to its control.</strong> Give each
       <code>.ds-hint</code> and each message an <code>id</code>, and list them in the control's
       <code>aria-describedby</code>. Without that a screen reader announces the field and nothing
-      else.</li>
+      else. A message is in the page, and named there, only while it applies; a hidden message that
+      is still named is read out on a valid field.</li>
       <li><strong>Use <code>aria-invalid</code> for errors only.</strong> Set
       <code>aria-invalid="true"</code> on a control in the error tier and remove it when the error
       clears. A warning is not invalid, and an info message is not a problem at all.</li>
-      <li><strong>Say the tier in words.</strong> Colour and a border are never the only signal
+      <li><strong>Say the tier in words.</strong> Color and a border are never the only signal
       (WCAG 1.4.1). The message says what is wrong or what changed, or includes a visually hidden
       “Error:” or “Warning:” prefix.</li>
       <li><strong>Validate on submit, then move focus.</strong> Do not tell someone they are wrong
@@ -947,7 +958,7 @@
   </div>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Modifiers</h2>
+  <h2 id="modifiers">Modifiers</h2>
 
   <!-- ───────── Field width ───────── -->
   <section>
@@ -990,12 +1001,6 @@
             <dd>Caps the field at 11rem, for a code, an identifier or a year.</dd>
             <dt>.ds-field--full</dt>
             <dd>Releases the cap, for something that genuinely wants the whole measure.</dd>
-            <dt>.ds-field--sm, .ds-field--md, .ds-field--lg</dt>
-            <dd>Internal tools only, in <code>internal-tools.css</code>: caps the control at
-            240px, 360px or 480px. Internal screens are dense enough to need field widths chosen
-            rather than inferred, so on an internal form a person picks the size instead of the
-            input <code>type</code> picking it. Use the pair above on public pages and this trio on
-            internal pages, and do not mix them on one form.</dd>
           </dl>
         </div>
       </details>
@@ -1003,7 +1008,7 @@
   </section>
 
 
-  <h2>Rules</h2>
+  <h2 id="rules">Rules</h2>
 
   <!-- ───────── Disposition tiers ───────── -->
   <section>
@@ -1015,7 +1020,7 @@
         <tbody>
           <tr><td><strong>Error</strong></td><td>No</td><td>Blocking. The value is not acceptable and must be corrected.</td></tr>
           <tr><td><strong>Warning</strong></td><td>Yes</td><td>Accepted, but the value may be suspect or cause issues later on.</td></tr>
-          <tr><td><strong>Info</strong></td><td>Yes</td><td>When used in validation it means arXiv changed the value automatically (for example, normalising whitespace). Nothing is wrong; the author is being informed.</td></tr>
+          <tr><td><strong>Info</strong></td><td>Yes</td><td>When used in validation it means arXiv changed the value automatically (for example, normalizing whitespace). Nothing is wrong; the author is being informed.</td></tr>
         </tbody>
       </table>
     </div>
@@ -1035,21 +1040,9 @@
   </section>
   </div>
 
-</div>
+</main>
 
 <script>
-  // Segmented control demo.
-  document.getElementById('demo-seg').addEventListener('click', function (e) {
-    var btn = e.target.closest('.ds-seg-btn');
-    if (!btn) return;
-    this.querySelectorAll('.ds-seg-btn').forEach(function (b) {
-      b.classList.remove('is-active');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('is-active');
-    btn.setAttribute('aria-pressed', 'true');
-  });
-
   // Nav dropdowns: close on outside click and Esc (enhancement only —
   // the <details> menus work without this).
   document.addEventListener('click', function (e) {

@@ -24,7 +24,7 @@ This repo is the source of truth for arXiv frontend design: tokens, components, 
 1. Read `docs/DESIGN-POLICIES.md` — hard constraints. Non-negotiable.
 2. Read `docs/brand.html` — the *why*; use it when no explicit rule covers your case.
 3. Use the routing table to read **only** what your task touches. Do not read the whole repo.
-4. **Find out whether the page belongs to a set**, such as arXiv's help pages, and what the set already uses: the opening band and the contents bar are on every page of a set or on none. If the brief does not say, ask; if you cannot ask, say in your final message what you assumed (`docs/organize-content.html#rules`).
+4. **Find out whether the page belongs to a set**, such as arXiv's help pages, and what the set already uses: the opening band and the TOC bar are on every page of a set or on none. If the brief does not say, ask; if you cannot ask, say in your final message what you assumed (`docs/organize-content.html#rules`).
 5. For each pattern page the table names, read its digest first: `docs/spec/<page>.md`, such as `docs/spec/filters.md` for `docs/filters.html`. Open the HTML page when the digest does not answer your question, or when the page has no digest yet (`docs/spec/index.md` lists those).
 
 ## Before you finish: review the layout
@@ -43,17 +43,17 @@ Render each page if you can: a headless browser can open it from a `file://` add
 
 | Building / touching | Read | Reuse |
 |---|---|---|
-| Anything with color | `docs/color-mapping.md`, `docs/colors.html` | tokens in that context's stylesheet |
+| Anything with color | `docs/colors.html` | tokens in that context's stylesheet |
 | Typography, text sizes | `docs/typography.html` | `--ds-font-*` |
 | Spacing, gaps, grouping | `docs/spacing.html` + DESIGN-POLICIES *Spacing* / *Layout* | `--ds-space-*` |
 | A line between sections, between items in a group, or between controls in a row | `docs/dividers.html` | a bare `<hr>`, no class; `.ds-divider--tight` between items in a group, `.ds-divider--flush` when the caller owns the spacing; in a row of controls, a `<span class="ds-divider ds-divider--vertical" aria-hidden="true">`; group with space first |
-| Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; `.ds-btn-compact` makes any of them smaller, for a small form; internal tools get their colour from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
+| Buttons | `docs/buttons.html` — both surfaces | bare `.ds-btn` is the secondary tier; `.ds-btn-primary`, `.ds-btn-text`, `.ds-btn-destructive`, `.ds-btn-icon`, `.on-tint` / `.on-dark` override it; `.ds-btn-compact` makes any of them smaller, for a small form; internal tools get their color from `.ds-internal` on a parent, never from a second class family. Internal-only: `[aria-pressed]` on an icon button, in tier 2 |
 | Alerts, status & feedback messages | `docs/alerts.html` — one page, both surfaces | `.ds-alert*` — never rebuild its chrome |
 | Organizing a page: start here | `docs/organize-content.html` *Evaluating user needs* | the four questions and their tests; its Rules are firm |
 | The page container and its widths, full-width bands, secondary zones, sidebars | `docs/layouts.html` | `.ds-sidebar` (always framed; accordions inside it need no class); `.ds-full` for an edge-to-edge band; the page ground is white; `.ds-full.ds-zone-secondary` is a tinted band for what introduces or supports the page |
-| A labelled aside — a requirement, guidance, or how a component differs in internal tools | `docs/messages.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
+| A labeled aside — a requirement, guidance, or how a component differs in internal tools | `docs/messages.html` *Notes* | `.ds-note` (+ `--essential` / `--internal`), `.ds-note-label`, `.ds-note-gotcha` — never a bespoke tinted box, and never an alert |
 | A one-sentence note beside a block (a demo, a figure) | `docs/layouts.html` *Marginalia* | `.ds-marginalia` inside a `.ds-card`, text in `.ds-marginalia-body.ds-annotation`; sits in the margin when there is one, folds to an info mark when there is not |
-| A table of contents for a long page | `docs/navigation.html` *TOC bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; write the `<ol>`: one link for each section heading, in the heading's exact words, to its `id`, so the list works without JavaScript; `toc.js` fills an empty `<ol>` as a fallback. Sticky by default; `.ds-toc-bar--scrolls` scrolls away. It hangs from the opening band, so the page has an introduction. A page in a set follows the set; whether the bar sticks is the builder's call |
+| A table of contents for a long page | `docs/navigation.html` *TOC bar* | `.ds-toc` in a `.ds-toc-bar`, plus `toc.js`; write the `<ol>`: one link for each section heading, in the heading's exact words, to its `id`, so the list works without JavaScript; `toc.js` fills an empty `<ol>` as a fallback. Sticky by default; `.ds-toc-bar--scrolls` scrolls away. It hangs from the opening band (`docs/layouts.html` *Secondary zones*). A page in a set follows the set |
 | Accordions, show more, popovers — anything hiding content behind a control | `docs/progressive-disclosure.html` | `.ds-acc*`, `.ds-popover`; `.ds-show-more` plus `show-more.js` once per page: write the whole text, the tail in a `.ds-show-more-tail` and the button `hidden`, and the script hides the tail and shows the button |
 | A tooltip: a short explanation on hover and focus | `docs/forms.html` *Tooltip* | `.ds-tooltip-host`, `.ds-tooltip`, `.ds-tooltip-body`, plus `tooltip.js` once per page (Escape, and keeping the bubble on screen); never position it yourself |
 | A modal, dialog, confirmation, or anything that takes over the page | `docs/modals.html` | `.ds-modal*` on a native `<dialog>` + `showModal()` — never a `<div role="dialog">`, never `show()` |
@@ -66,42 +66,36 @@ Render each page if you can: a headless browser can open it from a `file://` add
 | Tables (both surfaces), row selection, bulk actions, selecting items in a list | `docs/tables.html` | `.ds-table` (header row from `<thead>`), sortable headers, `.ds-bulk-count`, all tier 1; bulk-bar + selection rules documented there, for a table and for a list |
 | One record's details (label + value panel), any card | `docs/cards.html` (concept: `docs/layouts.html`) | `.ds-card`, `.ds-card--data`, `.ds-card-grid`; same markup on both surfaces; a card already mutes its paragraphs and trims its first and last child's margins, so do not set them again |
 | A search page: before and after a search | `docs/search.html` | the compact form on the page ground, a results heading (“Results for” and the query), `.ds-pagination--top` / `--bottom` as tinted bars around the results; what a result shows depends on what is searched |
-| A paper: in a list, or what to show first | `docs/papers.html` | the metadata hierarchy; `.ds-paper-list` of `.ds-paper` (title, `.ds-paper-when`, authors, abstract, `.ds-data-list`, `.ds-tag-list`); a full paper: `.ds-paper-identity`, `.ds-paper-versions`, `.ds-paper-cite` plus `cite.js` and `copy.js`, and a plain `<dl>` in a sidebar accordion; a withdrawn or removed paper: `.ds-paper-status` before the title and an error notice after it; never edit the author's text |
+| A paper: in a list, or what to show first | `docs/papers.html` | the metadata hierarchy; `.ds-paper-list` of `.ds-paper` (title, `.ds-paper-when`, authors, abstract, `.ds-data-list`, `.ds-tag-list`); a paper's own page (abstract or HTML) is generated from its template, never built by an agent: `papers.html` guides that template's developers, with `.ds-paper-identity`, `.ds-paper-versions`, `.ds-paper-cite` plus `cite.js` and `copy.js`, and a plain `<dl>` in a sidebar accordion; a withdrawn or removed paper: `.ds-paper-status` before the title and an error notice after it; never edit the author's text |
 | A very short form on one row, such as search | `docs/forms.html` *Compact form* | `.ds-form--compact` on the form, `.ds-input-group` to join the controls that make one input; labels may be `.is-sr-only`; messages, secondary options and the results' settings (order, results per page) go under the row; a link to another page takes the end of that line |
 | Forms, validation | `docs/forms.html` — one page, both surfaces | `.ds-field`/`.ds-label`/`.ds-input`/`.ds-hint`, `.is-invalid`, `.field-error`, `.ds-check`, `.ds-switch`, `.ds-seg` |
 | Code in text, or a code block | `docs/typography.html` *Code blocks and the copy button* | inline `<code>` for a short name or example in running text that a reader would not copy, such as a file name or a list of allowed characters; a block for code a reader copies or that runs over more than one line: plain `<pre><code>` plus `<script src="copy.js" defer>` once per page — the copy button is added for you; never hand-build one |
 | Showing which version of a paper is open, its other versions, or that it was withdrawn or removed | `docs/versions.html` | the version row (`.ds-date-row` with `.ds-version-list`) and the older-version warning; the Version history panel (`.ds-paper-versions`); `.ds-version--error` for a withdrawn paper or a removed version |
 | A long page that readers scan, return to or link into: a paper, a docs page, a help page | `docs/organize-content.html` *Long pages* | the longer the page, the more it needs navigation (a TOC bar, `docs/navigation.html`), secondary zones (`docs/layouts.html`) and a way back after a jump (`docs/references.html`) |
 | Citations, footnotes or cross-references in a long text | `docs/references.html` | a `.ds-popover` per citation cluster with Jump to reference; Back to your place after a jump |
-| Copy, Permalink, or any action whose result is not otherwise announced | `docs/action-feedback.html` | `copy.js` once per page: code blocks get their button; any other copy button takes `data-copy`, `data-copy-link` or `data-copy-from`, plus `data-copied` and a `.ds-copy-done` tick |
-| A site-wide announcement (the banner) | `templates/BANNER_ANNOUNCEMENTS.md`, then `docs/messages.html` *Announcement band* for wording | an entry in `templates/assets/json/announcements.json` — plain text and its links; never a per-app banner |
+| Copy, Permalink, or any action whose result is not otherwise announced | `docs/action-feedback.html` | `copy.js` once per page: code blocks get their button; any other copy button is written `hidden` and takes `data-copy`, `data-copy-link` or `data-copy-from`; a Permalink is a link to its `#id`, plus `data-copied` and a `.ds-copy-done` tick |
+| A site-wide announcement (the announcement band) | `templates/BANNER_ANNOUNCEMENTS.md`, then `docs/messages.html` *Announcement band* for wording | an entry in `templates/assets/json/announcements.json` — plain text and its links; never a per-app banner |
 | Site header / footer | `templates/` (the rendered header and footer), then `docs/header.html` and `docs/footer.html` for the parts you change | Start from the standard header and footer in `templates/` and change only what your context needs: the logo for the surface, the navigation, the tools, the account area — as `docs/header.html` shows for public pages and internal tools. The header at the top of every docs page is the docs site's own chrome, not a pattern: never copy it. The aspirational header (*The header unit*) comes with its search overlay and two scripts: `templates/assets/chrome/header.js` opens the overlay from the Search link, and `docs/header.js` folds the bar. `.ds-site-header` (+ `.ds-site-header-center` for one tool or filter that changes every page under the header, which folds last; `--light` only for pages outside the platform, such as these docs), `.ds-site-footer` — never hand-build chrome or draw logos from text |
 | Category / topic / state labels | `docs/tags.html` + DESIGN-POLICIES *Content and interaction* | `.ds-tag` (+ `--info` / `--success` / `--warning` / `--error`, `--keep-case`, `--rectangle`); category names are copied, never restyled |
-| Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; lock demo pages light; `.ds-theme-toggle` + `theme.js` in the head **undeferred** — both stylesheets mirror their dark block under `[data-theme]` |
+| Dark mode (status, mechanism, what flips) | `docs/dark-mode.html` | tokens flip automatically; never hand-pick dark values; `.ds-theme-toggle` + `theme.js` in the head **undeferred**; the theme is set on `<html>` for the whole page, never on part of it (a popover from the dark header takes dark mode from its script) — both stylesheets mirror their dark block under `:root[data-theme]` |
 | The blog, an event or campaign mini-site | `docs/outreach.html` + DESIGN-POLICIES *Contexts* | the public stylesheet, plus only the differences listed there |
 | Error messages, form help, instructions | `docs/STYLE.md`, then `docs/brand.html` for voice | existing wording — one name per thing, never a synonym |
 | Something with no pattern | nearest pattern above + `docs/brand.html` | derive from documented rationale; say so in comments |
 
 **Stylesheets are tiered.** `docs/design-system.css` is **tier 1** — the foundation and every component more than one surface could use. Everything loads it.
 
-`docs/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only (tables, metadata panels, info cards, the internal icon-button variants) plus the tokens whose values differ on that surface.
+`docs/internal-tools.css` is **tier 2 for internal tools**, and is *not* self-contained: an internal page loads tier 1 first, then this. It holds only what is internal-only, plus the tokens whose values differ on that surface.
 
-**The accent comes from a class, not from a file.** `.ds-internal` lives in tier 1 and re-points `--ds-accent` and the button colours to Access Lime for everything inside it. An internal page puts it on `<html>`; a page that shows both surfaces puts it on a wrapper.
+**The accent comes from a class, not from a file.** `.ds-internal` lives in tier 1 and re-points `--ds-accent` and the button colors to Access Lime for everything inside it. An internal page puts it on `<html>`; a page that shows both surfaces puts it on a wrapper. `docs/using.html` shows the head of each kind of page.
 
-**Two surfaces, and one name each.** They are the **public site** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The stylesheet is named for it too: `docs/internal-tools.css`.
-
-```html
-<html lang="en" class="ds-internal">
-<link rel="stylesheet" href="../design-system.css">
-<link rel="stylesheet" href="internal-tools.css">
-```
+**Two surfaces, and one name each.** They are **public pages** and **internal tools** — the wording DESIGN-POLICIES uses. Not `staff tools`, not `the staff surface`, not `the staff stylesheet`: one name per thing, and a second name for the same thing is how a reader ends up wondering whether it is a third thing. "Staff" stays for the people ("arXiv staff can see aggregate figures"). The stylesheet is named for it too: `docs/internal-tools.css`.
 
 A tier 2 file may re-point a tier 1 token where its surface needs a different value. It must never introduce a token that reuses a tier 1 name for a different meaning. **Never copy a component into tier 2 to restyle it** — if it needs to look different, that is a token, not a second copy.
 
 ## Rules agents break most (verified by our agent tests)
 
 - **Self-hosted everything.** Never load fonts, icons, or CSS from external URLs — no Google Fonts, no CDNs. If an existing page does it, that page is wrong, not the rule.
-- **Dark mode is live — build for it.** Take colors from tokens and pages flip on their own; never hand-pick a dark value. Text on an accent fill and specimen colors are the exceptions that stay fixed. Only lock a page light when it exists to show light-mode rendering. (`docs/dark-mode.html`.)
+- **Dark mode is live — build for it.** Take colors from tokens and pages flip on their own; never hand-pick a dark value. Text on an accent fill and specimen colors are the exceptions that stay fixed. (`docs/dark-mode.html`.)
 - **Two accent colors, never crossed.** Internal tools: Access Lime primary. Public pages: Open Blue primary. The accent tells people where they are. Outreach sites (blog, mini-sites) use the public design and may differ from it only in the ways listed in `docs/outreach.html`.
 - **Palette and type stack only.** No one-off hex values, no new font families.
 - **Reuse before rebuilding.** If a `.ds-` component exists for your need, use its documented construction — don't re-style its tokens onto new markup.
@@ -121,22 +115,11 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 
 - **Minimal diffs.** Never rewrite a file wholesale; never reorganize while editing.
 - **One fact, one home.** State each rule in exactly one file; link from everywhere else.
-- **Pattern pages are example-first**, and every component page has the same spine, in this order:
-
-  | Section | Holds |
-  |---|---|
-  | *(page header)* | `<h1>` and one or two sentences saying what the component is for |
-  | **Demo** | The rendered thing, first. A multi-part component may use several named topic sections here instead. |
-  | **Spec** | The class table — every class a builder can write, and what each does. |
-  | **Usage** | The markup, as a code block. |
-  | **Rules** | The constraints, and why each exists. |
-  | **Accessibility** | What has to be true, with the success criterion where there is one. |
-
-  Not every page needs every section, but a page must not use a *different name* for one of these — no "Behavior contract" for Rules, no "Color tokens" for Spec, no "Accessibility notes" for Accessibility. Rationale ≤ 3 sentences per rule.
+- **Pattern pages follow the shape of `docs/buttons.html`:** the `<h1>` and a sentence on what the component is for; a section for each part, with its demo first and its Relevant code under it; then, where the page needs them, **Modifiers**, the *Accessibility essentials* note, **Rules** and **Spec**, in that order and by those names, never another. `python3 verification/gen-digest.py --diagnose docs/<page>.html` lists what a page lacks. Rationale ≤ 3 sentences per rule.
 - **The design system is new and is not in use anywhere.** So the docs never describe their own history: no "previously", no "we dropped", no "this was renamed", no decision dates in the prose. A reader needs to know what the thing *is*. Decisions and their dates belong in `whiteboard/planning/`, and the git history is the changelog.
 - **One page shape, and one way of writing its headings.** `<title>` is `<Name> — arXiv Design System` and `<h1>` is `<Name>`, where the name matches the nav label; an internal-tools page adds `(internal tools)` to the title only, so headings stay clean and browser tabs stay unambiguous. Section headings are **sentence case** — they are read as prose, not as labels. No page has `Styles` or `Component Reference` in its name: the directory says which surface, and the filename says which component.
 - **Add prose only against evidence** — a failed agent test or a real misunderstanding, not speculation.
-- After changing a pattern, update its page; verify tokens/classes exist in the stylesheet, links resolve, HTML balances.
+- After changing a pattern, update its page; `check-policies.py` checks that every class the docs name exists and that every token is defined; check yourself that links resolve and the HTML balances.
 - After editing a docs page, run `python3 verification/gen-anchors.py` and `python3 verification/gen-digest.py`. The digests in `docs/spec/` are written from the pages, and `check-policies.py` fails when one is out of date.
 - The shared nav is four dropdowns (Components / Patterns / Mockups / Docs), hand-copied on every doc page and on `index.html`. Adding a component or pattern page means adding it to its menu on every page and a card to the home page's matching section; adding a mockup means adding it to the Mockups menu on every page AND to `whiteboard/mockups/index.html`. Script the sweep; never update just one page.
 - After changing either `design-system.css`, run `python3 verification/check-drift.py`. It guards the places where a value is written down twice — chiefly the mirrored dark palette. Any FAIL is yours to fix.

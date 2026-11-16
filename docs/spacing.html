@@ -14,7 +14,7 @@
 <header class="ds-site-header ds-site-header--light">
   <span class="ds-site-header-logo ds-tooltip-host"><a href="../index.html" aria-describedby="ds-logo-tip"><img class="ds-theme-light-only" src="assets/images/logos/logo_smileybones-ds.svg" alt="Smileybones"><img class="ds-theme-dark-only" src="assets/images/logos/logo_smileybones-ds-light.svg" alt="Smileybones"></a><span class="ds-tooltip" id="ds-logo-tip" role="tooltip"><span class="ds-tooltip-body">Smileybones Design System from arXiv</span></span></span>
   <nav class="ds-site-header-nav" aria-label="Design system">
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Components</summary>
       <div class="ds-site-header-menu">
         <span class="ds-panel-label">Foundations</span>
@@ -44,7 +44,7 @@
         <a href="tags.html">Tags</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Patterns</summary>
       <div class="ds-site-header-menu">
         <a href="action-feedback.html">Show that something was copied</a>
@@ -54,7 +54,7 @@
         <a href="search.html">The search experience</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Mockups</summary>
       <div class="ds-site-header-menu">
         <a href="../whiteboard/mockups/">All mockups</a>
@@ -71,15 +71,13 @@
         <a href="../whiteboard/mockups/internal/activity-dashboard/">Activity dashboard</a>
       </div>
     </details>
-    <details class="ds-site-header-dropdown">
+    <details name="docs-menus" class="ds-site-header-dropdown">
       <summary>Docs</summary>
       <div class="ds-site-header-menu">
         <a href="using.html">Using the system</a>
         <a href="doc.html?src=docs/DESIGN-POLICIES.md">Design policies</a>
-        <a href="doc.html?src=docs/accessibility-priorities.md">Accessibility priorities</a>
         <a href="doc.html?src=docs/STYLE.md">Writing style</a>
         <a href="brand.html">Brand &amp; vision</a>
-        <a href="doc.html?src=docs/color-mapping.md">Color spec</a>
         <a href="doc.html?src=README.md">About this repo</a>
       </div>
     </details>
@@ -90,7 +88,7 @@
   </div>
 </header>
 
-<div class="ds-container">
+<main id="main" class="ds-container">
 
   <div class="ds-full ds-zone-secondary">
   <header class="ds-page-header">
@@ -115,6 +113,7 @@
             <li><a href="#the-scale">The scale</a></li>
             <li><a href="#the-proximity-rule">The proximity rule</a></li>
             <li><a href="#the-layout-tokens">The layout tokens</a></li>
+            <li><a href="#rules">Rules</a></li>
             <li><a href="#stay-on-the-scale">Stay on the scale</a></li>
             <li><a href="#between-3-within">Do not mix within and between, aim for at least 2× difference</a></li>
             <li><a href="#you-do-not-need-a-border">You do not need a border, really</a></li>
@@ -259,15 +258,11 @@
       </div>
       <details class="ds-acc"><summary>Relevant code</summary>
         <div class="ds-acc-body">
-<pre><code>&lt;div class="ds-container"&gt;
+<pre><code>&lt;main class="ds-container"&gt;
   &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
   &lt;section&gt;…&lt;/section&gt;   &lt;!-- --ds-space-section above it, from the container --&gt;
   &lt;section&gt;…&lt;/section&gt;
-&lt;/div&gt;</code></pre>
-<pre><code>/* A page that needs a different width changes the one token;
-   it never adds a second width beside it. Here: a dense internal
-   tool with tables that cannot compress. */
-:root { --ds-width-page: 1080px; }</code></pre>
+&lt;/main&gt;</code></pre>
           <dl>
             <dt>--ds-width-page</dt>
             <dd>850px. The width of the content column, and the one width on a page: prose, tables,
@@ -289,7 +284,7 @@
   <div class="ds-note ds-note--essential">
     <h3 class="ds-note-label">Accessibility essentials</h3>
     <ul class="notes">
-      <li><strong>Do not shrink controls.</strong> Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbours.</li>
+      <li><strong>Do not shrink controls.</strong> Every button, link and other control keeps a hit area of at least 24 by 24 CSS pixels (WCAG 2.2, 2.5.8), however tight the gap between it and its neighbors.</li>
       <li><strong>Spacing survives zoom.</strong> The scale is in <code>rem</code>, so every gap grows with the reader's text size (WCAG 1.4.4). At 400% page zoom the page is only 320 pixels wide. Let the tokens do their work and never set a gap or a width that forces the page to scroll sideways.</li>
       <li><strong>Spacing is not structure.</strong> Proximity tells a sighted reader what belongs
       together, but a screen reader does not see it. Give groups a heading, a <code>&lt;fieldset&gt;</code> or a landmark, so the grouping is in the markup as well as visual.</li>
@@ -297,7 +292,7 @@
   </div>
 
   <div class="ds-full ds-zone-secondary">
-  <h2>Rules</h2>
+  <h2 id="rules">Rules</h2>
   <p>When using the expected HTML markup you do not need to know these rules. They are here for reference when you need to create something new or have a use case the design system does not cover.</p>
 
   <section>
@@ -349,7 +344,7 @@
   </section>
   </div>
 
-</div>
+</main>
 
 <script>
   // Nav dropdowns: close on outside click and Esc (enhancement only —

@@ -92,7 +92,7 @@ INT_SURF = ["canvas", "surface", "tint-warm", "surface-hover-strong"]
 INT_SPECIAL = [("text-on-accent", "accent"), ("text-on-accent", "accent-hover"), ("text-on-accent", "accent-active")]
 INT_STATUS = [("info-fg", "info-bg"), ("success-fg", "success-bg"), ("warning-fg", "warning-bg"), ("error-fg", "error-bg")]
 INT_NEVER = [("border-strong", "borders and arrows (3:1 non-text minimum)"),
-             ("text-disabled", "disabled text only"), ("danger-disabled-fg", "disabled destructive icon buttons only")]
+             ("text-disabled", "disabled text only")]
 
 def palettes():
     pub_text = PUB.read_text()
@@ -106,7 +106,7 @@ def palettes():
     # (tier 1, on a parent) re-pointing the accent on top of both.
     int_text = INT.read_text()
     raw_int_l = parse_block(int_text, ":root {")
-    raw_int_d = parse_block(int_text, "@media (prefers-color-scheme: dark)")
+    raw_int_d = parse_block(int_text, "@media screen and (prefers-color-scheme: dark)")
     ctx_l = parse_block(pub_text, "\n.ds-internal {")
     ctx_d = parse_block(pub_text, '[data-theme="dark"] .ds-internal {')
     int_l = resolve({**raw_pub_l, **raw_int_l, **ctx_l})

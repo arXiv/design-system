@@ -93,8 +93,9 @@ def rules(css):
 
 # ── 1. The dark mirror ──────────────────────────────────────────────
 # docs/design-system.css states the dark palette twice: once under
-# @media (prefers-color-scheme: dark) for the OS preference, once under
-# [data-theme="dark"] so a surface with its own toggle can force it.
+# @media screen and (prefers-color-scheme: dark) for the OS preference, once
+# under :is(:root, [popover])[data-theme="dark"] for the reader's own choice
+# and for a popover that opens from a dark row.
 # The second is a mirror of the first. If they disagree, one of the two
 # ways a reader can arrive at dark mode is now painting the wrong colors.
 def check_dark_mirror(css_path=None, label="public stylesheet"):
@@ -104,17 +105,12 @@ def check_dark_mirror(css_path=None, label="public stylesheet"):
     at all until 2026-09-16."""
     name = f"dark mirror matches the @media block ({label})"
     css = (css_path or PUBLIC_CSS).read_text()
-    media = matching_block(css, css.index("@media (prefers-color-scheme: dark)"))
-    expected = rules(
-        # The mirror is scopable: it drops the :root / html prefix so a
-        # data-theme island anywhere in the DOM picks up the same values.
-        media.replace(':root:not([data-theme="light"])', '[data-theme="dark"]').replace(
-            'html:not([data-theme="light"])', '[data-theme="dark"]'
-        )
-    )
+    at = css.index("@media screen and (prefers-color-scheme: dark)")
+    media = matching_block(css, at)
+    expected = rules(media.replace(':root:not([data-theme="light"])', ':is(:root, [popover])[data-theme="dark"]'))
     # The mirror is everything after the @media block that keys on
     # [data-theme="dark"] without a :not() guard.
-    after = css[css.index("@media (prefers-color-scheme: dark)") :]
+    after = css[at:]
     after = after[len(matching_block(after, 0)) :]
     # Exclude the OS-guarded rules specifically, not every rule containing a
     # :not(). A legitimate mirror rule has its own — .btn-icon:hover:not(:disabled)
@@ -142,45 +138,32 @@ def check_dark_mirror(css_path=None, label="public stylesheet"):
     ok(name)
 
 
-# ── 2. The light reset ──────────────────────────────────────────────
-# [data-theme="light"] puts the light values back inside a dark page, for a
-# demo or for content with no dark mode. It must reset every token the dark
-# mirror changes, each to its :root value. A token it misses keeps its dark
-# value there; a copy edited on one side only paints the old colour.
-def check_light_reset(css_path=None, label="public stylesheet"):
-    name = f"light block resets every dark token to its :root value ({label})"
-    css = re.sub(r"/\*.*?\*/", "", (css_path or PUBLIC_CSS).read_text(), flags=re.S)
+# ── 1b. Copies re-resolve inside a dark popover ─────────────────────
+# A popover from a dark row carries data-theme="dark" itself. A token declared
+# on :root as a copy of another (--ds-focus-ring: var(--ds-link)) is resolved
+# once, on :root, with the page's light value, and the popover inherits that.
+# So every such copy of a token the dark block changes is restated there.
+def check_copies_restated():
+    name = "every token that copies a dark token is restated in the dark block"
+    css = re.sub(r"/\*.*?\*/", "", PUBLIC_CSS.read_text(), flags=re.S)
+    root = dict(declarations(matching_block(css, css.index(":root {"))))
+    dark = dict(declarations(matching_block(css, css.index('[popover])[data-theme="dark"] {'))))
 
-    def tokens(marker):
-        block = matching_block(css, css.index(marker))
-        return {p: v for p, v in declarations(block) if p.startswith("--")}
+    def reads(value, seen=()):
+        out = set()
+        for ref in re.findall(r"var\((--[-\w]+)", value):
+            out.add(ref)
+            if ref in root and ref not in seen:
+                out |= reads(root[ref], seen + (ref,))
+        return out
 
-    def resolve(value, table, depth=0):
-        m = re.fullmatch(r"var\((--[-\w]+)\)", value)
-        if m and m.group(1) in table and depth < 10:
-            return resolve(table[m.group(1)], table, depth + 1)
-        return value.lower()
-
-    root = tokens(":root {")
-    dark = tokens('[data-theme="dark"] {')
-    if '[data-theme="light"] {' not in css:
-        return fail(name, f'no [data-theme="light"] block; dark changes {list(dark)}')
-    light = tokens('[data-theme="light"] {')
-    missing = [t for t in dark if t not in light]
-    differ = [
-        f"{t}: light {light[t]} vs :root {root.get(t)}"
-        for t in light
-        if resolve(light[t], {**root, **light}) != resolve(root.get(t, ""), root)
-    ]
-    if missing or differ:
-        return fail(
-            name,
-            f"dark tokens not reset: {missing or 'none'}; values that differ: {differ or 'none'}",
-        )
+    stale = sorted(t for t, v in root.items() if t.startswith("--") and t not in dark and reads(v) & set(dark))
+    if stale:
+        return fail(name, f"restate in the dark blocks: {stale}")
     ok(name)
 
 
-# ── 3. Consumers that bundle a copy of the stylesheet ───────────────
+# ── 2. Consumers that bundle a copy of the stylesheet ───────────────
 # The WordPress theme cannot link a stylesheet from another origin (and our
 # policy forbids it anyway), so it ships its own copy. That copy is allowed to
 # diverge: the blog is a separate project that extends the design system, more
@@ -219,7 +202,7 @@ def check_bundled_copy(consumer):
     )
 
 
-# ── 4. Shared .ds- names across surfaces ────────────────────────────
+# ── 3. Shared .ds- names across surfaces ────────────────────────────
 # Both stylesheets define some .ds- classes. Sharing a NAME is fine — the
 # same component wearing each surface's tokens. Sharing a name while the
 # constructions have drifted apart means an agent reading one page builds
@@ -257,7 +240,7 @@ def check_shared_names():
         ok(name + f" ({len(shared)} shared)")
 
 
-# ── 5. Tier 2 must not undo tier 1's dark values ────────────────────
+# ── 4. Tier 2 must not undo tier 1's dark values ────────────────────
 # internal-tools.css loads after design-system.css. A token it sets on :root
 # beats tier 1's [data-theme="dark"] value (same specificity, later in the
 # cascade), so with the theme toggle on dark that token keeps its light value.
@@ -282,7 +265,7 @@ def check_tier2_keeps_dark():
     ok(name)
 
 
-# ── 6. The docs' copy of the page-heading size ──────────────────────
+# ── 5. The docs' copy of the page-heading size ──────────────────────
 # papers.html shows a paper title inside a card, and a card would shrink a
 # heading to a card title, so docs.css gives .demo-h1 the h1's size again.
 # When the h1 changes in design-system.css, this copy has to change with it.
@@ -312,8 +295,7 @@ def main():
 
     check_dark_mirror(PUBLIC_CSS, "tier 1")
     check_dark_mirror(INTERNAL_CSS, "internal tools")
-    check_light_reset(PUBLIC_CSS, "tier 1")
-    check_light_reset(INTERNAL_CSS, "internal tools")
+    check_copies_restated()
     check_tier2_keeps_dark()
     check_bundled_copy(args.consumer)
     check_shared_names()

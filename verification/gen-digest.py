@@ -24,12 +24,14 @@ The shape it reads is buttons.html's (whiteboard/planning/DIGEST-PLAN.md has the
   .ds-note in the section -> guidance, under the note's label
   .ds-note--internal      -> the component's internal variant
   .ds-note--essential     -> rules, under the note's label
-  .ds-alert in the section itself -> a rule for that component
   sections under a plain "Rules" h2 -> rules, each under its own heading, with its paragraphs,
-                             lists and tables; under "Spec" -> left out (the stylesheet is the spec)
+                             lists and tables; under "Spec" -> the spec, the same way, code included
+An alert is never a rule: on these pages every alert is a demo, and a requirement is a note.
 A demo is not the contract. What sits in a demo (a .ds-card, a .page-demo or a <dialog>) is left
 out: a sample alert, a sample note, a sample table. So is everything else on the page.
 A section inside a section has its own entry and is not repeated in its parent's.
+--check also fails when a page's code blocks and its digest's do not match in number, so a
+code block the generator cannot place is never dropped without a word.
 
 The output is Markdown with a YAML header: the header is the contract as
 data, the body is the prose and markup. That is the format a renderer can
@@ -280,9 +282,17 @@ def md_table(table):
 def blocks(node, section):
     """The paragraphs, list items and tables of a rules section or a note, in page order."""
     out = []
-    for n in own(node, lambda n: n.tag in ("p", "li", "table")):
+    for n in own(node, lambda n: n.tag in ("p", "li", "table", "pre")):
         if n.has("ds-marginalia-body"):
             out.append(("p", md_inline(n)))   # a margin note says something about the rule, wherever it sits
+            continue
+        if n.tag == "pre":
+            acc = within(n, node, lambda p: p.tag == "details")
+            relevant = acc is not None and acc.find(lambda m: m.tag == "summary") is not None and \
+                squash(acc.find(lambda m: m.tag == "summary").text()).lower().startswith("relevant")
+            if relevant or (acc is None and not in_demo(n, section)):
+                raw = re.sub(r"</?span[^>]*>", "", n.inner_html())
+                out.append(("pre", html.unescape(re.sub(r"^\s*<code[^>]*>|</code>\s*$", "", raw)).strip("\n")))
             continue
         if in_demo(n, section) and not (n.tag == "table" and n.has("token-table")):
             continue
@@ -312,7 +322,7 @@ def flat(bl):
 def extract(path):
     root = parse(path)
     warn = []
-    page = {"page": path.name, "components": [], "rules": [], "rule_groups": []}
+    page = {"page": path.name, "components": [], "rules": [], "rule_groups": [], "spec_groups": []}
 
     title = root.find(lambda n: n.tag == "h1")
     page["title"] = squash(title.text()) if title else path.stem
@@ -320,8 +330,6 @@ def extract(path):
     if header:
         paras = [c for c in header.children if isinstance(c, Node) and c.tag == "p"]
         page["summary"] = " ".join(md_inline(p) for p in paras)
-        for alert in header.find_all(is_alert):
-            page["rules"].append(alert_text(alert))
     else:
         page["summary"] = ""
         warn.append("no .ds-page-header")
@@ -343,10 +351,10 @@ def extract(path):
         else:
             group = None
         if group and re.search(r"rule|spec", group, re.I):
-            if re.search(r"rule", group, re.I) and not re.search(r"token|spec", h.text(), re.I):
-                bl = blocks(section, section)
-                if bl:
-                    page["rule_groups"].append({"title": squash(h.text()), "blocks": bl})
+            bl = blocks(section, section)
+            if bl:
+                key = "spec_groups" if re.search(r"spec", group, re.I) or re.search(r"token|spec", h.text(), re.I) else "rule_groups"
+                page[key].append({"title": squash(h.text()), "blocks": bl})
             continue
         comp = {"id": h.attrs.get("id", ""), "title": squash(h.text()), "group": group,
                 "summary": "", "more": [], "classes": [], "markup": [], "examples": [], "tables": [],
@@ -455,10 +463,6 @@ def extract(path):
             bl = blocks(note, section)
             if bl:
                 comp["guidance"].append({"label": squash(label.text()) if label else "", "blocks": bl})
-        # an alert that stands in the section is a rule for that component; one in a demo is a sample
-        for alert in own(section, is_alert):
-            if not in_demo(alert, section):
-                comp["rules"].append(alert_text(alert))
         for note in own(section, lambda n: n.has("ds-marginalia")):
             body = note.find(lambda n: n.has("ds-marginalia-body"))
             if body:
@@ -521,6 +525,8 @@ def render_blocks(bl):
             out += [f"  - {k}" for k in v["kids"]]
             if i + 1 == len(bl) or bl[i + 1][0] != "li":
                 out.append("")
+        elif kind == "pre":
+            out += ["```", v, "```", ""]
         else:
             out += [v, ""]
     return out
@@ -604,6 +610,11 @@ def render(page):
             if g["title"]:
                 b += [f"### {g['title']}", ""]
             b += render_blocks(g["blocks"])
+    if page["spec_groups"]:
+        b += ["## Spec", ""]
+        for g in page["spec_groups"]:
+            b += [f"### {g['title']}", ""]
+            b += render_blocks(g["blocks"])
     while b and b[-1] == "":
         b.pop()
     return "\n".join(y) + "\n" + "\n".join(b) + "\n"
@@ -614,15 +625,33 @@ def render_index(pages, unreviewed):
            "One file per pattern page, generated from the page by `verification/gen-digest.py`.",
            "Each holds the classes, what they do and require, the markup to copy, and the rules.",
            "Nothing else. A digest exists only for a page that has had its review pass.", "",
-           "| Component | Digest | Summary |", "|---|---|---|"]
+           "| Component | Digest |", "|---|---|"]
     for p in pages:
-        out.append(f"| {p['title']} | [{p['page'].replace('.html', '.md')}]({p['page'].replace('.html', '.md')}) | {p['summary'][:160]} |")
+        out.append(f"| {p['title']} | [{p['page'].replace('.html', '.md')}]({p['page'].replace('.html', '.md')}) |")
     if unreviewed:
         out += ["", "## Not yet digested", "",
                 "These pages have not had their review pass. Read the page itself, and expect the shape to differ.", ""]
         for u in unreviewed:
             out.append(f"- {u}")
     return "\n".join(out) + "\n"
+
+
+def code_counts(path, text):
+    """How many code blocks the page shows a builder, and how many the digest carries. A block
+    in a demo is a sample, unless it is the demo's Relevant code."""
+    root = parse(path)
+    def counted(pre):
+        if pre.ancestor(lambda n: n.tag == "details" and n.has("ds-acc")
+                        and n.find(lambda m: m.tag == "summary") is not None
+                        and squash(n.find(lambda m: m.tag == "summary").text()).lower().startswith("relevant")) is not None:
+            return True
+        return pre.ancestor(lambda n: n.has("ds-card") or n.has("page-demo") or n.tag == "dialog") is None
+    titled_sections = [h.parent for h in root.find_all(section_title)]
+    shown = sum(1 for pre in root.find_all(lambda n: n.tag == "pre")
+                if counted(pre) and pre.ancestor(lambda n: any(n is t for t in titled_sections)) is not None)
+    body = text.split("\n---\n", 1)[1] if "\n---\n" in text else text
+    carried = len(re.findall(r"^```", body, flags=re.M)) // 2
+    return shown, carried
 
 
 # ── Main ────────────────────────────────────────────────────────────────
@@ -657,7 +686,16 @@ def main():
     unreviewed = [p for p in all_pages() if p not in reviewed()]
     outputs[SPEC / "index.md"] = render_index(pages, unreviewed)
     stale = [p for p, text in outputs.items() if not p.exists() or p.read_text(encoding="utf-8") != text]
+    short = []
+    for rel in reviewed():
+        shown, carried = code_counts(DOCS / rel, outputs[SPEC / Path(rel).with_suffix(".md").as_posix()])
+        if shown != carried:
+            short.append(f"{rel}: {shown} code blocks on the page, {carried} in the digest")
+    for line in short:
+        print("FAIL  " + line)
     if check:
+        if short:
+            return 1
         if stale:
             print("FAIL  digests stale: " + ", ".join(str(p.relative_to(REPO)) for p in stale) + " — run: python3 verification/gen-digest.py")
             return 1
@@ -668,7 +706,7 @@ def main():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(text, encoding="utf-8")
     print(f"{len(pages)} digest(s) written, {len(stale)} changed; {len(unreviewed)} pages not yet reviewed")
-    return 0
+    return 1 if short else 0
 
 
 if __name__ == "__main__":

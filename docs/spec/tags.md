@@ -31,11 +31,9 @@ components:
     summary: "A tag is a `<span>` unless it does something. A tag that goes somewhere is an `<a>` with an `href`, and a tag that acts on the page, such as a filter that switches on and off, is a `<button>`. Both take the same classes, both can be reached from the keyboard, and both show the focus ring. A `<span>` with a click handler does neither."
     classes:
       - name: "<a>, <button>"
-        does: "The element gives the tag its hover, its focus ring, and its keyboard behaviour; no class does. A link has an `href`; a button has `type=\"button\"`, and `aria-pressed` if it switches something on and off."
+        does: "The element gives the tag its hover, its focus ring, and its keyboard behavior; no class does. A link has an `href`; a button has `type=\"button\"`, and `aria-pressed` if it switches something on and off."
     notes:
       - "Meets accessibility guideline [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
-    rules:
-      - "A tag should not stand in for a link: A tag labels or categorizes the thing it sits on. A label might be a link when it makes sense, but it should never replace a text link as the better way to navigate off the page."
   - id: rectangular-labels
     title: "Rectangular labels"
     summary: "Rectangular instead of pill-shaped, this label variant is useful in very dense interfaces where you need to reclaim the extra left and right margin space."
@@ -56,8 +54,6 @@ components:
         does: "Required inside the remove control. The ✕ glyph is `aria-hidden`, so without this span the button announces as “button” and nothing more. Say what it removes: “Remove math.AP”."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)"
-    rules:
-      - "The remove control is the only editing the tag knows about: Anything else a person can do to a tag, such as drag it into a different order or pick it from a search box, belongs to the editor around the tags, not to `.ds-tag`. That editor is not documented yet."
 rules:
   - "**Use the element that matches the job.** Use tags for labels, not to replace content that should be buttons or links instead."
   - "**Uppercase is applied with CSS, never typed.** The underlying text then stays correct for copy-and-paste, in-page search, and screen readers."
@@ -77,7 +73,7 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 Size and shape remain the same across all levels, prominence comes from color and text. Reach for the quietest one that still does the job.
 
-Warm grey creates quiet labels that organize without claiming attention: counts, search filters, ancillary labels. Use for labels that are not particularly notable.
+Warm gray creates quiet labels that organize without claiming attention: counts, search filters, ancillary labels. Use for labels that are not particularly notable.
 
 Use these labels when “arXiv is speaking”. For example, arXiv's subject categories are a key part of our taxonomy and make sense in this color.
 
@@ -147,11 +143,9 @@ A tag is a `<span>` unless it does something. A tag that goes somewhere is an `<
 <button type="button" class="ds-tag" aria-pressed="true">Open access</button>
 ```
 
-- `<a>, <button>` — The element gives the tag its hover, its focus ring, and its keyboard behaviour; no class does. A link has an `href`; a button has `type="button"`, and `aria-pressed` if it switches something on and off.
+- `<a>, <button>` — The element gives the tag its hover, its focus ring, and its keyboard behavior; no class does. A link has an `href`; a button has `type="button"`, and `aria-pressed` if it switches something on and off.
 
 > Meets accessibility guideline [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
-
-**Rule.** A tag should not stand in for a link: A tag labels or categorizes the thing it sits on. A label might be a link when it makes sense, but it should never replace a text link as the better way to navigate off the page.
 
 ## Rectangular labels
 
@@ -200,8 +194,6 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 
 > Meets accessibility guidelines [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA) and [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A)
 
-**Rule.** The remove control is the only editing the tag knows about: Anything else a person can do to a tag, such as drag it into a different order or pick it from a search box, belongs to the editor around the tags, not to `.ds-tag`. That editor is not documented yet.
-
 ## Rules
 
 ### Accessibility essentials
@@ -211,3 +203,9 @@ Different parts of a tag can be combined, even doubled, for more complex uses. C
 - **Keep the case of every category and identifier.** Put `.ds-tag--keep-case` on any tag that holds a category name or an arXiv ID, so that `physics.optics` is never shown as `PHYSICS.OPTICS`.
 - **Color is never the only signal.** The label’s own words convey the meaning. A negative or removed state says so in text, not only in red.
 - **Name the remove control.** Every `.ds-tag-remove` holds a `<span class="is-sr-only">` that says what it removes, such as “Remove cs.AI”, and the ✕ glyph sits in a span with `aria-hidden="true"`. Do not use `title` or `aria-label` for this, because page translation tools skip attributes.
+
+## Spec
+
+### Contrast
+
+Read at runtime from `design-system.css` via `getComputedStyle` — swatches, hex codes, and contrast ratios reflect the currently active mode and cannot drift from the stylesheet. Use the theme control in the header to see the dark values. Contrast is text-on-background (target 4.5:1 AA).
