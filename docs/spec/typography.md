@@ -456,5 +456,6 @@ The sizes the stylesheet sets, in rem, with the pixel size at the browser's defa
 | Data card labels | 0.625rem · 10px, uppercase | 600 | Plex Sans Condensed |
 | Modal title | 1.125rem · 18px | 600 | Plex Sans |
 | Accordion label, modal body | 0.95rem · 15.2px | 600; 400 | Plex Sans |
-| Tables | 0.9375rem · 15px | 400 | Plex Sans |
+| Table cells (`.ds-table`) | 0.8125rem · 13px | 400 | Plex Sans |
+| A plain `<table>` in prose | 0.9375rem · 15px | 400 | Plex Sans |
 | Accordion body, TOC bar list | 0.85rem · 13.6px | 400 | Plex Sans |
