@@ -1195,6 +1195,7 @@ button:not(.is-failed) > svg.ds-copy-failed,
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
+  min-height: 24px;   /* the target is the whole <label>, as for .ds-check (WCAG 2.5.8) */
   cursor: pointer;
   user-select: none;
 }
@@ -1233,6 +1234,13 @@ button:not(.is-failed) > svg.ds-copy-failed,
 }
 .ds-switch input:disabled + .ds-switch-track { background: var(--ds-text-disabled); cursor: not-allowed; }
 .ds-switch:has(input:disabled) { cursor: not-allowed; color: var(--ds-text-disabled); }
+.ds-switch:has(input:disabled) .ds-switch-label { color: var(--ds-text-disabled); }
+/* High contrast: the system replaces the track's and thumb's fills, so both are drawn
+   with borders, which it keeps in the text colour. The thumb's place says on or off. */
+@media (forced-colors: active) {
+  .ds-switch-track { border: 1px solid; }
+  .ds-switch-thumb { top: 1px; left: 1px; box-sizing: border-box; border: 6.5px solid; }
+}
 
 /* Weight 600 in BOTH states, matching .ds-panel-label — the switch's label
    is a label like any other. It must not change weight with the state: a
@@ -1496,6 +1504,28 @@ button:not(.is-failed) > svg.ds-copy-failed,
 .ds-table--striped tbody tr:nth-child(even) > * { background: var(--ds-tint-warm); }
 .ds-table--striped tbody tr:hover > * { background: color-mix(in srgb, var(--ds-text) 7%, var(--ds-surface)); }
 .ds-table--striped tbody tr.is-selected > * { background: var(--ds-tint-accent); }
+
+/* SELECTING ITEMS IN A LIST — tables.html#selecting-items-in-a-list
+   A list item whose first child is a checkbox: the box in a column of its own at
+   the start, lined up with the item's first line, and everything else beside it.
+   Like a table row's, the box has no visible label to lend it a target, so it is 24px. */
+:where(li:has(> input[type="checkbox"]:first-child)) {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  column-gap: var(--ds-space-3);
+  align-items: start;
+}
+:where(li:has(> input[type="checkbox"]:first-child)) > * { grid-column: 2; }
+:where(li:has(> input[type="checkbox"]:first-child)) > input[type="checkbox"]:first-child {
+  grid-column: 1;
+  grid-row: 1 / span 12;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--ds-link);
+}
+/* The first thing beside the box keeps no space above it, so the two line up. */
+:where(li:has(> input[type="checkbox"]:first-child)) > input:first-child + label.is-sr-only + * { margin-top: 0; }
 
 /* A row-selection checkbox has no label to lend it a target, so it takes 24px. */
 .ds-table td:has(> input[type="checkbox"]),
@@ -1890,9 +1920,10 @@ textarea.ds-input { resize: vertical; min-height: 76px; line-height: 1.5; displa
 .ds-paper-list > .ds-paper + .ds-paper { margin-top: var(--ds-space-8); }
 .ds-paper > * { margin: 0; }
 .ds-paper > * + * { margin-top: var(--ds-space-2); }
-.ds-paper > :is(h2, h3, h4):first-child { margin: 0; font-size: 1.125rem; line-height: 1.35; }
-.ds-paper > :is(h2, h3, h4):first-child a { text-decoration: none; }
-.ds-paper > :is(h2, h3, h4):first-child a:hover { text-decoration: underline; }
+/* The title: the first heading, after a selection checkbox when the paper has one. */
+.ds-paper > :is(h2, h3, h4):first-of-type { margin: 0; font-size: 1.125rem; line-height: 1.35; }
+.ds-paper > :is(h2, h3, h4):first-of-type a { text-decoration: none; }
+.ds-paper > :is(h2, h3, h4):first-of-type a:hover { text-decoration: underline; }
 .ds-paper > .ds-paper-when {
   display: flex;
   flex-wrap: wrap;
@@ -3579,6 +3610,9 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   line-height: 1.8;
 }
 .ds-site-footer-links a { font-size: 0.8125rem; }
+/* The aspirational footer separates its links by space alone, as far apart as
+   two links with a dot between them. */
+.ds-site-footer-links:not(:has(.ds-site-footer-sep)) { column-gap: var(--ds-space-6); }
 .ds-site-footer .ds-site-footer-links a {
   color: var(--ds-text-muted);
   text-decoration: none;

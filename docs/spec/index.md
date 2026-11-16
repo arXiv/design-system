@@ -10,7 +10,7 @@ Nothing else. A digest exists only for a page that has had its review pass.
 | Alerts | [alerts.md](alerts.md) | Alerts are a critical component of successful user journeys. They go hand in hand with [form validation](forms.md) but have many uses beyond forms as well. Aler |
 | Tags | [tags.md](tags.md) | A small rounded element used for categories, search filters, states, and other small multiples. Tags remain the same across public and internal pages. |
 | Special messages | [messages.md](messages.md) | When arXiv has something special to say on the platform itself, this is how we do it. We are starting with a small announcement band above the header. Other opt |
-| Site footer | [footer.md](footer.md) | The universal arXiv public-page footer (`.ds-site-footer`). Note that the footer is still changing post-spinout as we figure out the best way to acknowledge maj |
+| Site footer | [footer.md](footer.md) | The universal arXiv public-page footer (`.ds-site-footer`): an acknowledgement line and the site's links. The transitional footer is the one in production now;  |
 | Forms & validation | [forms.md](forms.md) | The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mo |
 | Site header | [header.md](header.md) | The arXiv public-page header sets the tone for the entire platform: simple, straightforward, and utilitarian. It consists of a dark band with logo on the left,  |
 | Icons | [icons.md](icons.md) | The design system uses the Lucide icon set which is open source, community supported, and available for both commercial and non-commercial use under the ISC lic |

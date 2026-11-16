@@ -95,7 +95,7 @@ This component group is for moving through items one at a time, such as a modera
     <div class="ds-btn-group">
       <button class="ds-btn ds-btn-primary ds-btn-compact" type="button">Approve</button>
       <button class="ds-btn ds-btn-compact" type="button">Hold</button>
-      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button">Remove…</button>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"><svg aria-hidden="true">…</svg> Remove selected</button>
       <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
     </div>
     <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
