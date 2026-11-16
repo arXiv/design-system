@@ -51,7 +51,7 @@ components:
       - name: ".ds-page-header"
         does: "The page title, an `<h1>`, and its introduction, a plain paragraph with no class of its own. These docs pages mark theirs `.ds-section-desc`, which only flags a summary for the docs' digests; a product page leaves it out."
       - name: ".ds-zone-secondary"
-        does: "Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The color is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the color the class applies, which changes in dark mode."
+        does: "Goes on a `.ds-full` band and gives it the tinted ground and 32px of padding above and below, the same on every band. A band that opens or closes the page runs to the container’s edge. The color is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the color the class applies, which changes in dark mode."
       - name: ".ds-full"
         does: "On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the center column. It has no background of its own."
     rules:
@@ -180,7 +180,7 @@ The default page background is white, and that is the color that primary page co
 ```
 
 - `.ds-page-header` — The page title, an `<h1>`, and its introduction, a plain paragraph with no class of its own. These docs pages mark theirs `.ds-section-desc`, which only flags a summary for the docs' digests; a product page leaves it out.
-- `.ds-zone-secondary` — Goes on a `.ds-full` band and gives it the tinted ground and its own top and bottom padding. A band that opens or closes the page runs to the container’s edge. The color is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the color the class applies, which changes in dark mode.
+- `.ds-zone-secondary` — Goes on a `.ds-full` band and gives it the tinted ground and 32px of padding above and below, the same on every band. A band that opens or closes the page runs to the container’s edge. The color is the token `--ds-zone-secondary-bg`: the class is what you write, and the token is the color the class applies, which changes in dark mode.
 - `.ds-full` — On a direct child of `.ds-container`. The child runs across all three columns, from edge to edge, and its padding brings its own content back in line with the center column. It has no background of its own.
 
 **Rule.** **The opening band holds the page title, then an introduction or, on a data view, the filter for the whole page; never the title alone.** A title on its own in a tinted band looks unfinished and takes height the reader does not need. An introduction is one to five sentences. A page with neither has no opening band, unless its [set](organize-content.md#rules) uses one; then it needs an introduction.
