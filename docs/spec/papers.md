@@ -14,7 +14,7 @@ components:
       - name: ".ds-paper-list"
         does: "An `<ol>` of papers. Papers are separated by space, four times the space inside one, with no lines or boxes."
       - name: ".ds-paper"
-        does: "One paper, an `<li>`. Its first child is the title: a heading one level below the list's own heading, linked to the abstract page."
+        does: "One paper, an `<li>`. It opens with the title: a heading one level below the list's own heading, linked to the abstract page. In a list where papers can be selected, the checkbox and its label come first and the title follows ([Selecting items in a list](tables.md#selecting-items-in-a-list))."
       - name: ".ds-paper-when"
         does: "The format links (a `.ds-link-list`) and the dates (`.ds-date-row`) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates."
       - name: ".ds-link-list"
@@ -265,7 +265,7 @@ Search results and listings use the metadata hierarchy. We rely on proximity to 
 ```
 
 - `.ds-paper-list` — An `<ol>` of papers. Papers are separated by space, four times the space inside one, with no lines or boxes.
-- `.ds-paper` — One paper, an `<li>`. Its first child is the title: a heading one level below the list's own heading, linked to the abstract page.
+- `.ds-paper` — One paper, an `<li>`. It opens with the title: a heading one level below the list's own heading, linked to the abstract page. In a list where papers can be selected, the checkbox and its label come first and the title follows ([Selecting items in a list](tables.md#selecting-items-in-a-list)).
 - `.ds-paper-when` — The format links (a `.ds-link-list`) and the dates (`.ds-date-row`) on one line. The links come first in the markup, so a screen reader reaches them straight after the title; the dates are shown first. On a narrow screen the links wrap below the dates.
 - `.ds-link-list` — On a `<p>`: the authors. After eight names, Show more for the rest: every other name is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more).
 - `<p>` — The abstract excerpt and its Show more: the rest of the abstract is in the HTML, in a `.ds-show-more-tail`. See [Show more](progressive-disclosure.md#show-more).

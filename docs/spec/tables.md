@@ -58,6 +58,8 @@ components:
     title: "Bulk actions"
     summary: "Actions that apply to every selected row at once, as in moderation queues and ownership lists. The actions sit in the header bar of the card that holds a table with [row selection](#row-selection)."
     classes:
+      - name: "<form id=\"selection\">"
+        does: "One form for the selection, so selecting and acting work without JavaScript. The checkboxes and the actions join it with `form=\"selection\"`, because they sit apart, in the table and in the header bar, and the filter keeps its own form. Each action is a submit button with a `name` and `value`; the server answers a submit with nothing selected with an error message."
       - name: ".ds-card-bar"
         does: "The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar)."
       - name: ".ds-btn-group"
@@ -65,9 +67,11 @@ components:
       - name: ".ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact"
         does: "The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last."
       - name: ".ds-bulk-count"
-        does: "The selection count and the “Clear selection” link, beside the actions. Takes `role=\"status\"` so a change in the count is announced. The server renders the count and the actions' disabled state as they are when the page loads; the application's own script keeps them current as the reader selects. The design system ships no script for it."
-      - name: "<button disabled>"
-        does: "The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection."
+        does: "The selection count, beside the actions. Takes `role=\"status\"` so a change in the count is announced, and holds the count only. Only a script can keep it current, so it is written `hidden`, and the page's own script reveals it and updates it as the reader selects. The design system ships no script for it."
+      - name: "Clear selection"
+        does: "A text button after the count, never inside it: rewriting the count would remove a focused control and drop the reader's focus. A reset button for the selection form, so it clears the checkboxes with or without JavaScript. With JavaScript and nothing selected it stays in place with `aria-disabled=\"true\"`, not `disabled`, so after a press focus stays on it. It sits beside the actions, so it is the lesser choice next to a stronger one ([A row of actions among text](buttons.md#a-row-of-actions-among-text))."
+      - name: "disabled, set by the script"
+        does: "The actions are written enabled, so they work without JavaScript. With JavaScript, the page's script sets `disabled` on every action while nothing is selected, as shown. The buttons stay in place; the filter stays live, because it does not depend on a selection."
   - id: selecting-items-in-a-list
     title: "Selecting items in a list"
     summary: "The same selection when the set is a list rather than a table, such as a list of papers. Each item starts with its checkbox, lined up with the item's first line. The actions on the selection sit in the header bar above the list, as for a table. A control that acts on one item only sits at the end of that item, on the right."
@@ -228,6 +232,7 @@ Filters for a table go in the header bar of the card that holds it. For a demo, 
 Rows a reader can choose, one checkbox per row, so an action can apply to several at once.
 
 ```html
+<form id="selection" method="post" action="…"></form>   <!-- see Bulk actions -->
 <div class="ds-table-scroll" role="region" aria-label="Owned papers" tabindex="0">
   <table class="ds-table">
     <thead>
@@ -241,7 +246,7 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
     <tbody>
       <tr>
         <td>
-          <input type="checkbox" id="sel-1" checked>
+          <input type="checkbox" form="selection" name="paper" value="…" id="sel-1" checked>
           <label for="sel-1" class="is-sr-only">Select Asymptotic Expansions of Schrödinger Operators</label>
         </td>
         <td>2026-03-24</td>
@@ -250,7 +255,7 @@ Rows a reader can choose, one checkbox per row, so an action can apply to severa
       </tr>
       <tr>
         <td>
-          <input type="checkbox" id="sel-2" checked>
+          <input type="checkbox" form="selection" name="paper" value="…" id="sel-2" checked>
           <label for="sel-2" class="is-sr-only">Select Symmetry Breaking in Non-Abelian Gauge Theories</label>
         </td>
         <td>2025-07-09</td>
@@ -274,12 +279,14 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 
 ```html
 <div class="ds-card">
+  <form id="selection" method="post" action="…"></form>
   <div class="ds-card-bar">
     <div class="ds-btn-group">
-      <button class="ds-btn ds-btn-primary ds-btn-compact" type="button">Approve</button>
-      <button class="ds-btn ds-btn-compact" type="button">Hold</button>
-      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"><svg aria-hidden="true">…</svg> Remove selected</button>
-      <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+      <button class="ds-btn ds-btn-primary ds-btn-compact" type="submit" form="selection" name="action" value="approve">Approve</button>
+      <button class="ds-btn ds-btn-compact" type="submit" form="selection" name="action" value="hold">Hold</button>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="submit" form="selection" name="action" value="remove"><svg aria-hidden="true">…</svg> Remove selected</button>
+      <span class="ds-bulk-count" role="status" hidden>2 selected</span>
+      <button class="ds-btn ds-btn-text ds-btn-compact" type="reset" form="selection">Clear selection</button>
     </div>
     <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
       <label>Show <select class="ds-input" name="show">…</select></label>
@@ -292,26 +299,30 @@ Actions that apply to every selected row at once, as in moderation queues and ow
 </div>
 ```
 
+- `<form id="selection">` — One form for the selection, so selecting and acting work without JavaScript. The checkboxes and the actions join it with `form="selection"`, because they sit apart, in the table and in the header bar, and the filter keeps its own form. Each action is a submit button with a `name` and `value`; the server answers a submit with nothing selected with an error message.
 - `.ds-card-bar` — The header bar of the card that holds the table: the actions and the selection count at its start, and any filter at its end. It wraps on a narrow screen. See [Cards with a header bar](cards.md#cards-with-a-header-bar).
 - `.ds-btn-group` — The actions and the selection count, kept together.
 - `.ds-btn-primary, .ds-btn, .ds-btn-destructive, with .ds-btn-compact` — The actions, in the tiers documented on [Buttons](buttons.md), compact like every control in a header bar. The destructive action comes last.
-- `.ds-bulk-count` — The selection count and the “Clear selection” link, beside the actions. Takes `role="status"` so a change in the count is announced. The server renders the count and the actions' disabled state as they are when the page loads; the application's own script keeps them current as the reader selects. The design system ships no script for it.
+- `.ds-bulk-count` — The selection count, beside the actions. Takes `role="status"` so a change in the count is announced, and holds the count only. Only a script can keep it current, so it is written `hidden`, and the page's own script reveals it and updates it as the reader selects. The design system ships no script for it.
+- `Clear selection` — A text button after the count, never inside it: rewriting the count would remove a focused control and drop the reader's focus. A reset button for the selection form, so it clears the checkboxes with or without JavaScript. With JavaScript and nothing selected it stays in place with `aria-disabled="true"`, not `disabled`, so after a press focus stays on it. It sits beside the actions, so it is the lesser choice next to a stronger one ([A row of actions among text](buttons.md#a-row-of-actions-among-text)).
 
 **Nothing selected**
 
 ```html
+<form id="selection" method="post" action="…"></form>
 <div class="ds-card-bar">
   <div class="ds-btn-group">
-    <button class="ds-btn ds-btn-primary ds-btn-compact" type="button" disabled>Approve</button>
-    <button class="ds-btn ds-btn-compact" type="button" disabled>Hold</button>
-    <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button" disabled><svg aria-hidden="true">…</svg> Remove selected</button>
-    <span class="ds-bulk-count" role="status">0 selected</span>
+    <button class="ds-btn ds-btn-primary ds-btn-compact" type="submit" form="selection" name="action" value="approve">Approve</button>
+    <button class="ds-btn ds-btn-compact" type="submit" form="selection" name="action" value="hold">Hold</button>
+    <button class="ds-btn ds-btn-destructive ds-btn-compact" type="submit" form="selection" name="action" value="remove"><svg aria-hidden="true">…</svg> Remove selected</button>
+    <span class="ds-bulk-count" role="status" hidden>0 selected</span>
+    <button class="ds-btn ds-btn-text ds-btn-compact" type="reset" form="selection" aria-disabled="true">Clear selection</button>
   </div>
   <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">…</form>
 </div>
 ```
 
-- `<button disabled>` — The `disabled` attribute on every action button while nothing is selected. The buttons stay in place; the filter stays live, because it does not depend on a selection.
+- `disabled, set by the script` — The actions are written enabled, so they work without JavaScript. With JavaScript, the page's script sets `disabled` on every action while nothing is selected, as shown. The buttons stay in place; the filter stays live, because it does not depend on a selection.
 
 ## Selecting items in a list
 
@@ -321,19 +332,21 @@ The same selection when the set is a list rather than a table, such as a list of
 
 ```html
 <div class="ds-card">
+  <form id="selection" method="post" action="…"></form>
   <div class="ds-card-bar">
     <div class="ds-btn-group">
-      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"><svg aria-hidden="true">…</svg> Remove selected</button>
-      <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="submit" form="selection" name="action" value="remove"><svg aria-hidden="true">…</svg> Remove selected</button>
+      <span class="ds-bulk-count" role="status" hidden>2 selected</span>
+      <button class="ds-btn ds-btn-text ds-btn-compact" type="reset" form="selection">Clear selection</button>
     </div>
   </div>
   <ol class="ds-paper-list" aria-label="Saved papers">
     <li class="ds-paper">
-      <input type="checkbox" id="lists-1" checked><label for="lists-1" class="is-sr-only">Select LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</label>
+      <input type="checkbox" form="selection" name="paper" value="…" id="lists-1" checked><label for="lists-1" class="is-sr-only">Select LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</label>
       <h3><a href="https://arxiv.org/abs/2609.36857">LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</a></h3>
       <p class="ds-link-list">…the authors…</p>
       <div class="ds-btn-group ds-btn-group--end">
-        <button type="button" class="ds-btn ds-btn-text ds-btn-compact">Remove<span class="is-sr-only"> LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</span></button>
+        <button type="button" class="ds-btn ds-btn-compact">Remove<span class="is-sr-only"> LUMA: A CNN for Strong Gravitational Lens Searches in Astronomical Imaging</span></button>
       </div>
     </li>
     …

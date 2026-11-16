@@ -91,12 +91,14 @@ This component group is for moving through items one at a time, such as a modera
   <button class="ds-btn ds-btn-text" type="button"><span class="ds-pagination-label">Next</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </nav>
 <div class="ds-card">
+  <form id="selection" method="post" action="…"></form>
   <div class="ds-card-bar">
     <div class="ds-btn-group">
-      <button class="ds-btn ds-btn-primary ds-btn-compact" type="button">Approve</button>
-      <button class="ds-btn ds-btn-compact" type="button">Hold</button>
-      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="button"><svg aria-hidden="true">…</svg> Remove selected</button>
-      <span class="ds-bulk-count" role="status">2 selected · <a href="#">Clear selection</a></span>
+      <button class="ds-btn ds-btn-primary ds-btn-compact" type="submit" form="selection" name="action" value="approve">Approve</button>
+      <button class="ds-btn ds-btn-compact" type="submit" form="selection" name="action" value="hold">Hold</button>
+      <button class="ds-btn ds-btn-destructive ds-btn-compact" type="submit" form="selection" name="action" value="remove"><svg aria-hidden="true">…</svg> Remove selected</button>
+      <span class="ds-bulk-count" role="status" hidden>2 selected</span>
+      <button class="ds-btn ds-btn-text ds-btn-compact" type="reset" form="selection">Clear selection</button>
     </div>
     <form class="ds-form--compact" method="get" action="…" aria-label="Filter papers">
       <label>Show <select class="ds-input" name="show">…</select></label>
