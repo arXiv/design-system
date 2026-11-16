@@ -97,13 +97,15 @@ arXiv's design system contains four alerts that align with user expectations and
 Some messages are meant to be short and do not need lead-in text. Alerts can also be just a single line.
 
 ```html
-<div class="ds-alert ds-alert--success" role="status">
-  <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="m9 12 2 2 4-4"/>
-  </svg>
-  <div class="ds-alert-content">
-    <p>Link copied to clipboard.</p>
+<div role="status">   <!-- in the page from the start; the script puts the alert into it -->
+  <div class="ds-alert ds-alert--success">
+    <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="m9 12 2 2 4-4"/>
+    </svg>
+    <div class="ds-alert-content">
+      <p>Link copied to clipboard.</p>
+    </div>
   </div>
 </div>
 ```
@@ -115,7 +117,7 @@ Some messages are meant to be short and do not need lead-in text. Alerts can als
 The dismiss control, fully documented on [Buttons](buttons.md#the-close-control), should be used for non-essential messages that the user can ignore without impeding progress. Critical form errors should never be dismissible.
 
 ```html
-<div class="ds-alert" role="status">
+<div class="ds-alert">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <circle cx="12" cy="12" r="10"/>
     <path d="M12 16v-4"/>

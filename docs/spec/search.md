@@ -111,7 +111,7 @@ After a search, the form stays where it was, on the page ground. A heading names
   </form>
   <section aria-labelledby="results">
     <h2 id="results">Results for “lensing”</h2>
-    <div class="ds-alert" role="status">
+    <div class="ds-alert">
       <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
       <div class="ds-alert-content"><p>Search shows the first 10,000 results. To see the rest, narrow the search.</p></div>
     </div>

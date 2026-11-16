@@ -90,7 +90,7 @@ The same card on a public page and in an internal tool. Nothing in its markup ch
 <!-- The component: nothing in it knows which mode it is in -->
 <div class="ds-card">
   <p>Body text on a raised surface, with <a href="…">an inline link</a>.</p>
-  <div class="ds-alert ds-alert--success" role="status">…</div>
+  <div class="ds-alert ds-alert--success">…</div>
   <div class="ds-btn-group">
     <button class="ds-btn ds-btn-primary" type="button">Primary</button>
     <button class="ds-btn" type="button">Secondary</button>
