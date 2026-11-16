@@ -183,8 +183,9 @@
           <dl>
             <dt>.ds-alert</dt>
             <dd>The container. On its own it is the info state; add a state class for success,
-            warning or error. An alert that appears after the page has loaded takes <code>role="status"</code>
-            for success and info, <code>role="alert"</code> for warning and error. An alert that is in the
+            warning or error. An alert that appears after the page has loaded goes into a container that is
+            already in the page, with <code>role="status"</code> for success and info and
+            <code>role="alert"</code> for warning and error. An alert that is in the
             page as it loads, such as the warning above, takes no role, and neither does one that focus
             moves to, such as a <a href="forms.html#alerts-in-forms">form's error summary</a>: focus
             already makes it heard.</dd>
@@ -222,6 +223,10 @@
       info alert: it is polite, and a screen reader announces it when idle. Put
       <code>role="alert"</code> on a warning or error alert: it is assertive, and a screen reader
       announces it immediately. Do not use <code>role="alert"</code> for anything that can wait.</li>
+      <li><strong>Put the role on a container that is already in the page.</strong> A screen reader
+      announces a change inside a region it already knows; a new element that arrives with its role and
+      its text together is often not announced. Write an empty container with the role where the alert
+      will appear, and put the alert into it when the action is done.</li>
       <li><strong>No role on an alert that is in the page as it loads, or that focus moves to.</strong> A
       role announces a change, and a screen reader does not reliably announce an alert that was there
       from the start, such as the warning on an older version of a paper. Put that alert where the reader
