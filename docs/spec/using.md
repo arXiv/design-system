@@ -51,7 +51,7 @@ rules:
   - "**`theme.js` is not deferred.** The script is deliberately not deferred because it writes the reader's theme onto `<html>` before the first paint. If we added `defer` then the page will render light first, and then flip if the reader chose dark mode in their system. Many readers choose dark mode because light mode is less legible or hurts their eyes and we want to honor that."
   - "**Every section starts with a heading.** Headings provide important navigation structure for screen reader users so a `<section>` without one is hard to find."
   - "**Naming sections (optional).** A name on the section itself (`aria-labelledby` pointing at the heading) is optional, but useful for a section that a reader would want to jump to directly. Use your discretion. Every named section becomes an entry in the landmark list."
-  - "**Write the name arXiv so that screen readers say “archive”.** A screen reader reads the Xiv in our name as a Roman numeral. We can take a few steps to fix this: For an image like the logo, add alt text that says “archive”. Where the name is typed this markup will be pronounced correctly: `<span aria-hidden=\"true\">arXiv</span><span class=\"is-sr-only\">archive</span>`. When arXiv's name appears in a paragraph of text that is likely to be copied (ie: citations) we unfortunately must keep it as plain text and live with the screen reader mis-pronunciation. This is because the hidden word is copied along with the visible one and would break every pasted citation."
+  - "**Write the name arXiv so that screen readers say “archive”.** A screen reader reads the Xiv in our name as a Roman numeral. We can take a few steps to fix this:"
   - "For an image like the logo, add alt text that says “archive”."
   - "Where the name is typed this markup will be pronounced correctly: `<span aria-hidden=\"true\">arXiv</span><span class=\"is-sr-only\">archive</span>`."
   - "When arXiv's name appears in a paragraph of text that is likely to be copied (ie: citations) we unfortunately must keep it as plain text and live with the screen reader mis-pronunciation. This is because the hidden word is copied along with the visible one and would break every pasted citation."
@@ -86,11 +86,41 @@ Every core file you need to include in your repo, and in what order.
 
 This is all you need for a public arXiv page. Copy it and follow the comments.
 
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your page &mdash; arXiv</title>
+
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="design-system.css">
+  <script src="theme.js"></script>
+</head>
+
+<body class="ds-page">
+  <div class="ds-container">
+    <!-- add section elements as direct children here -->
+  </div>
+</body>
+</html>
+```
+
 **Rule.** **`class="ds-page"` on the body is not optional.** A page without it gets components on unstyled ground. The foundation hangs on the class rather than on `<body>` so that a page which is not on the design system can link the stylesheet, for its header and footer, without its own body styles being overwritten.
 
 ## Internal tools  (Building on the foundation)
 
 When building internal tools like arXiv Check or Admin Console pages, one class is added to `<html>` and a tier 2 stylesheet is added to the `<head>` section, in this order.
+
+```html
+<html lang="en" class="ds-internal">
+…
+<link rel="stylesheet" href="../fonts.css">
+<link rel="stylesheet" href="../design-system.css">    <!-- tier 1 -->
+<link rel="stylesheet" href="internal-tools.css">      <!-- tier 2 -->
+<script src="../theme.js"></script>
+```
 
 **Rule.** internal-tools.css does not work on its own: `internal-tools.css` is **not** a standalone stylesheet. It is a lightweight file that holds only the special styles or overrides that are specific to internal tools. Load it on its own and you get no foundation at all.
 
@@ -107,6 +137,13 @@ When building internal tools like arXiv Check or Admin Console pages, one class 
 ## Container options  (Building on the foundation)
 
 `.ds-container` is a grid with various options for managing section layout.
+
+```html
+<div class="ds-container">
+<section>…</section>                   <!-- content track -->
+<section class="ds-full ds-zone-secondary">…</section>  <!-- edge to edge, tinted -->
+</div>
+```
 
 **Rule.** **Sections.** The container's direct children are `<section>` elements, and the container sets the gap between them. Do not add top or bottom margins to sections, the container already does.
 
@@ -126,10 +163,15 @@ Most areas of a page can be built by putting existing components together. Look 
 
 ## Rules
 
+### Accessibility essentials
+
 - **`theme.js` is not deferred.** The script is deliberately not deferred because it writes the reader's theme onto `<html>` before the first paint. If we added `defer` then the page will render light first, and then flip if the reader chose dark mode in their system. Many readers choose dark mode because light mode is less legible or hurts their eyes and we want to honor that.
+
+### Accessibility essentials
+
 - **Every section starts with a heading.** Headings provide important navigation structure for screen reader users so a `<section>` without one is hard to find.
 - **Naming sections (optional).** A name on the section itself (`aria-labelledby` pointing at the heading) is optional, but useful for a section that a reader would want to jump to directly. Use your discretion. Every named section becomes an entry in the landmark list.
-- **Write the name arXiv so that screen readers say “archive”.** A screen reader reads the Xiv in our name as a Roman numeral. We can take a few steps to fix this: For an image like the logo, add alt text that says “archive”. Where the name is typed this markup will be pronounced correctly: `<span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span>`. When arXiv's name appears in a paragraph of text that is likely to be copied (ie: citations) we unfortunately must keep it as plain text and live with the screen reader mis-pronunciation. This is because the hidden word is copied along with the visible one and would break every pasted citation.
-- For an image like the logo, add alt text that says “archive”.
-- Where the name is typed this markup will be pronounced correctly: `<span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span>`.
-- When arXiv's name appears in a paragraph of text that is likely to be copied (ie: citations) we unfortunately must keep it as plain text and live with the screen reader mis-pronunciation. This is because the hidden word is copied along with the visible one and would break every pasted citation.
+- **Write the name arXiv so that screen readers say “archive”.** A screen reader reads the Xiv in our name as a Roman numeral. We can take a few steps to fix this:
+  - For an image like the logo, add alt text that says “archive”.
+  - Where the name is typed this markup will be pronounced correctly: `<span aria-hidden="true">arXiv</span><span class="is-sr-only">archive</span>`.
+  - When arXiv's name appears in a paragraph of text that is likely to be copied (ie: citations) we unfortunately must keep it as plain text and live with the screen reader mis-pronunciation. This is because the hidden word is copied along with the visible one and would break every pasted citation.

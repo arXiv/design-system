@@ -101,6 +101,16 @@ The announcement band is minimal but gets a lot of attention. Use sparingly to m
 - `.ds-announcement-sep` — Between the two links: an empty `<span aria-hidden="true">` with a no-break space on each side, drawn as a line. The spaces keep it from starting or ending a line, which a typed "|" cannot do.
 - `.ds-close` — The dismiss control, last inside the band; the band positions it at the right edge. Remembering the dismissal is the host’s job.
 
+**Tone**
+
+Announcement band messages must be concise and actionable, with a short link label. "Donate today" works because it is short and to the point. These examples do not work: "Click here" is not informative, and "Learn more about donating to arXiv" is too long.
+
+- **One sentence, and it states a fact.** What is happening, and when if there is a when: "Submissions pause on 1 January for maintenance." The link is where the reader goes for the rest.
+- **The link label is a verb and a noun.** It says what the reader will get: "Support arXiv", "View roles", "See what is new". It never repeats the sentence.
+- **arXiv’s voice.** Plain and direct. No exclamation marks, no "we are excited", no countdowns.
+- **Time-bound.** Every announcement has an end date, set when it goes up. A band that is always there is furniture, and people stop reading it.
+- **One at a time.** Two announcements compete and both lose. If two things must be said, the more urgent one goes up first.
+
 > Alert vs announcement? An alert belongs to the page’s content and is specific to that user’s journey. The announcement belongs to the site and is for all users.
 
 ## Notes
@@ -120,8 +130,6 @@ A box in the flow of a page that names its own register before the reader starts
 - `.ds-note--essential` — The blue register: a requirement. It uses the info status colours.
 - `.ds-note--internal` — The lime register: how the component differs in internal tools.
 - `.ds-note-gotcha` — A ruled-off warning at the foot of the note, on a `<p>` whose first child is a `<strong>` lead.
-
-**Internal variant.** Lime. How this component or rule differs in internal tools, shown in the section it belongs to rather than on a separate page. This is the one place a public page may show Access Lime, because here the internal surface is the subject rather than the accent.
 
 **Rule.** **Three registers, and the set is closed on purpose.** Adding one is three custom properties — `--ds-note-tint`, `--ds-note-line`, `--ds-note-mark` — but a colour only earns a register when it has a job. There is no background-colour utility class, because a tint that a page picks freely teaches the reader nothing.
 
@@ -161,6 +169,8 @@ Open Blue is our default banner color, and should be overridden sparingly. For m
 </div>
 ```
 
+- `.ds-announcement--maintenance` — For service notices: maintenance windows, outages, deadlines. The band takes the header’s dark ground in both themes, with light text and the light link blue.
+
 ```html
 <div class="ds-announcement ds-announcement--event" role="region" aria-label="Announcement">
   <span class="ds-announcement-text"><img class="ds-announcement-glyph" src="assets/images/bones/icon_small-smileybones.svg" alt="">We are celebrating 35 years of open science!</span>
@@ -175,12 +185,16 @@ Open Blue is our default banner color, and should be overridden sparingly. For m
 </div>
 ```
 
-- `.ds-announcement--maintenance` — For service notices: maintenance windows, outages, deadlines. The band takes the header’s dark ground in both themes, with light text and the light link blue.
 - `.ds-announcement--event` — For milestones and celebrations. The band takes the smileybones yellow in both themes, with fixed brown text; the link is the darker link blue, because the lighter one does not reach 4.5:1 on yellow.
 
 ## Rules
 
+### Accessibility essentials
+
 - Easy to get wrong: A note can include a ruled-off warning at its foot with `.ds-note-gotcha`. Use it for the mistake the rule keeps being broken by, not as a second paragraph.
+
+### Accessibility essentials
+
 - **Give the band a name.** Keep `role="region"` and `aria-label="Announcement"` on it. That is how a screen reader user finds the band in the page’s landmarks, and how they skip it once they have read it.
 - **Do not make it a live region.** The band is part of the page as it loads, not a change that happens later. `role="alert"` or `aria-live` would make every page announce it aloud, on every visit, before anything else.
 - **The sentence conveys the meaning.** The icon is hidden from assistive technology (`aria-hidden="true"`, or an empty `alt`), and the band’s colour says nothing on its own. Read the sentence without the icon and the colour; it must still make sense.

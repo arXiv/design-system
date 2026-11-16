@@ -8,7 +8,7 @@ components:
     title: "The page container"
     summary: "Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Full-width bands](#full-width-bands)."
     notes:
-      - "Research on optimal line width:[Dyson and Haselgrove (2001)](https://doi.org/10.1006/ijhc.2001.0458)[Nanavati and Bias (2005)](https://journals.uc.edu/index.php/vl/article/view/5765)"
+      - "Research on optimal line width: [Dyson and Haselgrove (2001)](https://doi.org/10.1006/ijhc.2001.0458) [Nanavati and Bias (2005)](https://journals.uc.edu/index.php/vl/article/view/5765)"
     rules:
       - "**One width per page.** Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width."
       - "**Long-form reading is narrower.** For an abstract, a full HTML paper, or wherever we need to support an optimal reading experience, we target a line width of about 65 characters. This is narrower than the standard content width."
@@ -84,7 +84,11 @@ Load `design-system.css`; internal tools also load `internal-tools.css` and put
 
 Every page sits in `.ds-container`. It centres the content in a column at the standard reading width, 850px at most, with a margin of at least 24px on each side. For a band that runs edge to edge, see [Full-width bands](#full-width-bands).
 
-> Research on optimal line width:[Dyson and Haselgrove (2001)](https://doi.org/10.1006/ijhc.2001.0458)[Nanavati and Bias (2005)](https://journals.uc.edu/index.php/vl/article/view/5765)
+```html
+<main class="ds-container">…</main>
+```
+
+> Research on optimal line width: [Dyson and Haselgrove (2001)](https://doi.org/10.1006/ijhc.2001.0458) [Nanavati and Bias (2005)](https://journals.uc.edu/index.php/vl/article/view/5765)
 
 **Rule.** **One width per page.** Everything on a page has the same left and right edge. A page that needs a different width changes the width token; it does not add a second width.
 
@@ -157,6 +161,12 @@ At wide screen widths, our max content width leaves enough gutter space on the s
 
 `.ds-full` lets a direct child of the container run edge to edge, while its own content lines up with the reading column. It adds no background color of its own.
 
+```html
+<main class="ds-container">
+  <div class="ds-full">…</div>
+</main>
+```
+
 ## Secondary zones  (Modifiers)
 
 The default page background is white, and that is the color that primary page content sits on. The **secondary** zone is a tinted band for what introduces or supports that content: the opening of the page, and any closing material.
@@ -196,7 +206,13 @@ The default page background is white, and that is the color that primary page co
 
 A dense internal tool can use a wider page: 1080px instead of 850px. Use it for tables and filters that do not fit the standard width, not for prose.
 
+```html
+<main class="ds-container ds-container--wide">…</main>
+```
+
 ## Rules
+
+### Accessibility essentials
 
 - **One main landmark.** Put the page's content in a single `<main>`. A page with two, or with none, gives a screen-reader user nothing to jump to.
 - **Label every aside.** A sidebar is an `<aside>` with an `aria-label` that says what it holds, so it announces as a complementary landmark with a name, not as part of the article.

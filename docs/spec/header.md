@@ -478,7 +478,12 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 
 ## Rules
 
-- A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, before its sidebar (see [Papers](papers.md#full-papers)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
+### Hosting the header
+
+A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, before its sidebar (see [Papers](papers.md#full-papers)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
+
+### Design rules
+
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
 - **Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below.
 - **An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go).
@@ -491,6 +496,9 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES).
 - **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.md#secondary-navigation) show the reader’s place.
 - **Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall.
+
+### Accessibility essentials
+
 - **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content. It is for a reader who moves through the page with the Tab key, and who would otherwise pass every link in the header on every page. Most of these readers can see the screen, so the link has to show when it has focus; a screen reader user more often moves by headings and landmarks.
 - **A second skip link goes where the block it passes begins.** A page with a block of controls part way down, as a paper has its sidebar, may put a second `.ds-skip-link` just before it ([Papers](papers.md#full-papers)). It shows where it stands, so write it inside the text it follows, in a paragraph or a column, never as a child of the page container.
 - **Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page.

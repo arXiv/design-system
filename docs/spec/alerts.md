@@ -20,11 +20,6 @@ components:
         does: "The leading line, in bold. It names the situation, and it is what conveys the meaning for a reader who cannot see the icon or the colour. Optional on a one-line alert. On a notice that changes how the whole page is read, such as a [withdrawn paper's](papers.md#withdrawn-papers), it is a heading one level below the page heading, and keeps the alert's size and colour."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)"
-    rules:
-      - "Preferences saved: You will get a weekly digest of new papers in your selected categories."
-      - "Submission limits added: Due to increased volume, arXiv is limiting submissions to 2 per month."
-      - "You are viewing version 1: A newer version is available — [version 3, revised 24 Apr 2026](#)."
-      - "Could not load the PDF: The file failed to render. [Try the HTML version](#) instead."
   - id: single-line
     title: "Single line"
     group: "Modifiers"
@@ -32,8 +27,6 @@ components:
     classes:
       - name: ".ds-alert-content"
         does: "One `<p>` and no `.ds-alert-title`. The sentence itself has to name the state, because there is no title to do it."
-    rules:
-      - "Link copied to clipboard."
   - id: dismissible
     title: "Dismissible"
     group: "Modifiers"
@@ -45,9 +38,11 @@ components:
         does: "Required inside the control. The icon is `aria-hidden`, so without this span the button announces as “button” and nothing more."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)"
-    rules:
-      - "Choosing the wrong category may delay announcement."
 rules:
+  - "The default position is at the top of the main content area, below the page title."
+  - "When possible, place alerts close to the content they refer to. This reduces cognitive load on our users."
+  - "Alerts live in the main content area, not tucked away in a sidebar."
+  - "We cannot expect a user to scroll up or down to catch a timely message. It either needs to appear in the area where they are working, or the page needs to scroll them to the area where the message appears."
   - "**Mark what needs attention where it is.** When some items in a set need attention, put a [status tag](tags.md) on each card or row, not an alert that lists the items, which the reader then has to find."
   - "**Title:** Announce the situation in a few words, for example “No files found”."
   - "**Body:** What the user should do about it, for example “Check the contents of the tarball or zip.”"
@@ -96,14 +91,6 @@ arXiv's design system contains four alerts that align with user expectations and
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A), [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA), and [WCAG 2.2 SC 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html) Status Messages (Level AA)
 
-**Rule.** Preferences saved: You will get a weekly digest of new papers in your selected categories.
-
-**Rule.** Submission limits added: Due to increased volume, arXiv is limiting submissions to 2 per month.
-
-**Rule.** You are viewing version 1: A newer version is available — [version 3, revised 24 Apr 2026](#).
-
-**Rule.** Could not load the PDF: The file failed to render. [Try the HTML version](#) instead.
-
 ## Single line  (Modifiers)
 
 Some messages are meant to be short and do not need lead-in text. Alerts can also be just a single line.
@@ -121,8 +108,6 @@ Some messages are meant to be short and do not need lead-in text. Alerts can als
 ```
 
 - `.ds-alert-content` — One `<p>` and no `.ds-alert-title`. The sentence itself has to name the state, because there is no title to do it.
-
-**Rule.** Link copied to clipboard.
 
 ## Dismissible  (Modifiers)
 
@@ -153,17 +138,31 @@ The dismiss control, fully documented on [Buttons](buttons.md#the-close-control)
 
 > Meets accessibility guidelines [WCAG 2.2 SC 4.1.2](https://www.w3.org/WAI/WCAG22/Understanding/name-role-value.html) Name, Role, Value (Level A) and [WCAG 2.2 SC 2.5.8](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) Target Size (Minimum) (Level AA)
 
-**Rule.** Choosing the wrong category may delay announcement.
-
 ## Rules
 
+### Placement
+
+The default position is at the top of the main content area, below the page title.
+
+When possible, place alerts close to the content they refer to. This reduces cognitive load on our users.
+
+Alerts live in the main content area, not tucked away in a sidebar.
+
+We cannot expect a user to scroll up or down to catch a timely message. It either needs to appear in the area where they are working, or the page needs to scroll them to the area where the message appears.
+
 - **Mark what needs attention where it is.** When some items in a set need attention, put a [status tag](tags.md) on each card or row, not an alert that lists the items, which the reader then has to find.
+
+### Writing the message
+
 - **Title:** Announce the situation in a few words, for example “No files found”.
 - **Body:** What the user should do about it, for example “Check the contents of the tarball or zip.”
 - **Links help:** When available, offer links inside the body that take the user to the next step.
 - **Focus on action:** Stay focused on what the user needs to do, do not explain what went wrong internally. “Enter a complete email address” is better than “Validation failed”.
 - **arXiv’s voice:** Plain, jargon-free, contraction-free, and we never blame the user. “The file failed to render” is better than “You uploaded a bad file”.
 - **One row when possible:** Shorter is better. Alerts should not crowd out the content they are supporting.
+
+### Accessibility essentials
+
 - **Choose the role by state.** Put `role="status"` on a success or info alert: it is polite, and a screen reader announces it when idle. Put `role="alert"` on a warning or error alert: it is assertive, and a screen reader announces it immediately. Do not use `role="alert"` for anything that can wait.
 - **No role on an alert that is in the page as it loads, or that focus moves to.** A role announces a change, and a screen reader does not reliably announce an alert that was there from the start, such as the warning on an older version of a paper. Put that alert where the reader meets it early, straight after the page heading. An alert that focus moves to, such as a [form's error summary](forms.md#alerts-in-forms), needs no role either: focus already makes it heard.
 - **Announce the result of an action.** Copy, Permalink and the theme control change nothing a reader can see: see [Show that something was copied](action-feedback.md).
