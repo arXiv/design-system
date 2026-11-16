@@ -4188,6 +4188,11 @@ html.js .ds-show-more-tail:not(.is-open) { display: none; }
   z-index: 60;
 }
 .ds-site-header.is-search-open > .ds-site-header-search.is-open { padding: 8px 16px; }
+/* A search field that stays in the bar keeps its place when the menu opens. The
+   open bar wraps, and a wrapping line places each item by its starting width, so
+   the field starts at its narrowest (the 7rem header.js measures with) and grows
+   back to its full 13rem; otherwise it drops below the bar. */
+.ds-site-header.is-collapsible.is-menu-open > .ds-site-header-search:not(.is-open) { flex: 1 1 7rem; max-width: 13rem; }
 /* Folded, the compact account button is a row with its name showing, so the
    menu's own name line would say it twice. !important only to undo .is-sr-only. */
 .ds-site-header.is-single-menu.is-nav-collapsed .ds-site-header-account--compact summary { height: auto; margin-block: 0; justify-content: flex-start; }
