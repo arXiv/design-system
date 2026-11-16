@@ -26,7 +26,7 @@ components:
       - name: ".ds-site-header-logo"
         does: "The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”."
       - name: ".ds-site-header-search-link"
-        does: "arxiv.org’s Search: an `<a href=\"/search\">` before the navigation and outside it, so it stays in the bar when the navigation folds. JavaScript upgrades it to open the search overlay; without JavaScript it goes to the search page."
+        does: "arxiv.org’s Search: a link to the search page before the navigation and outside it, so it stays in the bar when the navigation folds. With `id=\"ds-search-toggle\"` and `aria-controls=\"ds-search-overlay\"`, the header’s script opens the search overlay from it; without JavaScript it goes to the search page."
       - name: ".ds-site-header-nav"
         does: "The site’s sections, in a `<nav>` with an `aria-label`."
       - name: ".ds-nav-icon"
@@ -44,9 +44,13 @@ components:
       - name: ".ds-site-header-dropdown"
         does: "A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus)."
       - name: ".ds-search-overlay"
-        does: "The search overlay, after the header. The template’s `header.js` opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it."
+        does: "The search overlay, after the header, with `id=\"ds-search-overlay\"` and its field `id=\"ds-search-input\"`. The header’s script opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it."
       - name: ".ds-search-overlay-panel"
         does: "The overlay’s panel, hanging from the bottom of the bar at every width. Opening it closes the menu. Its field and hint are the ordinary `.ds-input` and `.ds-hint`."
+      - name: "templates/assets/chrome/header.js"
+        does: "The header’s script, which opens the search overlay. Load it once per page; without it the Search link goes to the search page and the overlay never opens. From `docs/` it is `../templates/assets/chrome/header.js`; on arxiv.org it is `chrome/header.js` on the static asset route, as the [transitional header’s](#transitional-header) code shows."
+      - name: "header.js"
+        does: "`docs/header.js`, which folds the bar when it does not fit on one row. See [On small screens](#on-small-screens)."
   - id: signed-in
     title: "Signed in"
     summary: "Signed in, the account area shows a greeting with the reader’s given name and an **Account** menu that holds Log out. A long name is cut to 14 characters."
@@ -60,7 +64,7 @@ components:
     summary: "When the header does not fit on one row, it folds. The greeting goes first. Then the navigation, tools and account area fold into one menu, leaving the logo, Search and the menu button. Internal headers keep their search fields in the bar while they fit, then open them from a Search button. A [centred tool or filter](#a-centred-tool-or-filter) folds last. The transitional header folds when the window is narrower than 600px."
     classes:
       - name: "header.js"
-        does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none."
+        does: "These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none. A page with the aspirational header loads this script and the one that opens the search overlay, as [The header unit](#the-header-unit) shows."
       - name: ".ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle"
         does: "The menu button, the Search button for search fields, and the Tools button on a bar without an account area. The script adds each one, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button."
       - name: ".is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-search-collapsed, .is-tools-collapsed, .is-menu-open, .is-search-open, .is-overfull, .is-open, .is-measuring"
@@ -128,7 +132,7 @@ components:
     group: "Modifiers"
     summary: "Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top of the viewport while the page scrolls, and the stylesheet sets `scroll-padding-top` on the page so a link to a section does not land under the bar. A page that uses it keeps no other sticky bar. It is not applied to the examples on this page, which already keeps the TOC bar in view."
 rules:
-  - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, past its sidebar (see [Papers](papers.md#the-sidebar)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
+  - "A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, before its sidebar (see [Papers](papers.md#full-papers)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement."
   - "**Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it."
   - "**Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below."
   - "**An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go)."
@@ -141,7 +145,8 @@ rules:
   - "**Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES)."
   - "**No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.md#secondary-navigation) show the reader’s place."
   - "**Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall."
-  - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content."
+  - "**The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content. It is for a reader who moves through the page with the Tab key, and who would otherwise pass every link in the header on every page. Most of these readers can see the screen, so the link has to show when it has focus; a screen reader user more often moves by headings and landmarks."
+  - "**A second skip link goes where the block it passes begins.** A page with a block of controls part way down, as a paper has its sidebar, may put a second `.ds-skip-link` just before it ([Papers](papers.md#full-papers)). It shows where it stands, so write it inside the text it follows, in a paragraph or a column, never as a child of the page container."
   - "**Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page."
   - "**The wordmark is an image with alt text.** Logo alt text and aria-labels say “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or Roman-numeral gibberish)."
   - "**The account area is not navigation.** In the aspirational header it sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there."
@@ -199,7 +204,7 @@ The header in production now. A page includes it from `templates/` rather than c
       <input type="hidden" name="source" value="header">
     </form>
     <p class="ds-hint">
-      Press Enter to search · <a href="https://arxiv.org/search/advanced">Advanced search</a>
+      Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
     </p>
   </div>
 </div>
@@ -221,10 +226,10 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
 <a class="ds-skip-link" href="#main">Skip to main content</a>
 
 <header class="ds-site-header">
-  <a href="/" class="ds-site-header-logo" aria-label="archive home">
-    <img src="logo_arxiv-primary.svg" alt="archive">
+  <a href="https://arxiv.org/" class="ds-site-header-logo" aria-label="archive home">
+    <img src="assets/images/logos/logo_arxiv-primary.svg" alt="archive">
   </a>
-  <a id="ds-search-toggle" class="ds-site-header-search-link" href="/search" aria-controls="ds-search-overlay" aria-expanded="false">
+  <a id="ds-search-toggle" class="ds-site-header-search-link" href="https://arxiv.org/search" aria-controls="ds-search-overlay" aria-expanded="false">
     <svg class="ds-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
       <circle cx="11" cy="11" r="8"/>
       <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -232,8 +237,8 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
     <span>Search</span>
   </a>
   <nav class="ds-site-header-nav" id="ds-site-header-nav" aria-label="Main navigation">
-    <a href="/submit">Submit</a>
-    <a href="/about/donate">Donate</a>
+    <a href="https://arxiv.org/submit">Submit</a>
+    <a href="https://info.arxiv.org/about/donate.html">Donate</a>
   </nav>
   <div class="ds-site-header-tools">
     <button type="button" class="ds-theme-toggle"></button>
@@ -241,15 +246,33 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
   </div>
   <span class="ds-site-header-divider" aria-hidden="true"></span>
   <div class="ds-site-header-account">
-    <a href="/login" class="ds-site-header-login">Log in</a>
+    <a href="https://arxiv.org/login" class="ds-site-header-login">Log in</a>
   </div>
 </header>
+<div class="ds-search-overlay" id="ds-search-overlay" hidden>
+  <div class="ds-search-overlay-panel" role="search">
+    <form method="GET" action="https://arxiv.org/search">
+      <label for="ds-search-input" class="is-sr-only">Search arXiv</label>
+      <input type="text" name="query" id="ds-search-input" class="ds-input" autocomplete="off"
+        placeholder="Search papers by title, author, abstract, or ID...">
+      <input type="hidden" name="searchtype" value="all">
+      <input type="hidden" name="source" value="header">
+    </form>
+    <p class="ds-hint">
+      Press Enter to search &middot; <a href="https://arxiv.org/search/advanced">Advanced search</a>
+    </p>
+  </div>
+</div>
+
+<!-- Once per page, at the foot. Paths are relative to docs/. -->
+<script src="../templates/assets/chrome/header.js" defer></script>
+<script src="header.js" defer></script>
 ```
 
 - `.ds-skip-link` — The skip link. The first focusable element on the page, visible only on keyboard focus. Its `href` is the id of the main content.
 - `.ds-site-header` — The bar. With no modifier it is the arxiv.org header.
 - `.ds-site-header-logo` — The brand slot, image or wordmark. Takes `margin-right: auto`. On arxiv.org it is the logo image, never the word typed out; its alt text says “archive”.
-- `.ds-site-header-search-link` — arxiv.org’s Search: an `<a href="/search">` before the navigation and outside it, so it stays in the bar when the navigation folds. JavaScript upgrades it to open the search overlay; without JavaScript it goes to the search page.
+- `.ds-site-header-search-link` — arxiv.org’s Search: a link to the search page before the navigation and outside it, so it stays in the bar when the navigation folds. With `id="ds-search-toggle"` and `aria-controls="ds-search-overlay"`, the header’s script opens the search overlay from it; without JavaScript it goes to the search page.
 - `.ds-site-header-nav` — The site’s sections, in a `<nav>` with an `aria-label`.
 - `.ds-nav-icon` — An icon beside a link label, sized by the stylesheet and quieter than the text. `aria-hidden="true"`; the label gives the name.
 - `.ds-site-header-divider` — A vertical hairline between groups of links or between regions, on the bar’s own divider token. Takes `aria-hidden="true"`. Hidden while the navigation is folded away.
@@ -258,8 +281,10 @@ Every header has the same regions, in this order: Logo, Search, Nav, Tools, and 
 - `.ds-site-header-account` — The last region: Log in, or the greeting and the Account menu. It sits outside the `<nav>`, because an account menu is not a site section.
 - `.ds-site-header-login` — The only item in the bar with heavier text: Log in, or the Account menu’s `<summary>`.
 - `.ds-site-header-dropdown` — A menu group in the bar, built on `<details>`. See [Header dropdown menus](#header-dropdown-menus).
-- `.ds-search-overlay` — The search overlay, after the header. The template’s `header.js` opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it.
+- `.ds-search-overlay` — The search overlay, after the header, with `id="ds-search-overlay"` and its field `id="ds-search-input"`. The header’s script opens it from the Search link or Ctrl/Cmd+K, and closes it on Escape, a click outside the panel, or focus leaving it.
 - `.ds-search-overlay-panel` — The overlay’s panel, hanging from the bottom of the bar at every width. Opening it closes the menu. Its field and hint are the ordinary `.ds-input` and `.ds-hint`.
+- `templates/assets/chrome/header.js` — The header’s script, which opens the search overlay. Load it once per page; without it the Search link goes to the search page and the overlay never opens. From `docs/` it is `../templates/assets/chrome/header.js`; on arxiv.org it is `chrome/header.js` on the static asset route, as the [transitional header’s](#transitional-header) code shows.
+- `header.js` — `docs/header.js`, which folds the bar when it does not fit on one row. See [On small screens](#on-small-screens).
 
 ## Signed in
 
@@ -293,7 +318,7 @@ When the header does not fit on one row, it folds. The greeting goes first. Then
 <script src="header.js" defer></script>
 ```
 
-- `header.js` — These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none.
+- `header.js` — These docs’ fold-by-fit script, `docs/header.js`, once per page. It finds every `.ds-site-header` and keeps each one on a single row, with no breakpoint to choose. Without JavaScript the bar wraps onto more rows instead, so nothing is hidden. The templates load their own script, so a page that uses them adds none. A page with the aspirational header loads this script and the one that opens the search overlay, as [The header unit](#the-header-unit) shows.
 - `.ds-site-header-nav-toggle, .ds-site-header-search-toggle, .ds-site-header-tools-toggle` — The menu button, the Search button for search fields, and the Tools button on a bar without an account area. The script adds each one, so they are not in the markup. Each has `aria-expanded` and `aria-controls`, and Escape closes the open region and returns focus to its button.
 - `.is-collapsible, .is-single-menu, .is-greeting-hidden, .is-nav-collapsed, .is-search-collapsed, .is-tools-collapsed, .is-menu-open, .is-search-open, .is-overfull, .is-open, .is-measuring` — State classes the script sets on the bar and on an open region. They are never written by hand. `.is-single-menu` marks a bar with an account area, whose menu holds the navigation, the tools and the account area. `.is-overfull` lets the bar wrap when even the folded bar is too wide for its space.
 
@@ -453,7 +478,7 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 
 ## Rules
 
-- A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, past its sidebar (see [Papers](papers.md#the-sidebar)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
+- A page includes the header from `templates/` and writes the skip link before it, pointing at its own main content. The skip link is hidden until it has keyboard focus, so it serves sighted keyboard users as well as screen-reader users; a paper has a second one, before its sidebar (see [Papers](papers.md#full-papers)). The [templates README](../doc.html?src=templates/README.md) says how to install the header, which variables a host sets, and how the stylesheet, scripts and logo are published and cached. [Banner announcements](../doc.html?src=templates/BANNER_ANNOUNCEMENTS.md) says how to put up an announcement.
 - **Regions, in one order.** Logo, search (the Search link on public pages, search fields on internal tools), navigation, tools (optional), account. In the transitional header, Log in or Account is the last link in the navigation, and page actions come after it.
 - **Navigation sits on the right.** The space after the logo stays empty, apart from the centred space below.
 - **An optional centred space** holds one tool or filter that changes every page under the header, whether a whole site or a whole tool. Use it sparingly. It is for the aspirational header; see [A centred tool or filter](#a-centred-tool-or-filter) and [Where controls go](organize-content.md#where-controls-go).
@@ -466,7 +491,8 @@ Internal tools only. Adding `.ds-site-header--sticky` keeps the bar at the top o
 - **Sticky on internal tools only.** arxiv.org’s public header scrolls away (DESIGN-POLICIES).
 - **No breadcrumbs.** arXiv’s sitemap is wide and shallow, so the header navigation and the [secondary navigation](navigation.md#secondary-navigation) show the reader’s place.
 - **Type sizes are rem**, so a reader’s browser font size applies. In print the header keeps only its logo, 28px tall.
-- **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content.
+- **The skip link comes first.** `.ds-skip-link` is the first focusable element on the page, visible only on keyboard focus, and it goes to the main content. It is for a reader who moves through the page with the Tab key, and who would otherwise pass every link in the header on every page. Most of these readers can see the screen, so the link has to show when it has focus; a screen reader user more often moves by headings and landmarks.
+- **A second skip link goes where the block it passes begins.** A page with a block of controls part way down, as a paper has its sidebar, may put a second `.ds-skip-link` just before it ([Papers](papers.md#full-papers)). It shows where it stands, so write it inside the text it follows, in a paragraph or a column, never as a child of the page container.
 - **Name the navigation.** The bar’s links sit in a `<nav>` with an `aria-label`, such as “Main navigation”, so a screen reader user can tell it from the other landmarks on the page.
 - **The wordmark is an image with alt text.** Logo alt text and aria-labels say “archive” — the spoken form of “arXiv” (screen readers otherwise produce “ar-zhiv” or Roman-numeral gibberish).
 - **The account area is not navigation.** In the aspirational header it sits outside the `<nav>`, so a screen reader user who lists landmarks finds only site sections there.

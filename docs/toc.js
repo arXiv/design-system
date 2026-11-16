@@ -2,11 +2,11 @@
  *
  *   <script src="toc.js" defer></script>
  *
- * .ds-toc is a <details>, so it opens and closes with JavaScript off. Its list
- * can be written into the HTML (these docs write theirs with
- * verification/gen-anchors.py) or left empty, in which case this fills it from
- * every h2 and h3 with an id inside <main>, or inside the element named by
- * data-toc-scope on .ds-toc. A written list is left alone.
+ * .ds-toc is a <details>, so it opens and closes with JavaScript off. Write its
+ * list into the HTML, so it works with JavaScript off too (these docs write
+ * theirs with verification/gen-anchors.py). As a fallback, this fills an empty
+ * list from every h2 and h3 with an id inside <main>, or inside the element
+ * named by data-toc-scope on .ds-toc. A written list is left alone.
  * This also adds what markup cannot: it closes on Escape, on a click outside,
  * and when a link is followed; it names the section the reader is in on the
  * control itself; and on a bar with .ds-toc-bar it marks the bar .is-stuck

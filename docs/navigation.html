@@ -391,7 +391,10 @@
         <div class="ds-acc-body">
 <pre><code>&lt;div class="ds-container"&gt;
   &lt;div class="ds-full ds-zone-secondary"&gt;
-    &lt;header class="ds-page-header"&gt;…&lt;/header&gt;
+    &lt;header class="ds-page-header"&gt;
+      &lt;h1&gt;Page title&lt;/h1&gt;
+      &lt;p&gt;One to five sentences that say what the page is for.&lt;/p&gt;
+    &lt;/header&gt;
   &lt;/div&gt;
 
   &lt;div class="ds-full ds-toc-bar"&gt;
@@ -403,7 +406,10 @@
           &lt;svg class="ds-toc-chevron" aria-hidden="true"&gt;…&lt;/svg&gt;
         &lt;/summary&gt;
         &lt;nav class="ds-toc-menu" aria-label="Contents"&gt;
-          &lt;ol&gt;&lt;/ol&gt;      &lt;!-- written by hand, or left empty for toc.js to fill --&gt;
+          &lt;ol&gt;      &lt;!-- each section heading, word for word --&gt;
+            &lt;li&gt;&lt;a href="#secondary-navigation"&gt;Secondary navigation&lt;/a&gt;&lt;/li&gt;
+            …
+          &lt;/ol&gt;
         &lt;/nav&gt;
       &lt;/details&gt;
     &lt;/div&gt;
@@ -425,12 +431,12 @@
             number in <code>.ds-toc-num</code>.</dd>
             <dt>.ds-toc-bar</dt>
             <dd>The edge-to-edge row that holds the control. A direct child of
-            <code>.ds-container</code>, with <code>.ds-full</code>. Placed directly after a
-            <code>.ds-zone-secondary</code> band, it sits on that band’s bottom edge. By default the bar is sticky:
+            <code>.ds-container</code>, with <code>.ds-full</code>. It comes directly after the page&#39;s opening
+            band, a <code>.ds-zone-secondary</code> band with the title and an introduction, and sits on that band’s bottom edge; a page with the bar always has that band (<a href="layouts.html#secondary-zones">Secondary zones</a>), except a paper, whose bar sits under the site header (<a href="papers.html#paper-toc-bar">The TOC bar on a paper</a>). By default the bar is sticky:
             it keeps to the top of the viewport, where it becomes <code>.is-stuck</code> and
             tightens, and it sets <code>scroll-padding-top</code> so an anchor lands below it. On a
             viewport shorter than 30rem, such as a phone on its side or a laptop at 400% zoom, it
-            scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar, and whether it sticks, is the developer’s call; a page keeps at most one sticky bar (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</dd>
+            scrolls away with the page instead, so the reader keeps the height for the text. Whether a page has the bar follows its set, if it is in one (<a href="organize-content.html#rules">Organize complex page content</a>), and whether it sticks is the developer’s call; a page keeps at most one sticky bar (<a href="doc.html?src=docs/DESIGN-POLICIES.md">DESIGN-POLICIES</a>).</dd>
             <dt>.ds-toc-bar--scrolls</dt>
             <dd>The bar scrolls away with the page instead of sticking, for a page that does not need its sections in view all the way down. An anchor then lands at the top of the viewport.</dd>
             <dt>.ds-toc-bar-inner</dt>
@@ -446,11 +452,11 @@
     </div>
 
     <ul class="notes">
-      <li><strong>The list is written or generated.</strong> Write the <code>&lt;ol&gt;</code> by
-      hand, or leave it empty and <code>toc.js</code> fills it when the page loads, with one link for every
-      <code>h2</code> and <code>h3</code> that has an <code>id</code>. A written list works with
-      JavaScript off, so these docs write theirs: <code>verification/gen-anchors.py</code> fills the
-      <code>&lt;ol&gt;</code> from the page’s section headings, and <code>--check</code> fails when the two
+      <li><strong>Write the list.</strong> Write the <code>&lt;ol&gt;</code> in the page, with one link
+      for every <code>h2</code> and <code>h3</code> that has an <code>id</code>, so the list works with
+      JavaScript off. <code>toc.js</code> fills an empty list when the page loads, as a fallback. These
+      docs write theirs with <code>verification/gen-anchors.py</code>, which fills the
+      <code>&lt;ol&gt;</code> from the page’s section headings; <code>--check</code> fails when the two
       disagree.</li>
       <li><strong>It opens without JavaScript.</strong> <code>toc.js</code> adds closing on Escape,
       closing on a click outside, and the name of the current section on the control.</li>
