@@ -68,10 +68,10 @@ components:
       - "Meets accessibility guideline [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A)"
   - id: matched-words
     title: "Search-matched words"
-    summary: "The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight."
+    summary: "The words that matched a search are marked with `<mark>`, in the info blue and a heavier weight."
     classes:
       - name: "<mark>"
-        does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the color, so it is never color alone. In internal tools the wash is Access Lime."
+        does: "One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the color, so it is never color alone. The blue is `--ds-info-bg`, the same in internal tools."
     notes:
       - "Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)"
   - id: code-blocks-and-the-copy-button
@@ -245,13 +245,13 @@ Reading text with <a href="/abs/2604.22725">an inline link</a> in it.
 
 ## Search-matched words
 
-The words that matched a search are marked with `<mark>`, in the accent wash and a heavier weight.
+The words that matched a search are marked with `<mark>`, in the info blue and a heavier weight.
 
 ```html
 <p>Weak-<mark>Lensing</mark> Shear Response for Photometric Redshift-Based Tomographic Binning</p>
 ```
 
-- `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the color, so it is never color alone. In internal tools the wash is Access Lime.
+- `<mark>` — One matched word or phrase. No class: the element is styled inside `.ds-page`. The weight marks it as well as the color, so it is never color alone. The blue is `--ds-info-bg`, the same in internal tools.
 
 > Meets accessibility guidelines [WCAG 2.2 SC 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html) Use of Color (Level A) and [WCAG 2.2 SC 1.4.3](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) Contrast (Minimum) (Level AA)
 
