@@ -36,6 +36,7 @@ components:
       - "**A tool or filter for every page under the header, whether a whole site or a whole tool: the header's centered space**, on the header's background. Nothing sits higher. Use it sparingly. See [Header](header.md#design-rules)."
       - "**A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation)."
       - "**A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones)."
+      - "**A control for the whole page, such as an edit or refresh button, goes on its own line above the page heading, aligned right.** Headings vary in length, and so do screen widths, so the heading's own row does not reliably have room for another element. The line comes before the heading in the markup too, so a screen reader meets it in the order it is shown. Write it as a `.ds-btn-group.ds-btn-group--end` inside the page header, before the `<h1>`."
       - "**Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers)."
       - "**Selecting items in a list: the checkbox at the start of each item, and the actions on the selection in the set's header bar.** A control for one item only goes at the end of that item, on the right. See [Selecting items in a list](tables.md#selecting-items-in-a-list)."
       - "**A control for the whole page sits at least as far above the first set of data as the sets sit from each other**, so it reads as the page's and not the first set's."
@@ -118,6 +119,8 @@ A control sits with what it changes. The more of the site it changes, the higher
 **Rule.** **A choice between the sections of a tool: the section menu**, at the start of the second row, on the accent tint. It is navigation. See [Two levels of navigation](navigation.md#two-levels-of-navigation).
 
 **Rule.** **A filter for the whole page: the page's opening band**, under the page title. See [Secondary zones](layouts.md#secondary-zones).
+
+**Rule.** **A control for the whole page, such as an edit or refresh button, goes on its own line above the page heading, aligned right.** Headings vary in length, and so do screen widths, so the heading's own row does not reliably have room for another element. The line comes before the heading in the markup too, so a screen reader meets it in the order it is shown. Write it as a `.ds-btn-group.ds-btn-group--end` inside the page header, before the `<h1>`.
 
 **Rule.** **Filters, sort and group actions for one set of data: the set's header bar**, on one line, even when the set's only control is one action, such as Copy emails. See [Filters](filters.md) and [Cards with a header bar](cards.md#cards-with-a-header-bar). A table sorts from its [column headers](tables.md#sortable-column-headers).
 
