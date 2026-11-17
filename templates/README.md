@@ -192,4 +192,4 @@ all three.
   and move status, lib, submit and tapir onto the TemplateToolkit and static targets.
 
 Background: the dev Slack channel (the update-to-latest and banner-service threads) and
-[`dev-workflow-comparison.html`](../whiteboard/planning/proposals/dev-workflow-comparison.html).
+the dev workflow comparison in the planning notes.

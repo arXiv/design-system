@@ -357,7 +357,7 @@ No fixed line-heights, no pinned letter-spacing, no `!important` on font-family 
 
 ### Why IBM Plex
 
-Open source under the SIL Open Font License, so there is no licensing cost and no vendor dependency; self-hostable as woff2 from arXiv's own assets; one designer's family covering Sans, Condensed, Mono and Serif so nothing is mixed; broad language coverage including Latin Extended, Cyrillic, Greek, Arabic, Hebrew, Devanagari and Thai; and it pairs with STIX Two Math, which is built for the same technical context. The family was re-evaluated in June 2026 against Atkinson Hyperlegible Next, Source Sans 3, Inter and Public Sans, and kept — that comparison lives in [whiteboard/planning/proposals](../doc.html?src=whiteboard/planning/proposals/typeface-re-evaluation-2026-06.md), not here.
+Open source under the SIL Open Font License, so there is no licensing cost and no vendor dependency; self-hostable as woff2 from arXiv's own assets; one designer's family covering Sans, Condensed, Mono and Serif so nothing is mixed; broad language coverage including Latin Extended, Cyrillic, Greek, Arabic, Hebrew, Devanagari and Thai; and it pairs with STIX Two Math, which is built for the same technical context. The family was re-evaluated in June 2026 against Atkinson Hyperlegible Next, Source Sans 3, Inter and Public Sans, and kept — that comparison lives in the planning notes, not here.
 
 ### Tokens
 

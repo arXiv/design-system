@@ -19,8 +19,7 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-# blog-theme/ is a packaged copy of a separate project — see AGENTS.md.
-ROOTS = [REPO / "docs", REPO / "whiteboard" / "mockups"]
+ROOTS = [REPO / "docs"]
 
 FAILS = []
 
@@ -243,23 +242,11 @@ def check_one_name_per_surface():
 # ── Type sizes are relative, so a reader's font-size setting reaches them ──
 # typography.html, "Sizes are rem, never px". The rule existed for six weeks
 # before anything checked it, and tier 1 went from 6 px font sizes to 17 in
-# that time. The one guard that existed ran in a browser against the abstract
-# mockup and read the stylesheets THAT page loads — and it loads none, so it
-# never saw design-system.css and reported green throughout.
-#
-# Deferred by name, not by silence: the two admin console mockups are 100% px
-# (92 and 55) and belong to the internal tools work, not to this. They report
-# as a NOTE, the way check-drift.py defers the blog theme.
+# that time.
 PX_FONT = re.compile(r"font-size:\s*([0-9.]+)px")
 TYPE_REQUIRED = [
     REPO / "docs" / "design-system.css",
     REPO / "docs" / "internal-tools.css",
-    REPO / "whiteboard" / "mockups" / "public" / "html-phase1.html",
-    REPO / "whiteboard" / "mockups" / "public" / "abstract-phase2.html",
-]
-TYPE_DEFERRED = [
-    REPO / "whiteboard" / "mockups" / "internal" / "admin-console" / "user-page" / "index.html",
-    REPO / "whiteboard" / "mockups" / "internal" / "admin-console" / "paper-details" / "index.html",
 ]
 
 
@@ -280,13 +267,6 @@ def check_relative_type_sizes():
                  "font-size setting reaches it")
         if len(hits) > 6:
             print(f"      ...and {len(hits) - 6} more in {f.relative_to(REPO)}")
-    deferred = 0
-    for f in TYPE_DEFERRED:
-        if f.exists():
-            deferred += len(PX_FONT.findall(f.read_text()))
-    if deferred:
-        print(f"NOTE  {rule} — {deferred} px font sizes in the two admin console "
-              "mockups,\n      deferred with the internal tools work (whiteboard/planning/NEXT-STEPS.md, Mockups)")
     if rule not in FAILS:
         ok(rule, f"{total} files")
 
@@ -408,7 +388,7 @@ def check_permalink_script():
 # ── The docs do not narrate their own history ──
 # The system is new and in use nowhere, so a reader needs to know what a thing
 # IS. "Previously", "we dropped", a decision date in the prose — all of it is
-# a changelog in the wrong place. Decisions live in whiteboard/planning/; git is the log.
+# a changelog in the wrong place. Decisions live in the planning notes outside this repository; git is the log.
 HISTORY = re.compile(
     r"\b(decided 20\d\d|settled 20\d\d|reviewed 20\d\d|renamed 20\d\d"
     r"|we (?:rejected|dropped|removed|replaced)|the earlier version"

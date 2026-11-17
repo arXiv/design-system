@@ -1,7 +1,7 @@
 ---
 page: forms.html
 title: "Forms & validation"
-summary: "The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mockup](../../whiteboard/mockups/public/submission-metadata/index.html)."
+summary: "The design system supports highly accessible forms with robust validation display options."
 stylesheet: design-system.css
 components:
   - id: fields
@@ -162,7 +162,7 @@ rules:
 
 # Forms & validation
 
-The design system supports highly accessible forms with robust validation display options. Explore validation examples in action in this [submission metadata mockup](../../whiteboard/mockups/public/submission-metadata/index.html).
+The design system supports highly accessible forms with robust validation display options.
 
 Load `design-system.css`; internal tools also load `internal-tools.css` and put
 `class="ds-internal"` on `<html>`. Every class below is in tier 1 unless it says otherwise.
