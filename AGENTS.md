@@ -128,5 +128,6 @@ The policies in `docs/DESIGN-POLICIES.md` are non-negotiable. If any request con
 ## Repo conventions
 
 - Small team: never add anything needing manual upkeep.
+- The repository is public. A mockup holds no real people, no paper ID that a page judges, no rules arXiv uses to judge work (thresholds, moderation criteria) and no screenshot of an internal tool with real data: see `whiteboard/mockups/README.md` *Data in a mockup*. When unsure, ask before committing.
 - Git: work on a branch named for what it changes; changes reach master only through a pull request, which GitHub enforces. Identity SBBCornell. Published via GitHub Pages.
 - Tests: `verification/token-burn/` measures whether agents can work in this repo. Its tests and scoring notes are excluded from test workspaces — do not tune to them.
