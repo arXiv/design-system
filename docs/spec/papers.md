@@ -362,18 +362,18 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
 **The top of a withdrawn paper, viewing the withdrawal notice**
 
 ```html
-<title>Withdrawn: Gauge-independent approach to inflation in quadratic gravity</title>
+<title>Withdrawn: Apparent instabilities of scalar perturbations in a toy model of quadratic gravity</title>
 …
 <p class="ds-paper-identity">
-  <span><span class="ds-version" aria-hidden="true">arXiv:2604.22725v4</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 2 2 7 2 5, version 4</span></span>
+  <span><span class="ds-version" aria-hidden="true">arXiv:2604.92725v4</span><span class="is-sr-only">archive paper, I D 2 6 0 4 dot 9 2 7 2 5, version 4</span></span>
   <span>[gr-qc] General Relativity and Quantum Cosmology</span>
 </p>
-<h1><span class="ds-paper-status" lang="en">Withdrawn:</span> Gauge-independent approach to inflation in quadratic gravity</h1>
+<h1><span class="ds-paper-status" lang="en">Withdrawn:</span> Apparent instabilities of scalar perturbations in a toy model of quadratic gravity</h1>
 <section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
   <svg class="ds-alert-icon" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/></svg>
   <div class="ds-alert-content">
-    <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Adrian Palomares.</h2>
-    <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.22725v3">version 3</a>.</p>
+    <h2 class="ds-alert-title" id="notice-h">This paper has been withdrawn by Arvid Hellqvist.</h2>
+    <p>Reason given: &ldquo;The main result in Section 3 relies on a gauge condition that does not hold in general. A corrected analysis will be submitted as a new paper.&rdquo; The withdrawn paper can still be read in <a href="https://arxiv.org/abs/2604.92725v3">version 3</a>.</p>
   </div>
 </section>
 <p class="ds-date-row">…the dates, ending with Withdrawn, and the versions, as in <a href="versions.html#version-row">Version row</a>…</p>
@@ -390,9 +390,9 @@ A withdrawn paper keeps its title, authors, abstract and metadata, and its earli
 **The top of a removed version**
 
 ```html
-<title>Removed: Gauge-independent approach to inflation in quadratic gravity</title>
+<title>Removed: Apparent instabilities of scalar perturbations in a toy model of quadratic gravity</title>
 …
-<h1><span class="ds-paper-status" lang="en">Removed:</span> Gauge-independent approach to inflation in quadratic gravity</h1>
+<h1><span class="ds-paper-status" lang="en">Removed:</span> Apparent instabilities of scalar perturbations in a toy model of quadratic gravity</h1>
 <section class="ds-alert ds-alert--error" aria-labelledby="notice-h">
   <svg class="ds-alert-icon" …>…</svg>
   <div class="ds-alert-content">

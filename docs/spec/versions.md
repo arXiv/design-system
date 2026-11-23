@@ -474,7 +474,7 @@ In the sidebar, Version history lists every version, newest first, with its date
 <ol class="ds-paper-versions">
   <li class="ds-version--error" aria-current="true">
     <p class="ds-date-row"><strong class="ds-version ds-version--error">Withdrawal notice</strong> · <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC · Viewing</p>
-    <p>Withdrawn by Adrian Palomares.</p>
+    <p>Withdrawn by Arvid Hellqvist.</p>
   </li>
   <li>…v3, v2 and v1, as on any paper…</li>
 </ol>
@@ -489,7 +489,7 @@ In the sidebar, Version history lists every version, newest first, with its date
 <ol class="ds-paper-versions">
   <li class="ds-version--error">
     <p class="ds-date-row"><a class="ds-version ds-version--error" href="…">Withdrawal notice</a> · <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC</p>
-    <p>Withdrawn by Adrian Palomares.</p>
+    <p>Withdrawn by Arvid Hellqvist.</p>
   </li>
   <li class="ds-version--error" aria-current="true">
     <p class="ds-date-row"><strong class="ds-version ds-version--error">v3</strong> · <time datetime="2026-06-28">28&nbsp;Jun&nbsp;2026</time>&nbsp;UTC · Viewing</p>
@@ -507,7 +507,7 @@ In the sidebar, Version history lists every version, newest first, with its date
 <ol class="ds-paper-versions">
   <li class="ds-version--error">
     <p class="ds-date-row"><a class="ds-version ds-version--error" href="…">Withdrawal notice</a> · <time datetime="2026-10-22">22&nbsp;Oct&nbsp;2026</time>&nbsp;UTC</p>
-    <p>Withdrawn by Adrian Palomares.</p>
+    <p>Withdrawn by Arvid Hellqvist.</p>
   </li>
   <li>…v3, as on any paper…</li>
   <li aria-current="true">
